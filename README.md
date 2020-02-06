@@ -91,7 +91,7 @@ geany v1.29 under Raspian Stretch
   - choose www-root-directory and link to NAS storage, e.g.
    
     ```ln -s /media/nas-storage /var/www/html/cloud```
-  - copy .css, .js, .xsl(t), ... files to www-root
+  - copy .css, .js, .xsl(t), ... files to www-root/cloud
   - create user/password pair:
    
     ```sudo htpasswd -c /path/to/.htpasswd username```

@@ -10,7 +10,7 @@ server {
 
 server {
 
-    gzip off; # because off ssl related vulnerability;
+    gzip off; # because of ssl related vulnerability;
     #gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript text/html;
     #gzip_proxied    any;
     #gzip_min_length 200;
@@ -129,7 +129,7 @@ server {
 	    
 	# 4GUESTS
 	location /cloud/guest {
-        gzip off; # because off ssl related vulnerability
+        gzip off; # because of ssl related vulnerability
 	    
 	    auth_basic "Restricted Content";
             auth_basic_user_file /path/to/.htpasswd-guest;

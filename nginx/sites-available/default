@@ -50,7 +50,7 @@ server {
 		auth_basic_user_file /path/to/.htpasswd;
 	    autoindex on;
 	    autoindex_format xml;
-	    xslt_stylesheet /path/to/custom01.xslt;
+	    xslt_stylesheet /path/to/custom01.xslt; # by-name sort order
 	    autoindex_localtime on;
 	    autoindex_exact_size off;
 	}
@@ -61,7 +61,7 @@ server {
 		auth_basic_user_file /path/to/.htpasswd;
 	    autoindex on;
 	    autoindex_format xml;
-	    xslt_stylesheet /path/to/custom02.xslt;
+	    xslt_stylesheet /path/to/custom02.xslt; # by-date sort order
 	    autoindex_localtime on;
 	    autoindex_exact_size off;
 	}
@@ -72,7 +72,7 @@ server {
 		auth_basic_user_file /path/to/.htpasswd;
 	    autoindex on;
 	    autoindex_format xml;
-	    xslt_stylesheet /path/to/custom03.xslt;
+	    xslt_stylesheet /path/to/custom03.xslt; # by-size sort order
 	    autoindex_localtime on;
 	    autoindex_exact_size off;
 	}
@@ -97,7 +97,7 @@ server {
 		auth_basic_user_file /path/to/.htpasswd;
 	    autoindex on;
 	    autoindex_format xml;
-	    xslt_stylesheet /path/to/gal01.xslt;
+	    xslt_stylesheet /path/to/gal01.xslt; # by-name sort order
 	    xslt_string_param title $1;
 	    autoindex_localtime on;
 	    autoindex_exact_size off;
@@ -109,7 +109,7 @@ server {
 		auth_basic_user_file /path/to/.htpasswd;
 	    autoindex on;
 	    autoindex_format xml;
-	    xslt_stylesheet /path/to/gal02.xslt;
+	    xslt_stylesheet /path/to/gal02.xslt; # by-date sort order
 	    xslt_string_param title $1;
 	    autoindex_localtime on;
 	    autoindex_exact_size off;
@@ -121,7 +121,7 @@ server {
 		auth_basic_user_file /path/to/.htpasswd;
 	    autoindex on;
 	    autoindex_format xml;
-	    xslt_stylesheet /path/to/gal03.xslt;
+	    xslt_stylesheet /path/to/gal03.xslt; # by-size sort order
 	    xslt_string_param title $1;
 	    autoindex_localtime on;
 	    autoindex_exact_size off;

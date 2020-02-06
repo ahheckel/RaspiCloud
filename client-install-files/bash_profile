@@ -1,0 +1,14 @@
+
+echo "[Starting crond...]" && crond && echo "[OK]"
+
+echo "[$(crontab -l 2>/dev/null | sed '/^\s*$/d' | grep -v ^# | wc -l) cronjobs]"
+crontab -l 2>/dev/null
+scrpts="push-to-cloud-tmp.sh getgps.sh"
+for scrpt in $scrpts ; do
+	if ! pgrep -f "$HOME/.shortcuts/${scrpt}" > /dev/null ; then 
+		echo "[${scrpt} : no instance is running]"
+		rm -f $HOME/.${scrpt}.lock
+	else
+		echo "[${scrpt} : an instance is running]"
+	fi
+done

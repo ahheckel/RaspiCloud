@@ -1,0 +1,212 @@
+/* CSSBox, is released under the Creative Commons
+   Attribution-ShareAlike 4.0 license and is available on
+   https://github.com/TheLastProject/CSSBox. 
+   The code has been adapted to include simple image manipulation functions.
+*/
+div.cssbox {
+  display: inline-block;
+  word-wrap: break-word;   
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+span.cssbox_full {
+  z-index: 999;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(100,100,100,0.9);
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s linear;
+}
+
+span.cssbox_full img {
+  position: fixed;
+  background-color: rgb(60,60,60); //white;
+  margin: 0;
+  padding: 0;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 50px black;
+}
+
+div.cssbox > a.cssbox_zoomin,
+div.cssbox > a.cssbox_rotate-reset,
+div.cssbox > a.cssbox_rotate-left,
+div.cssbox > a.cssbox_rotate-right,
+div.cssbox > a.cssbox_title,
+div.cssbox > a.cssbox_close,
+div.cssbox > a.cssbox_prev,
+div.cssbox > a.cssbox_next {
+  z-index: 999;
+  position: fixed;
+  text-decoration: none;
+  visibility: hidden;
+  color: white;
+  padding: 50px;
+  background-color: rgb(0,0,0,0.1);
+  text-shadow: 0px 0px 10px rgb(0,0,0,1);
+  box-shadow: 0px 0px 10px rgb(0,0,0,1);
+  font-size: 120px;
+}
+
+div.cssbox > a.cssbox_close {
+	padding: 70px;
+  border-radius: 100px;
+  background-color: rgb(0,0,0,0.1);
+  top: 2%;
+  right: 4%;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent;  
+}
+
+div.cssbox > a.cssbox_close::after {
+  content: '\00d7';
+}
+
+div.cssbox > a.cssbox_prev,
+div.cssbox > a.cssbox_next {
+  top: 50%;
+  transform: translate(0%, -50%);
+}
+
+div.cssbox > a.cssbox_prev {
+  left: 5%;
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent;  
+}
+
+div.cssbox > a.cssbox_next {
+  right: 5%;
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent;
+}
+
+div.cssbox > a.cssbox_title {
+  bottom: 2%;
+  left: 50%;
+  color: #fff;
+  transform: translate(-50%, 0%);
+  font-size: 50px;
+  background-color: rgb(0,0,0,0.1);
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent;
+  //max-width: 90%;
+  text-align: center;
+  font-weight: bold;
+}
+div.cssbox > a.cssbox_zoomin {
+  top: 2%;
+  left: 5%;
+  color: #ccc;
+  transform: translate(-10%, 0%);
+  font-size: 50px;
+  background-color: rgb(0,0,0,0.1);
+  cursor: pointer;
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent;
+}
+div.cssbox > a.cssbox_rotate-reset {
+  top: 2%;
+  left: 50%;
+  color: #ccc;
+  transform: translate(-50%, 0%);
+  font-size: 50px;
+  padding: 40px;
+  background-color: rgb(0,0,0,0.1);
+  cursor: pointer;
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent;
+}
+div.cssbox > a.cssbox_rotate-left {
+  top: 2%;
+  left: 35%;
+  color: #ccc;
+  transform: translate(-50%, 0%);
+  font-size: 50px;
+  background-color: rgb(0,0,0,0.1);
+  cursor: pointer;
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent;
+}
+div.cssbox > a.cssbox_rotate-right {
+  top: 2%;
+  left: 65%;
+  color: #ccc;
+  transform: translate(-50%, 0%);
+  font-size: 50px;
+  background-color: rgb(0,0,0,0.1);
+  cursor: pointer;
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent;
+}
+
+div.cssbox > a:target ~ a.cssbox_zoomin,
+div.cssbox > a:target ~ a.cssbox_rotate-reset,
+div.cssbox > a:target ~ a.cssbox_rotate-left,
+div.cssbox > a:target ~ a.cssbox_rotate-right,
+div.cssbox > a:target ~ a.cssbox_title,
+div.cssbox > a:target ~ a.cssbox_close,
+div.cssbox > a:target ~ a.cssbox_prev,
+div.cssbox > a:target ~ a.cssbox_next {
+  visibility: visible;
+}
+
+div.cssbox > a:target > img.cssbox_thumb + span.cssbox_full {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: initial;
+}
+span.cssbox_full {
+  cursor: initial;
+}
+div.cssbox > a.cssbox_next:hover,div.cssbox > a.cssbox_prev:hover {
+  color: #ff0;
+  border-color: #ff0;
+  background-color: rgb(60,60,0,0.5);
+  box-shadow: 0px 0px 10px rgb(255,255,0,1);
+}
+div.cssbox > a.cssbox_title:hover {
+  color: #f80;
+  border-color: #f80;
+  background-color: rgb(40,20,0,0.5);
+  box-shadow: 0px 0px 10px rgb(255,170,0,1);
+}
+div.cssbox > a.cssbox_rotate-reset:hover,div.cssbox > a.cssbox_rotate-left:hover,div.cssbox > a.cssbox_rotate-right:hover {
+  color: #ccc;
+  border-color: #0f0;
+  background-color: rgb(0,60,0,0.3);
+  box-shadow: 0px 0px 10px rgb(0,255,0,1);
+}
+div.cssbox > a.cssbox_zoomin:hover {
+  border-color: #f0f;
+  background-color: rgb(150,0,150,0.3);
+  box-shadow: 0px 0px 10px rgb(255,0,255,1);
+}
+div.cssbox > a.cssbox_close:hover {
+  color: #f30;
+  border-color: #f30;
+  background-color: rgb(150,20,0,0.3);
+  box-shadow: 0px 0px 10px rgb(255,30,0,1);
+}
+/* This is the end of CSSBox */

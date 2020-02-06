@@ -1,0 +1,143 @@
+
+# Default server configuration
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	return 301 
+	https://$host$request_uri;
+}
+
+server {
+
+    gzip off; # because off ssl related vulnerability;
+    #gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript text/html;
+    #gzip_proxied    any;
+    #gzip_min_length 200;
+
+	# SSL configuration
+	listen 443 ssl http2 default_server;
+	listen [::]:443 ssl http2 default_server;
+	ssl_certificate /etc/nginx/ssl/nginx.crt;      # adds certificate
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;  # adds private key
+	ssl_protocols       TLSv1.2; 				  # defines protocols
+    ssl_ciphers         HIGH:!aNULL:!MD5; 	     # defines ciphersuites
+	ssl_buffer_size 8k;
+
+
+	root /var/www/html;
+
+	# Add index.php to the list if you are using PHP
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+		
+	location /cloud {
+		allow 172.16.0.0/24;
+		deny all;
+		auth_basic "Restricted Content";
+		auth_basic_user_file /path/to/.htpasswd;
+	    autoindex on;
+	    autoindex_format xml;
+	    xslt_stylesheet /path/to/custom.xslt;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	}
+	location /.cloud01 {
+		allow 172.16.0.0/24;
+		deny all;
+		auth_basic "Restricted Content";
+		auth_basic_user_file /path/to/.htpasswd;
+	    autoindex on;
+	    autoindex_format xml;
+	    xslt_stylesheet /path/to/custom01.xslt;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	}
+	location /.cloud02 {
+		allow 172.16.0.0/24;
+		deny all;
+		auth_basic "Restricted Content";
+		auth_basic_user_file /path/to/.htpasswd;
+	    autoindex on;
+	    autoindex_format xml;
+	    xslt_stylesheet /path/to/custom02.xslt;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	}
+	location /.cloud03 {
+		allow 172.16.0.0/24;
+		deny all;
+		auth_basic "Restricted Content";
+		auth_basic_user_file /path/to/.htpasswd;
+	    autoindex on;
+	    autoindex_format xml;
+	    xslt_stylesheet /path/to/custom03.xslt;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	}
+	
+	# GALLERIES
+	location ~ /cloud/(.*/tmp/(vids|auds|docs|pics)) {
+		allow 172.16.0.0/24;
+		deny all;
+		auth_basic "Restricted Content";
+		auth_basic_user_file /path/to/.htpasswd;
+	    autoindex on;
+	    autoindex_format xml;
+	    xslt_stylesheet /path/to/gal.xslt;
+	    xslt_string_param title $1;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	}
+	location ~ /.cloud01/(.*/tmp/(vids|auds|docs|pics)) {
+		allow 172.16.0.0/24;
+		deny all;
+		auth_basic "Restricted Content";
+		auth_basic_user_file /path/to/.htpasswd;
+	    autoindex on;
+	    autoindex_format xml;
+	    xslt_stylesheet /path/to/gal01.xslt;
+	    xslt_string_param title $1;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	}
+	location ~ /.cloud02/(.*/tmp/(vids|auds|docs|pics)) {
+		allow 172.16.0.0/24;
+		deny all;
+		auth_basic "Restricted Content";
+		auth_basic_user_file /path/to/.htpasswd;
+	    autoindex on;
+	    autoindex_format xml;
+	    xslt_stylesheet /path/to/gal02.xslt;
+	    xslt_string_param title $1;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	}
+	location ~ /.cloud03/(.*/tmp/(vids|auds|docs|pics)) {
+		allow 172.16.0.0/24;
+		deny all;
+		auth_basic "Restricted Content";
+		auth_basic_user_file /path/to/.htpasswd;
+	    autoindex on;
+	    autoindex_format xml;
+	    xslt_stylesheet /path/to/gal03.xslt;
+	    xslt_string_param title $1;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	    }
+	    
+	# 4GUESTS
+	location /cloud/guest {
+        gzip off; # because off ssl related vulnerability
+	    
+	    auth_basic "Restricted Content";
+        auth_basic_user_file /path/to/.htpasswd-guest;
+	    autoindex_format xml;
+	    xslt_stylesheet /path/to/guest/custom01.xslt;
+	    xslt_string_param title $1;
+	    autoindex on;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	}
+}

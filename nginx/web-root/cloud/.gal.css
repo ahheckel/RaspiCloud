@@ -1,0 +1,25 @@
+@import "/.cloud02/.custom.css";
+//*
+img.gal,
+img.cssbox_thumb {
+	display: block;
+	width: 800px;
+	max-width: calc(25% - 4mm);
+	max-height: calc(25% - 4mm);
+	margin: 2mm;
+	vertical-align: bottom;
+}
+@media all and (max-width: 20.4cm) {
+	img {
+		max-width: calc(100% - 4mm);
+	}
+}
+td.img {
+	border: solid 0 orange; 
+	border-bottom-width:5px; 
+	padding-bottom:10px; 
+	text-decoration:none;
+	font-size: 60px;
+}
+*//
+ 

@@ -80,8 +80,8 @@ fi
 echo "--------------------------"
 echo "Upload public key..."
 echo "--------------------------"
-cat $HOME/.ssh/id_rsa.pub | ssh ${admin}@${ip} "sudo mkdir -p /home/$user1/.ssh && sudo cat >> /home/$user1/.ssh/authorized_keys"
-ssh ${admin}@${ip} "sudo mkdir -p /home/$user1/.ssh && sudo chown -R $user1:$user1 /home/$user1/.ssh && sudo chmod -R 600 /home/$user1/.ssh && sudo chmod 700 /home/$user1/.ssh"
+cat $HOME/.ssh/id_rsa.pub | ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod -R 600 /home/$user1/.ssh && chmod 700 /home/$user1/.ssh"
+#ssh ${admin}@${ip} "sudo mkdir -p /home/$user1/.ssh && sudo chown -R $user1:$user1 /home/$user1/.ssh && sudo chmod -R 600 /home/$user1/.ssh && sudo chmod 700 /home/$user1/.ssh"
 
 #adapt templates
 echo "--------------------------"

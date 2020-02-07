@@ -64,7 +64,7 @@ fi
 echo "--------------------------"
 echo "Create user's cloud directory..."
 echo "--------------------------"
-read -e -p "cloud directory on NAS: " -i "/home/media/cloud-NAS/${user1^}" dstdir
+read -e -p "cloud directory on NAS: " -i "/home/media/cloud-NAS/${user1}" dstdir
 read -e -p "group owner: "            -i "www-data" grp
 read -p "Create directory '${dstdir}/tmp' on server ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then

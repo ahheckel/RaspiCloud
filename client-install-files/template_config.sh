@@ -48,7 +48,7 @@ chmod +x $syncscrpt
 
 # create destination dir on server
 echo -n "$(basename $0) : "
-read -p "Create cloud directory '$dstdir' on server ? [y/N]" yn
+read -p "Create cloud directory '$dstdir' on server ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
   read -e -p "server admin user: " -i "$ADMIN" user0
   ssh ${user0}@${ip} "sudo mkdir -p $dstdir && sudo chown ${user}:${grp} $dstdir && sudo chmod 750 $dstdir"
@@ -56,7 +56,7 @@ fi
 
 # add user to group
 echo -n "$(basename $0) : "
-read -p "Add user '$user' to group '$grp' on server ? [y/N]" yn
+read -p "Add user '$user' to group '$grp' on server ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
   read -e -p "server admin user: " -i "$ADMIN" user0
   ssh ${user0}@${ip} "sudo adduser $user $grp"

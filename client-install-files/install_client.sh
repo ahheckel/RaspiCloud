@@ -64,7 +64,7 @@ fi
 echo "--------------------------"
 echo "Create user's cloud directory..."
 echo "--------------------------"
-read -e -p "cloud directory on NAS: " -i "/home/media/cloud-NAS/${user1}" dstdir
+read -e -p "cloud directory on NAS: " -i "/media/cloud-NAS/${user1}" dstdir
 read -e -p "group owner: "            -i "www-data" grp
 read -p "Create directory '${dstdir}/tmp' on server ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
@@ -80,7 +80,7 @@ fi
 echo "--------------------------"
 echo "Upload public key..."
 echo "--------------------------"
-cat $HOME/.ssh/id_rsa.pub | ssh ${admin}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys"
+cat $HOME/.ssh/id_rsa.pub | ssh ${admin}@${ip} "sudo mkdir -p /home/$user1/.ssh && sudo cat >> /home/$user1/.ssh/authorized_keys"
 ssh ${admin}@${ip} "sudo mkdir -p /home/$user1/.ssh && sudo chown -R $user1:$user1 /home/$user1/.ssh && sudo chmod -R 600 /home/$user1/.ssh && sudo chmod 700 /home/$user1/.ssh"
 
 #adapt templates
@@ -91,7 +91,7 @@ $HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.
 echo "$(basename $0) : uploading to server..."
 scp $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/"
 #scp $HOME/.shortcuts/getgps.sh ${user1}@${ip}:"\$HOME/"
-scp $HOME/.shortcuts/runscript.sh ${user1}@${ip}:"\$HOME/"
+scp $HOME/.shortcuts/runscrpt.sh ${user1}@${ip}:"\$HOME/"
  
 #copy scripts to user's home on server
 echo "--------------------------"
@@ -123,7 +123,7 @@ fi
 echo " "
 echo "--------------------------"
 echo "Replace ssh-keys with user-generated keys"
-echo "(ssh-keygen -t rsa -b 2048 -f id_rsa)"
+echo "ssh-keygen -t rsa -b 2048 -f id_rsa"
 echo "and adapt authorized_keys file on the server"
 echo "Restart Termux (with WakeLock enabled)."
 echo "--------------------------"

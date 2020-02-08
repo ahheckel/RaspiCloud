@@ -13,7 +13,7 @@ Simple script-based, private cross-platform Cloud using Raspberry-Pi as Server w
 - no 'rooting' of android devices required
 
 ## Requirements
-- client-side (android) requires termux or cygwin (windows)  
+- client requires termux (android) or cygwin (windows) environment 
   https://play.google.com/store/apps/details?id=com.termux&hl=en  
   https://cygwin.com/
 - linux server (tested with raspberry 3b+ on Raspian Stretch) with nginx web server and ssh client installed

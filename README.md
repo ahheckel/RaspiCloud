@@ -2,22 +2,22 @@
 Simple script-based private cross-platform Cloud using Raspberry PI as server with ssl-encrypted web interface.
 
 ## Features
-- *generic:* based on linux tools 'rsync', 'cron' and bash scripts
+- *generic:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
 - *secure:* ssh-based file transfer (password protected or key-based)
-- *convenient:* nginx ssl-encrypted web interface for convenient file browsing with image gallery functions
+- *convenient:* nginx ssl-encrypted web interface for file browsing with image gallery functions
 - *cross-platform:* requires client side linux environmen available on many platforms
 - *low cost:* using raspberry-pi as server with standard USB storage as NAS 
 - syncs clients automatically to cloud storage
 - automatic thumbnail generation
 - automatic categorization of synced files in audio, video, documents and pictures
-- no rooting of android devices required
+- no 'rooting' of android devices required
 
 ## Requirements
 - client-side (android) requires termux or cygwin (windows)  
   https://play.google.com/store/apps/details?id=com.termux&hl=en  
   https://cygwin.com/
 - linux server (tested with raspberry 3b+ on Raspian Stretch) with nginx web server and ssh client installed
-- NAS storage (tested with low cost 2.5 inch portbale USB-Harddisk attached to the raspberry pi)
+- NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the raspberry pi)
 - imagemagick v6 and libreoffice v5 for thumbnail generation (server-side)
 - a file manager for browsing with ssh support (e.g. mxeplorer, solidexplorer and others under android support ssh including key based authentication and are available on google playstore)
 - a standard webbrowser on the client, e.g. firefox
@@ -52,7 +52,7 @@ geany v1.29 under Raspian Stretch
   
     ```mkdir ~/client-install-files```
     
-    Copy the files in ./server to ~/ and the files in ./client-install-files to ~/client-install-files.
+    Copy the files in ./server to ~/ and the files in ./client-install-files/ to ~/client-install-files/.
     
   - copy private/public keys of privileged user to ~/client-install-files/ssh (and remove them after installation is finished).
   - create user for client: 
@@ -67,7 +67,7 @@ geany v1.29 under Raspian Stretch
   
   - copy install script from server:
   
-    ```scp pi@172.16.0.10:client-install-files/install_client.sh $HOME/```
+    ```scp pi@IPADDRESS:client-install-files/install_client.sh $HOME/```
     
     ```chmod +x $HOME/install_client.sh```
   

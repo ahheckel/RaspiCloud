@@ -1,12 +1,12 @@
 # RaspiCloud
-Simple script-based private cross-platform Cloud using Raspberry PI as server with ssl-encrypted web interface.
+Simple script-based, private cross-platform Cloud using Raspberry-Pi as Server with ssl-encrypted Web Interface.
 
 ## Features
-- *generic:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
+- *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
 - *secure:* ssh-based file transfer (password protected or key-based)
 - *convenient:* nginx ssl-encrypted web interface for file browsing with image gallery functions
-- *cross-platform:* requires client side linux environmen available on many platforms
-- *low cost:* using raspberry-pi as server with standard USB storage as NAS 
+- *cross-platform:* client-side linux environment available on many platforms
+- *low cost:* using Raspberry-Pi as server with standard USB storage as NAS 
 - syncs clients automatically to cloud storage
 - automatic thumbnail generation
 - automatic categorization of synced files in audio, video, documents and pictures

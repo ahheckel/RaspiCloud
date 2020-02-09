@@ -13,9 +13,9 @@ trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 touch $HOME/.$(basename $0).lock
 
 #disclaimer
-echo "This is experimental software, which might damage your system.“
-echo “Please be careful!“
-echo ““
+echo "This is experimental software, which might damage your system."
+echo "Please be careful!"
+echo ""
 
 #parse inputs
 read -e -p "server admin user (for installation purposes): " -i "pi" admin

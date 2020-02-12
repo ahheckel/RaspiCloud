@@ -13,8 +13,10 @@ trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 touch $HOME/.$(basename $0).lock
 
 #disclaimer
+echo "WARNING"
 echo "This is experimental software, which might damage your system."
 echo "Please be careful!"
+read -p "Press key to continue or abort with CTRL-C."
 echo ""
 
 #parse inputs
@@ -79,6 +81,20 @@ read -p "Create link to cloud storage in ${user1}'s home folder ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
   read -e -p "command: " -i "ln -sfn $dstdir /home/${user1}/cloud-NAS" linkcmd
   ssh ${admin}@${ip} "sudo $linkcmd"
+fi
+read -p "Add admin user '$admin' to group '$grp' on server ? [y/n]" yn
+if [ x"$yn" == x"y" ]; then
+  ssh ${admin}@${ip} "sudo adduser $admin $grp"
+fi
+
+#create cloud-dir 4 guests
+echo "--------------------------"
+echo "Create guests' cloud directory..."
+echo "--------------------------"
+read -e -p "cloud directory on NAS: " -i "/media/cloud-NAS/guest" gstdstdir
+read -p "Create directory for guests on server ? [y/n]" yn
+if [ x"$yn" == x"y" ]; then
+  ssh ${admin}@${ip} "sudo mkdir -p ${gstdstdir} && sudo chown ${admin}:${grp} ${gstdstdir} && sudo chmod 750 ${gstdstdir}"
 fi
 
 #upload authorized_keys

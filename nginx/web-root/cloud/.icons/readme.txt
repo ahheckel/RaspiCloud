@@ -1,4 +1,5 @@
- © 2010 - 2020 tiheum
+NOTE Please note that the files have been renamed for the purpose of this project.
+© 2010 - 2020 tiheum
 This icon theme for Gnome provides monochromatic icons for panels, toolbars and buttons and colourful squared icons for devices, applications, folder, files and Gnome menu items. Four themes are included to fit with light or dark themes/panels.
 
 This work is released under the GNU/GPL license. Sources can be downloaded here : https://code.google.com/archive/p/faenza-icon-theme/

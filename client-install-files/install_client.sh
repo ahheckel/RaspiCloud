@@ -8,6 +8,7 @@ function finish {
 	    rm -rf $tmpdir
 	    rm -f $HOME/.$(basename $0).lock
 	    cd "$wdir"
+	    exit
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM 
 touch $HOME/.$(basename $0).lock
@@ -101,7 +102,7 @@ fi
 echo "--------------------------"
 echo "Upload public key..."
 echo "--------------------------"
-cat $HOME/.ssh/id_rsa.pub | ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod -R 600 /home/$user1/.ssh && chmod 700 /home/$user1/.ssh"
+cat $HOME/.ssh/id_rsa.pub | ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod -R 600 /home/$user1/.ssh/authorized_keys && chmod 700 /home/$user1/.ssh"
 #ssh ${admin}@${ip} "sudo mkdir -p /home/$user1/.ssh && sudo chown -R $user1:$user1 /home/$user1/.ssh && sudo chmod -R 600 /home/$user1/.ssh && sudo chmod 700 /home/$user1/.ssh"
 
 #adapt templates
@@ -112,7 +113,7 @@ $HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.
 echo "$(basename $0) : uploading to server..."
 scp $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/"
 #scp $HOME/.shortcuts/getgps.sh ${user1}@${ip}:"\$HOME/"
-scp $HOME/.shortcuts/runscrpt.sh ${user1}@${ip}:"\$HOME/"
+#scp $HOME/.shortcuts/runscrpt.sh ${user1}@${ip}:"\$HOME/"
  
 #copy scripts to user's home on server
 echo "--------------------------"

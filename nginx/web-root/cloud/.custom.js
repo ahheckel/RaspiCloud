@@ -149,9 +149,9 @@ if ( path_array[3] == "tmp" ) {
 // ENTRY01
 var x = 0;
 if (x == 1) {
-        document.getElementById("mode").src="/.cloud02/.icons/view-list-icons.png";
+        document.getElementById("mode").src="/cloud/.icons/view-list-icons.png";
 } else {
-        document.getElementById("mode").src="/.cloud02/.icons/view-list-compact.png";
+        document.getElementById("mode").src="/cloud/.icons/view-list-compact.png";
 }
 
 // global vars
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         } 
                         var irow = document.createElement("tr");
                         irow.className = "insert"
-                        irow.innerHTML = '<td></td><td class="img" colspan="3"><div class="cssbox"><a id="image' + imgiter + '" href="#image' + imgiter + '"><img class="cssbox_thumb lazy" ' + thumb_src + '="' + href_thumb + '" alt=""/><span class="cssbox_full"><img class="img_full" style="width:' + img_width + '; height:' + img_height + '; max-width:' + img_w + ';max-height:' + img_h + ';object-fit: contain" data-src="' + img_href + '"/></span></a><a class="cssbox_close" href="#void"></a><a class="cssbox_prev" href="' + imgiter_prev + '">&lt;</a><a class="cssbox_next" href="#image' + imgiter_next + '">&gt;</a><a class="cssbox_title" href=' + href_full + '>' + decodeURI(href_full) + '</a><a class="cssbox_rotate-right"><img src="/.cloud02/.icons/object-rotate-right.png"/></a><a class="cssbox_rotate-left"><img src="/.cloud02/.icons/object-rotate-left.png"/></a><a class="cssbox_rotate-reset">0°</a><a class="cssbox_zoomin"><img src="/.cloud02/.icons/gtk-zoom-out.png"/></a></div></td>';
+                        irow.innerHTML = '<td></td><td class="img" colspan="3"><div class="cssbox"><a id="image' + imgiter + '" href="#image' + imgiter + '"><img class="cssbox_thumb lazy" ' + thumb_src + '="' + href_thumb + '" alt=""/><span class="cssbox_full"><img class="img_full" style="width:' + img_width + '; height:' + img_height + '; max-width:' + img_w + ';max-height:' + img_h + ';object-fit: contain" data-src="' + img_href + '"/></span></a><a class="cssbox_close" href="#void"></a><a class="cssbox_prev" href="' + imgiter_prev + '">&lt;</a><a class="cssbox_next" href="#image' + imgiter_next + '">&gt;</a><a class="cssbox_title" href=' + href_full + '>' + decodeURI(href_full) + '</a><a class="cssbox_rotate-right"><img src="/cloud/.icons/object-rotate-right.png"/></a><a class="cssbox_rotate-left"><img src="/cloud/.icons/object-rotate-left.png"/></a><a class="cssbox_rotate-reset">0°</a><a class="cssbox_zoomin"><img src="/cloud/.icons/gtk-zoom-out.png"/></a></div></td>';
                         a.parentNode.insertBefore(irow,a.nextSibling);
                         imgiter = imgiter + 1;                        
                 }
@@ -446,7 +446,7 @@ $(document).ready(function(){
         $("#mode").on('click',function(){
                 x = (x+1)%2;
                 if (x == 1){
-                        document.getElementById("mode").src="/.cloud02/.icons/view-list-icons.png";
+                        document.getElementById("mode").src="/cloud/.icons/view-list-icons.png";
                         for (var i = 0, o = document.getElementsByClassName("row"), len = o.length;  i < len; i++) {
                                 insertImgRow2(o[i]);
                         }         
@@ -455,7 +455,7 @@ $(document).ready(function(){
                         yall();                        
                         imgview();
                 } else {
-                        document.getElementById("mode").src="/.cloud02/.icons/view-list-compact.png";                        
+                        document.getElementById("mode").src="/cloud/.icons/view-list-compact.png";                        
                         for (var j = 0, o = document.querySelectorAll(".insert"), len = o.length;  j < len; j++) {
                                 o[j].previousElementSibling.style.backgroundColor = "";
                                 o[j].previousElementSibling.children[1].style.backgroundColor = "";

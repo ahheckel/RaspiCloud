@@ -1,4 +1,4 @@
-@import "/.cloud02/.cssbox.css";
+@import "/cloud/.cssbox.css";
 body {
   width: 100%;
   height: 100%;
@@ -243,7 +243,7 @@ input.form-control {
     border-radius: 40px;
     line-height: 2.0;
     background-color: #000;
-    background-image: url('/.cloud02/.icons/searchicon.png');
+    background-image: url('/cloud/.icons/searchicon.png');
     min-height: 35px;
     background-position: 10px 12px;
     background-repeat: no-repeat;
@@ -308,7 +308,7 @@ tr.insert {
   height: 150px; 
   width: 150px;
   border-radius: 40px;
-  background-image: url('/.cloud02/.icons/menu.png'); 
+  background-image: url('/cloud/.icons/menu.png'); 
   background-size: cover; 
   background-repeat: no-repeat; 
   background-position: center;

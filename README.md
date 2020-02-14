@@ -52,12 +52,8 @@ geany v1.29 under Raspian Stretch
   
     ```mkdir ~/client-install-files```
     
-    Copy the files in ./server to ~/ and the files in ./client-install-files/ to ~/client-install-files/.
-    
+  - copy the files in ./server/ to ~/ and the files in ./client-install-files/ to ~/client-install-files/.   
   - copy private/public keys of privileged user to ~/client-install-files/ssh (and remove them after installation is finished).
-  - create user for client: 
-  
-    ```sudo useradd user1```
   
   **Android Client:**
   - Install Termux app (see google playstore).
@@ -67,7 +63,7 @@ geany v1.29 under Raspian Stretch
   
   - copy install script from server:
   
-    ```scp pi@IPADDRESS:client-install-files/install_client.sh $HOME/```
+    ```scp pi@IP-ADDRESS:client-install-files/install_client.sh $HOME/```
     
     ```chmod +x $HOME/install_client.sh```
   
@@ -81,21 +77,21 @@ geany v1.29 under Raspian Stretch
     
     and update authorized_keys on server.
    
-### Nginx Web-Server with Interface:
-  - install nginx, openssl and apache2-utils(for htpasswd):
+### Install Nginx Web-Server for File Browsing:
+  - install nginx and openssl, apache2-utils(for htpasswd), imagemagick & libreoffice (for thumbnails):
     
-    ```sudo apt-get install nginx openssl apache2-utils```
+    ```sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice```
   - create self signed certificate for ssl encryption:
    
-    ```sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt```
+    ```sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/nginx.key -out /etc/nginx/nginx.crt```
   - choose www-root-directory and link to NAS storage, e.g.
    
-    ```ln -s /media/nas-storage /var/www/html/cloud```
+    ```sudo ln -s /media/cloud-NAS /var/www/html/cloud```
   - copy .css, .js, .xsl(t), ... files to www-root/cloud
   - create user/password pair:
    
-    ```sudo htpasswd -c /path/to/.htpasswd username```
-  - adapt nginx 'default' configuration file in /etc/nginx/sites-available (see example file above)
+    ```sudo htpasswd -c /etc/nginx/.htpasswd USER```
+  - adapt nginx 'default' configuration file in /etc/nginx/sites-available (see example in nginx/sites-available)
   - restart nginx:
    
     ```sudo service nginx restart```

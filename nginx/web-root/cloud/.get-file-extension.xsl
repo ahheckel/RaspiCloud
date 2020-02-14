@@ -1,4 +1,4 @@
-# from author TwistedInteractive ; Get File Extension V 1.0; released on 23. Sept. 2011; see https://www.getsymphony.com/download/xslt-utilities/view/77812/
+<!-- from author TwistedInteractive ; Get File Extension V 1.0; released on 23. Sept. 2011; see https://www.getsymphony.com/download/xslt-utilities/view/77812/ -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template name="get-file-extension">
        <xsl:param name="path" />

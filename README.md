@@ -13,7 +13,8 @@ Simple script-based, private cross-platform Cloud using Raspberry-Pi as Server w
 - no 'rooting' of android devices required
 
 ## Requirements
-- client requires termux (android) or cygwin (windows) environment 
+- client requires termux (android) or cygwin (windows) environment
+
   https://play.google.com/store/apps/details?id=com.termux&hl=en  
   https://cygwin.com/
 - linux server (tested with raspberry 3b+ on Raspian Stretch) with nginx web server and ssh client installed
@@ -52,7 +53,7 @@ geany v1.29 under Raspian Stretch
   
     ```mkdir ~/client-install-files```
     
-  - copy the files in ./server/ to ~/ and the files in ./client-install-files/ to ~/client-install-files/.   
+  - copy the files in RaspiCloud/server/ to ~/ and the files in RaspiCloud/client-install-files/ to ~/client-install-files/.   
   - copy private/public keys of privileged user to ~/client-install-files/ssh (and remove them after installation is finished).
   
   **Android Client:**
@@ -78,7 +79,7 @@ geany v1.29 under Raspian Stretch
     and update authorized_keys on server.
    
 ### Install Nginx Web-Server for File Browsing:
-  - install nginx and openssl, apache2-utils(for htpasswd), imagemagick & libreoffice (for thumbnails):
+  - install nginx and openssl, apache2-utils (for htpasswd), imagemagick & libreoffice (for thumbnails):
     
     ```sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice```
   - create self signed certificate for ssl encryption:
@@ -87,11 +88,11 @@ geany v1.29 under Raspian Stretch
   - choose www-root-directory and link to NAS storage, e.g.
    
     ```sudo ln -s /media/cloud-NAS /var/www/html/cloud```
-  - copy .css, .js, .xsl(t), ... files to www-root/cloud
+  - copy .css, .js, .xsl(t),... files in RaspiCloud/nginx/webroot/cloud to www-root/cloud
   - create user/password pair:
    
     ```sudo htpasswd -c /etc/nginx/.htpasswd USER```
-  - adapt nginx 'default' configuration file in /etc/nginx/sites-available (see example in nginx/sites-available)
+  - adapt nginx 'default' configuration file in /etc/nginx/sites-available (see example in RaspiCloud/nginx/sites-available)
   - restart nginx:
    
     ```sudo service nginx restart```

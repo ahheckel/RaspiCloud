@@ -21,7 +21,7 @@ opts="xOPTSx"
 for dir in $dirs ; do
  if [ ! -d $dir ] ; then continue ; fi
 	touch $dir/.$(basename $0).list
-	ls -lpi $dir | grep -v / > $dir/._$(basename $0).list
+	ls -lpi --time-style=+%F $dir | grep -v / > $dir/._$(basename $0).list
 	if [ "$(cat $dir/.$(basename $0).list)" != "$(cat $dir/._$(basename $0).list)" ] ; then		
 		nc -w 10 -z $ip 22 2>/dev/null ; if [ $? -eq 1 ] ; then echo "netcat failed. - exiting." ; rm -f $HOME/.$(basename $0).lock ; exit 1 ; fi # is more robust than ping
 		echo "syncing..."

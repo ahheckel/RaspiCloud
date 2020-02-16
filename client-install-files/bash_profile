@@ -12,3 +12,4 @@ for scrpt in $scrpts ; do
 		echo "[${scrpt} : an instance is running]"
 	fi
 done
+export VISUAL=nano;

@@ -17,7 +17,7 @@ Simple script-based, private cross-platform Cloud using Raspberry-Pi as Server w
 
   https://play.google.com/store/apps/details?id=com.termux&hl=en  
   https://cygwin.com/
-- linux server (tested with raspberry 3b+ on Raspian Stretch) with nginx web server and ssh client installed
+- linux server (tested with Raspian Stretch on a Raspberry 3b+) with nginx web server and ssh client installed
 - NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the raspberry pi)
 - imagemagick v6 and libreoffice v5 for thumbnail generation (server-side)
 - a file manager for browsing with ssh support (e.g. mxeplorer, solidexplorer and others under android support ssh including key based authentication and are available on google playstore)
@@ -64,9 +64,10 @@ geany v1.29 under Raspian Stretch
   
   - copy install script from server:
   
-    ```scp pi@IP-ADDRESS:client-install-files/install_client.sh $HOME/```
+    ```sh
+    scp pi@IP-ADDRESS:client-install-files/install_client.sh $HOME/
     
-    ```chmod +x $HOME/install_client.sh```
+    chmod +x $HOME/install_client.sh```
   
   - execute it:
   

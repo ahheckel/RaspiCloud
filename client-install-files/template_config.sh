@@ -64,7 +64,7 @@ if [ x"$yn" == x"y" ]; then
 fi
 
 echo ""
-echo "$(basename $0) : remember: user $user must be member of group $grp (execute 'sudo adduser $user $grp' on server)."
+#echo "$(basename $0) : remember: user $user must be member of group $grp (execute 'sudo adduser $user $grp' on server)."
 echo "$(basename $0) : remember: you can change sync-folders in the script ${syncscrpt}."
 echo "$(basename $0) : remember: you may want to run ${synscrpt} once per minute or so with a termux cronjob (crontab -e)."
 echo ""

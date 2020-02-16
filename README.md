@@ -104,9 +104,9 @@ geany v1.29 under Raspian Stretch
 ![Alt text](screenshot01.jpg "optional title")
 <table>
 <tr>
-<td><img src="screenshot01.jpg" width="400px"</img></td>
-<td>fa</td>
-<td>fd</td>
+<td><img src="screenshot01.jpg" </img></td>
+<td><img src="screenshot02.jpg" </img></td>
+<td><img src="screenshot03.jpg" </img></td>
 </tr>
 </table>
 

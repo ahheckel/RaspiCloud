@@ -53,7 +53,7 @@ geany v1.29 under Raspian Stretch
   
     ```mkdir ~/client-install-files```
     
-  - copy the files in ```RaspiCloud/server/``` to ~/ and the files in ***RaspiCloud/client-install-files/*** to ~/client-install-files/.   
+  - copy the files in ```RaspiCloud/server/``` to ~/ and the files in *RaspiCloud/client-install-files/* to ~/client-install-files/.   
   - copy private/public keys of privileged user to ~/client-install-files/ssh (and remove them after installation is finished).
   
   **Android Client:**

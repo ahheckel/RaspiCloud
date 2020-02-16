@@ -101,7 +101,7 @@ geany v1.29 under Raspian Stretch
 ## Screenshots
 <table>
 <tr>
-<td>Dark themed layout. Layout inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.</td>
+<td>Dark themed design. Layout inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.</td>
 <td>Thumbnail view.</td>
 <td>Gallery with image manipulation based on <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox</a>.</td>
 </tr>

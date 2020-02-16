@@ -100,6 +100,15 @@ geany v1.29 under Raspian Stretch
 ## Status
  experimental
 
+## Screenshots
+<table>
+<tr>
+<td>![Alt text](screenshot01.jpg "optional title")</td>
+<td>fa</td>
+<td>fd</td>
+</tr>
+</table>
+
 ## Disclaimer
 The material embodied in this software is provided to you "as-is" and without warranty of any kind, express, implied or otherwise, including 
 without limitation, any warranty of fitness for a particular purpose. In no event shall the author be liable to you or anyone else for any 

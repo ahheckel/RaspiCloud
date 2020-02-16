@@ -109,7 +109,7 @@ geany v1.29 under Raspian Stretch
 <td>Gallery with image manipulation inspired by <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox</a>.</td>
 </tr>
 <tr>
-<td><img src="screenshot01.jpg" width="300px" </img></td>
+<td><img src="screenshot01.jpg" width="600px" </img></td>
 <td><img src="screenshot02.jpg" </img></td>
 <td><img src="screenshot03.jpg" </img></td>
 </tr>

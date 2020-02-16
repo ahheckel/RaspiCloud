@@ -64,10 +64,9 @@ geany v1.29 under Raspian Stretch
   
   - copy install script from server:
   
-    ```sh
-    scp pi@IP-ADDRESS:client-install-files/install_client.sh $HOME/
+    ```scp pi@IP-ADDRESS:client-install-files/install_client.sh $HOME/```
     
-    chmod +x $HOME/install_client.sh```
+    ```chmod +x $HOME/install_client.sh```
   
   - execute it:
   

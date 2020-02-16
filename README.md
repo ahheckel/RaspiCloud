@@ -123,20 +123,20 @@ geany v1.29 under Raspian Stretch
 <td>Dark themed layout. Design inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.</td>
 </tr>
 <tr>
-<td><img src="screenshot01.jpg" width="400px"</img></td>
+<td><img src="screenshot01.jpg" width="200px"</img></td>
 </tr>
 <tr>
 <td>Thumbnail mode</td>
 </tr>
 <tr>
-<td><img src="screenshot02.jpg" width="400px"</img></td>
+<td><img src="screenshot02.jpg" width="200px"</img></td>
 </tr>
 </tr>
 <tr>
 <td>Gallery with image manipulation inspired by <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox.</a>.</td>
 </tr>
 <tr>
-<td><img src="screenshot03.jpg" width="400px"</img></td>
+<td><img src="screenshot03.jpg" width="200px"</img></td>
 </tr>
 </table>
 

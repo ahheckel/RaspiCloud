@@ -10,6 +10,7 @@ Simple script-based, private cross-platform Cloud using Raspberry-Pi as Server w
 - syncs clients automatically to cloud storage
 - automatic thumbnail generation
 - automatic categorization of synced files in audio, video, documents and pictures
+- guest access possible
 - no 'rooting' of android devices required
 
 ## Requirements
@@ -101,20 +102,21 @@ geany v1.29 under Raspian Stretch
  experimental
 
 ## Screenshots
-![Alt text](screenshot01.jpg "optional title")
 <table>
 <tr>
-<td>Dark themed layout. Design inspired by <a href=" https://gitlab.com/devCoster/BetterListing">BetterListing(DevCoster)</a></td>
+<td>Dark themed layout. Design inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.</td>
+<td>Gallery with image manipulation inspired by <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox./a>.</td>
 <td>Thumbnail mode</td>
-<td>Gallery with image manipulation inspired by <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox</a></td>
 </tr>
 <tr>
 <td><img src="screenshot01.jpg" </img></td>
-<td><img src="screenshot02.jpg" </img></td>
 <td><img src="screenshot03.jpg" </img></td>
+<td><img src="screenshot02.jpg" </img></td>
 </tr>
 </table>
-
+<div>Dark themed layout. Design inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.
+<img src="screenshot01.jpg" </img>
+</div>
 ## Disclaimer
 The material embodied in this software is provided to you "as-is" and without warranty of any kind, express, implied or otherwise, including 
 without limitation, any warranty of fitness for a particular purpose. In no event shall the author be liable to you or anyone else for any 

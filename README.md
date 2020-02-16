@@ -110,36 +110,10 @@ geany v1.29 under Raspian Stretch
 </tr>
 <tr>
 <td><img src="screenshot01.jpg" </img></td>
-<td><i<td>Thumbnail mode</td>mg src="screenshot02.jpg" </img></td>
+<td><img src="screenshot02.jpg" </img></td>
 <td><img src="screenshot03.jpg" </img></td>
 </tr>
 </table>
-<div>Dark themed layout. Design inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.
-<img src="screenshot01.jpg" width="600px"</img>
-</div>
-
-<table>
-<tr>
-<td>Dark themed layout. Design inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.</td>
-</tr>
-<tr>
-<td><img src="screenshot01.jpg" width="400px"</img></td>
-</tr>
-<tr>
-<td>Thumbnail mode</td>
-</tr>
-<tr>
-<td><img src="screenshot02.jpg" width="200px"</img></td>
-</tr>
-</tr>
-<tr>
-<td>Gallery with image manipulation inspired by <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox.</a>.</td>
-</tr>
-<tr>
-<td><img src="screenshot03.jpg" width="200px"</img></td>
-</tr>
-</table>
-
 
 ## Disclaimer
 The material embodied in this software is provided to you "as-is" and without warranty of any kind, express, implied or otherwise, including 

@@ -1,5 +1,5 @@
 # RaspiCloud
-Simple script-based, private cross-platform Cloud using Raspberry-Pi as Server with ssl-encrypted Web Interface.
+Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted Web Interface.
 
 ## Features
 - *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
@@ -86,6 +86,8 @@ geany v1.29 under Raspian Stretch
   - create self signed certificate for ssl encryption:
    
     ```sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/nginx.key -out /etc/nginx/nginx.crt```
+    
+    to become a certificate authority (optional, useful in local networks) follow these steps: https://reactpaths.com/how-to-get-https-working-in-localhost-development-environment-f17de34af046
   - choose www-root-directory and link to NAS storage, e.g.
    
     ```sudo ln -s /media/cloud-NAS /var/www/html/cloud```

@@ -101,7 +101,7 @@ for i in $(cat $tmpdir/list) ; do
       categ="pics"
       _dir="$dir/$categ"
       find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
-      for j in  jpeg jpg png gif webp tif tiff psd bmp ; do
+      for j in  jpeg jpg png gif webp tif tiff psd bmp jfif ; do
 	    if [ x"$ext" = "x${j}" ] ; then		  
 		  echo "$i" >> $tmpdir/${categ}
 		  inode=$(stat -c %i "$i")		  

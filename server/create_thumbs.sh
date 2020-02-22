@@ -36,7 +36,7 @@ if [ ! -d $dirn/.thumbs ] ; then
 fi
 
 # convert
-for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx ; do
+for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif ; do
 	if [ x"$ext" == "x${j}" ] ; then
 		echo "$(basename $0) : creating thumbnail for ${dirn}/${file}..."
 		if [ ${j} == "pdf" ] ; then

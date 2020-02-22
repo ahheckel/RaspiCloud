@@ -26,6 +26,15 @@ export ADMIN=$admin
 read -e -p "server ip-address: " -i "172.16.0.10" ip
 read -e -p "server installation files source: " -i "/home/$admin/client-install-files/" path
 
+#install missing progs on server
+echo "--------------------------"
+echo "Install missing packages on server..."
+echo "--------------------------"
+read -p "Install missing packages on server ? [y/n]" yn
+if [ x"$yn" == x"y" ]; then
+  ssh ${admin}@${ip} "sudo apt-get install bc gawk fdupes"
+fi
+
 #download keys
 echo "--------------------------"
 echo "Download keys for install..."

@@ -162,7 +162,7 @@ var href_thumb;
 var imgiter_prev = imgiter - 1;
 var imgiter_next = imgiter + 1;
 var isimg = 0;
-var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps"];
+var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif"];
 var fileExt;
 var imgiter = 0;
 var lastobj;

@@ -57,14 +57,21 @@ fi
 
 # add user to group
 echo -n "$(basename $0) : "
-read -p "Add user '$user' to group '$grp' on server ? [y/n]" yn
-if [ x"$yn" == x"y" ]; then
-  read -e -p "server admin user: " -i "$ADMIN" user0
-  ssh ${user0}@${ip} "sudo adduser $user $grp"
-fi
+if [ "$grp" == "$user" ]; then
+  read -p "Add user 'www-data' to group '$grp' on server ? [y/n]" yn
+  if [ x"$yn" == x"y" ]; then
+    read -e -p "server admin user: " -i "$ADMIN" user0
+    ssh ${user0}@${ip} "sudo adduser www-data $grp"
+  fi
+else 
+  read -p "Add user '$user' to group '$grp' on server ? [y/n]" yn
+  if [ x"$yn" == x"y" ]; then
+    read -e -p "server admin user: " -i "$ADMIN" user0
+    ssh ${user0}@${ip} "sudo adduser $user $grp"
+  fi
+fi  
 
 echo ""
-#echo "$(basename $0) : remember: user $user must be member of group $grp (execute 'sudo adduser $user $grp' on server)."
 echo "$(basename $0) : remember: you can change sync-folders in the script ${syncscrpt}."
 echo "$(basename $0) : remember: you may want to run ${synscrpt} once per minute or so with a termux cronjob (crontab -e)."
 echo ""

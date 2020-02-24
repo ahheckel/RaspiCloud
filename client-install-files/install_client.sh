@@ -73,8 +73,7 @@ read -e -p "user: "  -i "user" user1
 export USER1=$user1
 read -p "Create account for '$user1' on ${ip} ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
-	ssh ${admin}@${ip} "sudo adduser $user1"
-	ssh ${admin}@${ip} "sudo adduser $admin $user1" # add admin to private group
+	ssh ${admin}@${ip} "sudo adduser $user1 && sudo adduser $admin $user1" # add admin to private group
 fi
 
 #create cloud-dir
@@ -82,7 +81,7 @@ echo "--------------------------"
 echo "Create user's cloud directory..."
 echo "--------------------------"
 read -e -p "cloud directory on NAS: " -i "/media/cloud-NAS/${user1}" dstdir
-read -e -p "group owner: "            -i "www-data" grp
+read -e -p "group owner: "            -i "$user1" grp
 read -p "Create directory '${dstdir}/tmp' on server ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
   ssh ${admin}@${ip} "sudo mkdir -p ${dstdir}/tmp && sudo chown ${user1}:${grp} ${dstdir}/tmp && sudo chmod 750 ${dstdir}/tmp && sudo chown ${user1}:${grp} $dstdir && sudo chmod 750 $dstdir"
@@ -92,9 +91,9 @@ if [ x"$yn" == x"y" ]; then
   read -e -p "command: " -i "ln -sfn $dstdir /home/${user1}/cloud-NAS" linkcmd
   ssh ${admin}@${ip} "sudo $linkcmd"
 fi
-read -p "Add admin user '$admin' to group '$grp' on server ? [y/n]" yn
+read -p "Add admin user '$admin' to group 'www-data' on server ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
-  ssh ${admin}@${ip} "sudo adduser $admin $grp"
+  ssh ${admin}@${ip} "sudo adduser $admin www-data"
 fi
 
 #create cloud-dir 4 guests

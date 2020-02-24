@@ -24,12 +24,17 @@ for dir in $dirs ; do
 	ls -lpi --time-style=+%F $dir | grep -v / > $dir/._$(basename $0).list
 	if [ "$(cat $dir/.$(basename $0).list)" != "$(cat $dir/._$(basename $0).list)" ] ; then		
 		nc -w 10 -z $ip 22 2>/dev/null ; if [ $? -eq 1 ] ; then echo "netcat failed. - exiting." ; rm -f $HOME/.$(basename $0).lock ; exit 1 ; fi # is more robust than ping
+		echo "deleting duplicates in $dir..."
+		fdupes -dN $dir
+		echo ""
 		echo "syncing..."
 		rsync $opts $dir/* --exclude='*.*.part' --iconv=utf-8,ascii//TRANSLIT//IGNORE -e ssh ${user}@$ip:$dstdir
+		echo ""
 		echo "downloading cloud-scripts..."
 		rsync -av -e ssh ${user}@${ip}:$(basename $0) $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/$(basename $0)
 		#rsync -av -e ssh ${user}@${ip}:getgps.sh $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/getgps.sh
 		rsync -av -e ssh ${user}@${ip}:runscrpt.sh $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/runscrpt.sh
+		echo ""
 		echo "updating database..."
 		ssh ${user}@$ip -t $scrpt
 	fi

@@ -8,6 +8,7 @@ function finish {
 	    rm -rf $tmpdir
 	    rm -f $HOME/.$(basename $0).lock
 	    cd "$wdir"
+	    echo ""
 	    exit
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM 
@@ -76,6 +77,14 @@ read -p "Create account for '$user1' on ${ip} ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
 	ssh ${admin}@${ip} "sudo adduser $user1 && sudo adduser $admin $user1" # add admin to private group
 fi
+read -p "Add user '$user1' to group 'www-data' on server ? [y/n]" yn
+if [ x"$yn" == x"y" ]; then
+  ssh ${admin}@${ip} "sudo adduser $user1 www-data"
+fi
+read -p "Add admin user '$admin' to group 'www-data' on server ? [y/n]" yn
+if [ x"$yn" == x"y" ]; then
+  ssh ${admin}@${ip} "sudo adduser $admin www-data"
+fi
 
 #create cloud-dir
 echo "--------------------------"
@@ -92,10 +101,6 @@ if [ x"$yn" == x"y" ]; then
   read -e -p "command: " -i "ln -sfn $dstdir /home/${user1}/cloud-NAS" linkcmd
   ssh ${admin}@${ip} "sudo $linkcmd"
 fi
-read -p "Add admin user '$admin' to group 'www-data' on server ? [y/n]" yn
-if [ x"$yn" == x"y" ]; then
-  ssh ${admin}@${ip} "sudo adduser $admin www-data"
-fi
 
 #create cloud-dir 4 guests
 echo "--------------------------"
@@ -104,7 +109,7 @@ echo "--------------------------"
 read -e -p "cloud directory on NAS: " -i "/media/cloud-NAS/guest" gstdstdir
 read -p "Create directory for guests on server ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
-  ssh ${admin}@${ip} "sudo mkdir -p ${gstdstdir} && sudo chown ${admin}:${grp} ${gstdstdir} && sudo chmod 750 ${gstdstdir}"
+  ssh ${admin}@${ip} "sudo mkdir -p ${gstdstdir} && sudo chown ${admin}:www-data ${gstdstdir} && sudo chmod 770 ${gstdstdir}"
 fi
 
 #upload authorized_keys

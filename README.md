@@ -7,21 +7,22 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted
 - *convenient:* nginx ssl-encrypted web interface for file browsing with image gallery functions
 - *cross-platform:* client-side linux environment available on many platforms
 - *low cost:* using Raspberry-Pi as server with standard USB storage as NAS 
-- syncs clients automatically to cloud storage
-- automatic thumbnail generation
+- syncs client directories automatically to cloud storage
 - automatic categorization of synced files in audio, video, documents and pictures
+- automatic thumbnail generation
 - guest access possible
 - no 'rooting' of android devices required
 
 ## Requirements
+- linux server (tested with Raspian Stretch on a Raspberry Pi 3b+) 
+- nginx web server (1.10.3) and OpenSSH server (7.4) installed
+- NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the Raspberry Pi)
+- imagemagick v6 and libreoffice v5 for thumbnail generation (server-side)
 - client requires termux (android) or cygwin (windows) environment
 
   https://play.google.com/store/apps/details?id=com.termux&hl=en  
   https://cygwin.com/
-- linux server (tested with Raspian Stretch on a Raspberry 3b+) with nginx web server and ssh client installed
-- NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the raspberry pi)
-- imagemagick v6 and libreoffice v5 for thumbnail generation (server-side)
-- a file manager for browsing with ssh support (e.g. mxeplorer, solidexplorer and others under android support ssh including key based authentication and are available on google playstore)
+- a file manager with ssh support (e.g. mxeplorer, solidexplorer and others under android support key based authentication and are available on google playstore)
 - a standard webbrowser on the client, e.g. firefox
 
 ## Dependencies

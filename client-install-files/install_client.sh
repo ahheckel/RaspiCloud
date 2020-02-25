@@ -44,7 +44,7 @@ scp ${admin}@${ip}:"$path/ssh/*" $HOME/.ssh/
 
 #pkg upgrade
 echo "--------------------------"
-echo "Install basic termux packages..."
+echo "Install basic Termux packages..."
 echo "--------------------------"
 pkg install openssh rsync lftp python neovim wget bc util-linux iconv
 termux-setup-storage
@@ -60,7 +60,7 @@ rsync -r $opts -e ssh ${admin}@${ip}:$path --exclude=ssh/ --iconv=utf-8,ascii//T
 
 #install Termux packages
 echo "--------------------------"
-echo "Install Termux packages..."
+echo "Install further Termux packages..."
 echo "--------------------------"
 cp -f $localinstall/cpscr $HOME/
 . $HOME/cpscr $localinstall
@@ -136,7 +136,8 @@ echo "--------------------------"
 read -p "Create cronjob ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
     touch $HOME/../usr/var/spool/cron/crontabs/$(whoami) && cp $HOME/../usr/var/spool/cron/crontabs/$(whoami) $tmpdir/t
-    echo '* * * * * $HOME/.shortcuts/runscrpt.sh $HOME/.shortcuts/push-to-cloud-tmp.sh' >> $tmpdir/t
+    cmd='* * * * * $HOME/.shortcuts/runscrpt.sh $HOME/.shortcuts/push-to-cloud-tmp.sh'
+    echo "$cmd" >> $tmpdir/t
     #echo '* * * * * $HOME/.shortcuts/runscrpt.sh $HOME/.shortcuts/getgps.sh' >> $tmpdir/t
     #echo '*/5 * * * * $HOME/../usr/bin/sshd' >> $tmpdir/t
     cat $tmpdir/t | sort -u > $HOME/../usr/var/spool/cron/crontabs/$(whoami)
@@ -153,8 +154,9 @@ fi
 echo " "
 echo "--------------------------"
 echo "Replace ssh-keys with user-generated keys"
-echo "ssh-keygen -t rsa -b 2048 -f id_rsa"
-echo "and adapt authorized_keys file on the server"
+echo "   ssh-keygen -t rsa -b 2048 -f id_rsa"
+echo "   cat ~/.ssh/id_rsa.pub | ssh ${user1}@${ip} \"cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys\""
+#echo "and adapt authorized_keys file on the server"
 echo "Restart Termux (with WakeLock enabled)."
 echo "--------------------------"
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)

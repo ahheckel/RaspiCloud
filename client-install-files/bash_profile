@@ -1,7 +1,7 @@
 
 echo "[Starting crond...]" && crond && echo "[OK]"
 
-echo "[$(crontab -l 2>/dev/null | sed '/^\s*$/d' | grep -v ^# | wc -l) cronjobs]"
+echo "[$(crontab -l 2>/dev/null | sed '/^\s*$/d' | grep -v '^[[:blank:]]*#' | wc -l) cronjobs]"
 crontab -l 2>/dev/null
 scrpts="push-to-cloud-tmp.sh getgps.sh"
 for scrpt in $scrpts ; do

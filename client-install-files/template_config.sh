@@ -51,8 +51,7 @@ chmod +x $syncscrpt
 echo -n "$(basename $0) : "
 read -p "Create cloud directory '$dstdir' on server ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
-  read -e -p "server admin user: " -i "$ADMIN" user0
-  ssh ${user0}@${ip} "sudo mkdir -p $dstdir && sudo chown ${user}:${grp} $dstdir && sudo chmod 750 $dstdir"
+  ssh ${ADMIN}@${ip} "sudo mkdir -p $dstdir && sudo chown ${user}:${grp} $dstdir && sudo chmod 750 $dstdir"
 fi
 
 # add user to group
@@ -60,14 +59,12 @@ echo -n "$(basename $0) : "
 if [ "$grp" == "$user" ]; then
   read -p "Add user 'www-data' to group '$grp' on server ? [y/n]" yn
   if [ x"$yn" == x"y" ]; then
-    read -e -p "server admin user: " -i "$ADMIN" user0
-    ssh ${user0}@${ip} "sudo adduser www-data $grp"
+    ssh ${ADMIN}@${ip} "sudo adduser www-data $grp"
   fi
 else 
   read -p "Add user '$user' to group '$grp' on server ? [y/n]" yn
   if [ x"$yn" == x"y" ]; then
-    read -e -p "server admin user: " -i "$ADMIN" user0
-    ssh ${user0}@${ip} "sudo adduser $user $grp"
+    ssh ${ADMIN}@${ip} "sudo adduser $user $grp"
   fi
 fi  
 
@@ -121,15 +118,15 @@ read -p "Press key to continue..."
 #echo -n "$(basename $0) : "
 #read -p "Create directory '$dstdir' on server ? [y/N]" yn
 #if [ x"$yn" == x"y" ]; then
-  #read -e -p "server admin user: " -i "$ADMIN" user0
-  #ssh ${user0}@${ip} "sudo mkdir -p $dstdir && sudo chown ${user}:${grp} $dstdir && sudo chmod 750 $dstdir"
+  #read -e -p "server admin user: " -i "$ADMIN" ADMIN
+  #ssh ${ADMIN}@${ip} "sudo mkdir -p $dstdir && sudo chown ${user}:${grp} $dstdir && sudo chmod 750 $dstdir"
 #fi
 #echo -n "$(basename $0) : "
 #read -p "Create file '$dstdir0/index.html' on server ? [y/N]" yn
 #if [ x"$yn" == x"y" ]; then
-  #read -e -p "server admin user: " -i "$ADMIN" user0
-  #ssh ${user0}@${ip} "sudo mkdir -p $dstdir0 && sudo chown ${user0}:${grp} $dstdir0 && sudo chmod 750 $dstdir0"
-  #ssh ${user0}@${ip} "sudo touch $dstdir0/index.html && sudo chown ${user0}:${grp} $dstdir0/index.html && sudo chmod 760 $dstdir0/index.html"
+  #read -e -p "server admin user: " -i "$ADMIN" ADMIN
+  #ssh ${ADMIN}@${ip} "sudo mkdir -p $dstdir0 && sudo chown ${ADMIN}:${grp} $dstdir0 && sudo chmod 750 $dstdir0"
+  #ssh ${ADMIN}@${ip} "sudo touch $dstdir0/index.html && sudo chown ${ADMIN}:${grp} $dstdir0/index.html && sudo chmod 760 $dstdir0/index.html"
   #fi
 
 #echo ""

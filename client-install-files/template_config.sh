@@ -5,6 +5,7 @@ function finish {
 	    rm -rf $tmpdir
 	    rm -f $HOME/.$(basename $0).lock
 	    cd "$wdir"
+	    echo ""
 	    exit
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM 

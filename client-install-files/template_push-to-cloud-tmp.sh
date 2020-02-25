@@ -30,7 +30,7 @@ for dir in $dirs ; do
 		echo "syncing..."
 		rsync $opts $dir/* --exclude='*.*.part' --iconv=utf-8,ascii//TRANSLIT//IGNORE -e ssh ${user}@$ip:$dstdir
 		echo ""
-		echo "downloading cloud-scripts..."
+		echo "updating cloud-scripts..."
 		rsync -av -e ssh ${user}@${ip}:$(basename $0) $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/$(basename $0)
 		#rsync -av -e ssh ${user}@${ip}:getgps.sh $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/getgps.sh
 		rsync -av -e ssh ${user}@${ip}:runscrpt.sh $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/runscrpt.sh

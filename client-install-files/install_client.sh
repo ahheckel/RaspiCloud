@@ -24,6 +24,7 @@ echo ""
 read -e -p "server admin user (for installation purposes): " -i "pi" admin
 export ADMIN=$admin
 read -e -p "server ip-address: " -i "172.16.0.10" ip
+export IP=$ip
 read -e -p "server installation files source: " -i "/home/$admin/client-install-files/" path
 
 #install missing progs on server
@@ -137,10 +138,15 @@ read -p "Create cronjob ? [y/n]" yn
 if [ x"$yn" == x"y" ]; then
     touch $HOME/../usr/var/spool/cron/crontabs/$(whoami) && cp $HOME/../usr/var/spool/cron/crontabs/$(whoami) $tmpdir/t
     cmd='* * * * * $HOME/.shortcuts/runscrpt.sh $HOME/.shortcuts/push-to-cloud-tmp.sh'
-    echo "$cmd" >> $tmpdir/t
+    echo "$cmd"
+    read -p "Add above line to crontab ? [y/n]" yn
+    if [ x"$yn" == x"y" ]; then
+        echo "$cmd" >> $tmpdir/t
+    fi
     #echo '* * * * * $HOME/.shortcuts/runscrpt.sh $HOME/.shortcuts/getgps.sh' >> $tmpdir/t
     #echo '*/5 * * * * $HOME/../usr/bin/sshd' >> $tmpdir/t
     cat $tmpdir/t | sort -u > $HOME/../usr/var/spool/cron/crontabs/$(whoami)
+    echo "Crontab:"
     crontab -l
 fi
 read -p "Autostart cron daemon on login ? [y/n]" yn

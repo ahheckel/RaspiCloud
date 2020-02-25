@@ -25,14 +25,14 @@ else
       cp "$input0" $tmpdir/
       input="$tmpdir/$(basename $input0)"
 fi
-read -e -p "IP-address: "  -i "172.16.0.10" ip
+read -e -p "IP-address: "  -i "$IP" ip
 read -e -p "user: "        -i "$USER1" user
+read -e -p "group-owner: " -i "$user" grp
 read -e -p "syncfolders: " -i "storage/downloads/ storage/dcim/Screenshots/ storage/dcim/Camera/ storage/dcim/Facebook" syncfolders
 read -e -p "dstdir: "      -i "/home/$user/cloud-NAS/tmp/" dstdir
-read -e -p "scrpt: "       -i "/home/$user/updatedb.sh $dstdir" scrpt
-read -e -p "group: "       -i "www-data" grp
-read -e -p "opts: "        -i "-v --size-only -p -o -g --progress --chown=$user:$grp --chmod=750" opts
+read -e -p "rsync-opts: "  -i "-v --size-only -p -o -g --progress --chown=$user:$grp --chmod=750" opts
 read -e -p "syncscrpt: "   -i ".shortcuts/push-to-cloud-tmp.sh" syncscrpt
+read -e -p "post-scrpt: "  -i "/home/$user/updatedb.sh $dstdir" scrpt
 
 # replace
 sed -i "s|xIPADDRESSx|$ip|g" $input

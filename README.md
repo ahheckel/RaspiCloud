@@ -110,7 +110,7 @@ geany v1.29 under Raspian Stretch
 </tr>
 <tr>
 <td><img src="screenshot01.jpg" width="100%" </img></td>
-<td><img src="screenshot02.jpg" width="95%" </img></td>
+<td><img src="screenshot02.jpg" width="97%" </img></td>
 <td><img src="screenshot03.jpg" width="90%" </img></td>
 </tr>
 </table>

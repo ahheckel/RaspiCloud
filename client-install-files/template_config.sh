@@ -56,17 +56,10 @@ fi
 
 # add user to group
 echo -n "$(basename $0) : "
-if [ "$grp" == "$user" ]; then
-  read -p "Add user 'www-data' to group '$grp' on server ? [y/n]" yn
-  if [ x"$yn" == x"y" ]; then
-    ssh ${ADMIN}@${ip} "sudo adduser www-data $grp"
-  fi
-else 
-  read -p "Add user '$user' to group '$grp' on server ? [y/n]" yn
-  if [ x"$yn" == x"y" ]; then
-    ssh ${ADMIN}@${ip} "sudo adduser $user $grp"
-  fi
-fi  
+read -p "Add user 'www-data' to group '$grp' on server ? [y/n]" yn
+if [ x"$yn" == x"y" ]; then
+  ssh ${ADMIN}@${ip} "sudo adduser www-data $grp"
+fi    
 
 echo ""
 echo "$(basename $0) : remember: you can change sync-folders in the script ${syncscrpt}."

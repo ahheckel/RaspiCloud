@@ -55,8 +55,8 @@ geany v1.29 under Raspian Stretch
   
     ```mkdir ~/client-install-files```
     
-  - copy the files in RaspiCloud/server/ to ~/ and the files in RaspiCloud/client-install-files/ to ~/client-install-files/.   
-  - copy private/public keys of privileged user to ~/client-install-files/ssh (and remove them after installation is finished).
+  - copy the files in *RaspiCloud/server* to *~/* and the files in *RaspiCloud/client-install-files* to *~/client-install-files*.   
+  - copy private/public keys of privileged user to *~/client-install-files/ssh* (and remove them after installation is finished).
   
   **Android Client:**
   - Install Termux app (see google playstore).
@@ -92,11 +92,11 @@ geany v1.29 under Raspian Stretch
   - choose www-root-directory and link to NAS storage, e.g.
    
     ```sudo ln -s /media/cloud-NAS /var/www/html/cloud```
-  - copy .css, .js, .xsl(t),... files in RaspiCloud/nginx/webroot/cloud to www-root/cloud
+  - copy .css, .js, .xsl(t),... files in *RaspiCloud/nginx/webroot/cloud* to *www-root/cloud*
   - create user/password pair:
    
     ```sudo htpasswd -c /etc/nginx/.htpasswd USER```
-  - adapt nginx 'default' configuration file in /etc/nginx/sites-available (see example in RaspiCloud/nginx/sites-available)
+  - adapt nginx 'default' configuration file in */etc/nginx/sites-available* (see example in *RaspiCloud/nginx/sites-available*)
   - restart nginx:
    
     ```sudo service nginx restart```

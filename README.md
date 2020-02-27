@@ -2,16 +2,16 @@
 Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted Web Interface.
 
 ## Features
-- *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
-- *secure:* ssh-based file transfer (password protected or key-based)
-- *convenient:* nginx ssl-encrypted web interface for file browsing with image gallery functions
-- *cross-platform:* client-side linux environment available on many platforms
-- *low cost:* using Raspberry-Pi as server with standard USB storage as NAS 
 - syncs client directories automatically to cloud storage
 - automatic categorization of synced files in audio, video, documents and pictures
 - automatic thumbnail generation
 - guest access possible
 - no 'rooting' of android devices required
+- *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
+- *secure:* ssh-based file transfer (password protected or key-based)
+- *convenient:* nginx ssl-encrypted web interface for file browsing with image gallery functions (see screenshots)
+- *cross-platform:* client-side linux environment available on many platforms
+- *low cost:* using Raspberry-Pi as server with standard USB storage as NAS 
 
 ## Requirements
 - linux server (tested with Raspian Stretch on a Raspberry Pi 3b+) 

@@ -71,9 +71,9 @@ Download and extract zipped repository in user pi's  home directory (*/home/pi*)
    
 ### Install Nginx Web Interface:
   **On Raspbian Server:**
-  - execute: 
+  - execute in pi's home directory: 
     
-    ```./RaspiCloud/install_web.sh```
+    ```./RaspiCloud/install/install_web.sh```
     
   
 ## Screenshots

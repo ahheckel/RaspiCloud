@@ -29,10 +29,10 @@ read -e -p "server ip-address: " -i "192.168.178.38" ip
 export IP=$ip
 read -e -p "server admin user (for installation purposes): " -i "pi" admin
 export ADMIN=$admin
-read -e -p "installation source (on server): " -i "/home/$admin/RaspiCloud/install/" path
-read -e -p "client script dir (on server): " -i "RaspiCloud/client" clidir
+read -e -p "installation source (on server): " -i "/home/$admin/RaspiCloud-master/install/" path
+read -e -p "client script dir (on server): " -i "RaspiCloud-master/client" clidir
 export CLIDIR=$clidir
-read -e -p "server script dir (on server): " -i "RaspiCloud/server" srvdir
+read -e -p "server script dir (on server): " -i "RaspiCloud-master/server" srvdir
 export SRVDIR=$srvdir
 read -e -p "current user: "  -i "johndoe" user1
 export USER1=$user1
@@ -197,7 +197,7 @@ echo "--------------------------"
 #echo "   ssh-keygen -t rsa -b 2048 -f id_rsa"
 #echo "   cat ~/.ssh/id_rsa.pub | ssh ${user1}@${ip} \"cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys\""
 #echo "and adapt authorized_keys file on the server"
-echo "Restart Termux (with WakeLock enabled)."
+echo "Now restart Termux (with 'WakeLock' enabled)."
 echo "--------------------------"
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)
 echo "$(basename $0) : finished. - $(date) ($elapsed sec elapsed)"

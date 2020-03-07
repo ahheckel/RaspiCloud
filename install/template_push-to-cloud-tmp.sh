@@ -26,7 +26,7 @@ for dir in $dirs ; do
 	if [ "$(cat $dir/.$(basename $0).list)" != "$(cat $dir/._$(basename $0).list)" ] ; then		
 		nc -w 10 -z $ip 22 2>/dev/null ; if [ $? -eq 1 ] ; then echo "netcat failed. - exiting." ; rm -f $HOME/.$(basename $0).lock ; exit 1 ; fi # is more robust than ping
 		echo "deleting duplicates in $dir..."
-		fdupes -dN $dir
+		fdupes -dNA $dir
 		echo ""
 		echo "syncing..."
 		rsync $opts $dir/* --exclude='*.*.part' --iconv=utf-8,ascii//TRANSLIT//IGNORE -e ssh ${user}@$ip:$dstdir

@@ -49,7 +49,7 @@ geany v1.29 under Raspian Stretch
 - bourne-shell
 
 ## Installation
-Download and extract zipped repository in user pi's  home directory (*/home/pi*).
+Download and extract zipped repository in user pi's home directory (*/home/pi*).
 
 ### Install Client:
   **On Android Client:**
@@ -60,7 +60,7 @@ Download and extract zipped repository in user pi's  home directory (*/home/pi*)
   
   - copy install script from server:
   
-    ```scp pi@IP-ADDRESS:RaspiCloud/install/install_client.sh $HOME/```
+    ```scp pi@IP-ADDRESS:RaspiCloud-master/install/install_client.sh $HOME/```
     
     ```chmod +x $HOME/install_client.sh```
   
@@ -71,9 +71,13 @@ Download and extract zipped repository in user pi's  home directory (*/home/pi*)
    
 ### Install Nginx Web Interface:
   **On Raspbian Server:**
-  - execute in pi's home directory: 
+  - make install script executable:
+  
+    ```chmod +x ./RaspiCloud-master/install/install_web.sh```
+  
+  - execute it: 
     
-    ```./RaspiCloud/install/install_web.sh```
+    ```./RaspiCloud-master/install/install_web.sh```
     
   
 ## Screenshots

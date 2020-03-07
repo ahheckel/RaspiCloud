@@ -30,7 +30,7 @@ sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice
 echo "--------------------------"
 echo "Install web interface..."
 echo "--------------------------"
-read -e -p "install source:          "  -i "$HOME/RaspiCloud/nginx" installdir
+read -e -p "install source:          "  -i "$HOME/RaspiCloud-master/nginx" installdir
 read -e -p "web-root directory:      "  -i "/var/www/html" webroot
 read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
 read -e -p "allowed ip-range:        "  -i "192.168.178.0/24" iprange
@@ -39,19 +39,25 @@ sudo ln -sfnv  $webroot/cloud $webroot/.cloud01
 sudo ln -sfnv  $webroot/cloud $webroot/.cloud02
 sudo ln -sfnv  $webroot/cloud $webroot/.cloud03
 sudo rsync -rv $installdir/web-root/cloud/ $webroot/cloud/
-sudo cat $installdir/sites-available/default | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" > /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
+sudo cat $installdir/sites-available/default | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" > $tmpdir/default
+sudo mv $tmpdir/default /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
 
 echo "--------------------------"
-echo "Create encrypted password..."
+echo "Create encrypted password for web access..."
 echo "--------------------------"
-read -e -p "user: "  -i "johndoe" user
-sudo htpasswd -c /etc/nginx/.htpasswd $user
+read -p "Create password ? [Y/n]" yn
+if [ x"$yn" != x"n" ]; then
+  read -e -p "user: "  -i "johndoe" user
+  sudo htpasswd -c /etc/nginx/.htpasswd $user
+fi
 
 echo "--------------------------"
 echo "Create ssl-certificate..."
 echo "--------------------------"
-read -p "Press enter to continue..."
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/nginx.key -out /etc/nginx/nginx.crt
+read -p "Create (new) certificate ? [Y/n]" yn
+if [ x"$yn" != x"n" ]; then
+  sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/nginx.key -out /etc/nginx/nginx.crt
+fi
 
 echo "--------------------------"
 echo "Restart nginx..."

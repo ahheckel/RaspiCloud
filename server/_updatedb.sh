@@ -16,7 +16,7 @@ IFS="
 
 # parse input
 if [ x"$1" == "x" ] ; then
-       echo "$(basename $0) : nor directory given... exiting."
+       echo "$(basename $0) : no directory given... exiting."
 else
       dir="$1"
 fi

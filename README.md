@@ -2,7 +2,7 @@
 Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted Web Interface.
 
 ## Features
-- syncs client directories automatically to cloud storage
+- syncs client directories automatically to private cloud storage
 - automatic categorization of synced files in audio, video, documents and pictures
 - automatic thumbnail generation
 - guest access possible
@@ -39,7 +39,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted
   - *BetterListing* by DevCoster:
    https://gitlab.com/devCoster/BetterListing
    
-   - *jquery v3.4.1*:
+  - *jquery v3.4.1*:
    https://jquery.com/download/
    
 ## Coding
@@ -49,58 +49,33 @@ geany v1.29 under Raspian Stretch
 - bourne-shell
 
 ## Installation
+Download and extract zipped repository in user pi's  home directory (*/home/pi*).
+
 ### Install Client:
-  **Raspbian Server:** 
-  - create directory for client-installation files under a privileged user's account (e.g., 'pi'):
-  
-    ```mkdir ~/client-install-files```
-    
-  - copy the files in *RaspiCloud/server* to *~* and the files in *RaspiCloud/client-install-files* to *~/client-install-files*.   
-  - copy private/public keys of privileged user to *~/client-install-files/ssh* (and remove them after installation is finished).
-  
-  **Android Client:**
-  - Install Termux app (see google playstore).
+  **On Android Client:**
+  - install Termux app (see google playstore).
   - open Termux and install openssh:
   
     ```pkg install openssh```
   
   - copy install script from server:
   
-    ```scp pi@IP-ADDRESS:client-install-files/install_client.sh $HOME/```
+    ```scp pi@IP-ADDRESS:RaspiCloud/install/install_client.sh $HOME/```
     
     ```chmod +x $HOME/install_client.sh```
   
   - execute it:
   
     ```./install_client.sh```
+    
+   
+### Install Nginx Web Interface:
+  **On Raspbian Server:**
+  - execute: 
+    
+    ```./RaspiCloud/install_web.sh```
+    
   
-  - after that, create new ssh keypair:
-  
-    ```ssh-keygen -t rsa -b 2048 -f id_rsa```
-    
-    and update authorized_keys on server.
-   
-### Install Nginx Web-Server for File Browsing:
-  - install nginx and openssl, apache2-utils (for htpasswd), imagemagick & libreoffice (for thumbnails):
-    
-    ```sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice```
-  - create self signed certificate for ssl encryption:
-   
-    ```sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/nginx.key -out /etc/nginx/nginx.crt```
-    
-    to become a certificate authority (optional, useful in local networks) follow these steps: https://reactpaths.com/how-to-get-https-working-in-localhost-development-environment-f17de34af046
-  - choose www-root-directory and link to NAS storage, e.g.
-   
-    ```sudo ln -s /media/cloud-NAS /var/www/html/cloud```
-  - copy .css, .js, .xsl(t),... files in *RaspiCloud/nginx/webroot/cloud* to *www-root/cloud*
-  - create user/password pair:
-   
-    ```sudo htpasswd -c /etc/nginx/.htpasswd USER```
-  - adapt nginx 'default' configuration file in */etc/nginx/sites-available* (see example in *RaspiCloud/nginx/sites-available*)
-  - restart nginx:
-   
-    ```sudo service nginx restart```
-
 ## Screenshots
 <table>
 <tr>

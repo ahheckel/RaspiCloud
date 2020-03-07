@@ -93,7 +93,7 @@ for i in $(cat $tmpdir/list) ; do
 			continue
 		  else
 			ln -vf "$i" "$_dir" ;
-			$HOME/create_thumbs.sh "$i"
+			$(dirname $0)/create_thumbs.sh "$i"
 		  fi
 	    fi
       done
@@ -111,7 +111,7 @@ for i in $(cat $tmpdir/list) ; do
 			continue
 		  else
 			ln -vf "$i" "$_dir" ;	
-			$HOME/create_thumbs.sh "$i"
+			$(dirname $0)/create_thumbs.sh "$i"
 		  fi
 	    fi
       done
@@ -174,7 +174,7 @@ if [ $doall -eq 1 ] ; then
 		  if [ -f $i/.thumbs/$fname ] ; then 
 			continue
 		  else
-			$HOME/create_thumbs.sh "${i}/${fname}"
+			$(dirname $0)/create_thumbs.sh "${i}/${fname}"
 		  fi
 	    done
       done

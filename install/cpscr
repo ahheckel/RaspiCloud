@@ -1,8 +1,8 @@
 src="$1"
 
-echo "--------------------------"
+echo "++++++++++++++++++++++++++"
 echo "copying configs to termux..."
-echo "--------------------------"
+echo "++++++++++++++++++++++++++"
 mkdir -p $HOME/.shortcuts
 cp ${src}/* $HOME/.shortcuts/
 chmod +x $HOME/.shortcuts/*
@@ -11,14 +11,14 @@ ln -snf $HOME/.shortcuts $HOME/.termux/tasker
 cp ${src}/bashrc $HOME/.bashrc
 cp ${src}/bash_profile $HOME/.bash_profile
 
-echo "--------------------------"
+echo "++++++++++++++++++++++++++"
 echo "executing termux-setup-storage..."
-echo "--------------------------"
+echo "++++++++++++++++++++++++++"
 termux-setup-storage
 
-echo "--------------------------"
+echo "++++++++++++++++++++++++++"
 echo "installing termux-packages..."
-echo "--------------------------"
+echo "++++++++++++++++++++++++++"
 pkg install openssh rsync lftp python neovim wget bc util-linux iconv poppler termux-api nano nmap gawk fdupes
 #pip install youtube-dl
 #pip install --upgrade pip

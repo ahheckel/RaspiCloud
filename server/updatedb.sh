@@ -15,12 +15,14 @@ IFSbak="$IFS"
 IFS="
 "
 
-$HOME/_updatedb.sh "$1"
+sdir=$(dirname $0)
+
+$sdir/_updatedb.sh "$1"
 EC=$?
 
 i=0 ; cutoff=30
 until [ ${EC} -ne 9 ] ; do 
-      $HOME/_updatedb.sh "$1"
+      $sdir/_updatedb.sh "$1"
       EC=$?
       sleep 10
       i=$[$i+1]

@@ -51,10 +51,10 @@ for j in  $(cat $tmpdir/list) ; do
 	if [ $refresh -eq 0 ] ; then 
 	  continue
 	else
-	  $HOME/create_thumbs.sh "${i}/${fname}" $res_img $res_pdf 1
+	  $(dirname $0)/create_thumbs.sh "${i}/${fname}" $res_img $res_pdf 1
 	fi
   else
-	$HOME/create_thumbs.sh "${i}/${fname}" $res_img $res_pdf 0
+	$(dirname $0)/create_thumbs.sh "${i}/${fname}" $res_img $res_pdf 0
   fi
 done
 

@@ -19,16 +19,21 @@ else
 fi
 
 admin="pi" # admin user
-files="updatedb.sh _updatedb.sh parsefiles2link.sh create_thumbs.sh _create_thumbs.sh runscript.sh"
+srv=RaspiCloud/server
+clnt=RaspiCloud/client
+files="$srv/updatedb.sh $srv/_updatedb.sh $srv/parsefiles2link.sh $srv/create_thumbs.sh $srv/_create_thumbs.sh $clnt/runscrpt.sh"
 
+mkdir -p $tmpdir/$srv ; mkdir -p $tmpdir/$clnt
 for user in $users ; do
     echo "$(basename $0) : updating user ${user}..."
+    sudo mkdir -p /home/$user/$srv ; sudo mkdir -p /home/$user/$clnt
 	for file in $files ; do
-		sudo cp /home/$admin/$file $tmpdir/$(basename $file)
-		sudo cp -v $tmpdir/$(basename $file) /home/${user}/
-		sudo chmod 770 /home/${user}/$(basename $file)
-		sudo chown ${user}:${user} /home/${user}/$(basename $file)
-	done
+		sudo cp /home/$admin/$file $tmpdir/$(dirname $file)/
+		sudo cp -v $tmpdir/$file /home/${user}/$(dirname $file)/
+		done
+		
+		sudo chown -R ${user}:${user} /home/${user}/$(dirname $file)
+		sudo chmod -R 770 /home/${user}/$(dirname $file)
 done
 
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)

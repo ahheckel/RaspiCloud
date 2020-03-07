@@ -26,47 +26,30 @@ else
       cp "$input0" $tmpdir/
       input="$tmpdir/$(basename $input0)"
 fi
-read -e -p "IP-address: "  -i "$IP" ip
-read -e -p "user: "        -i "$USER1" user
-read -e -p "group-owner: " -i "$user" grp
 read -e -p "syncfolders: " -i "storage/downloads/ storage/dcim/Screenshots/ storage/dcim/Camera/ storage/dcim/Facebook" syncfolders
-read -e -p "dstdir: "      -i "/home/$user/cloud-NAS/tmp/" dstdir
-read -e -p "rsync-opts: "  -i "-v --size-only -p -o -g --progress --chown=$user:$grp --chmod=750" opts
+read -e -p "rsync-opts: "  -i "-v --size-only -p -o -g --progress --chown=$USER1:$GRP --chmod=750" opts
 read -e -p "syncscrpt: "   -i ".shortcuts/push-to-cloud-tmp.sh" syncscrpt
-read -e -p "post-scrpt: "  -i "/home/$user/updatedb.sh $dstdir" scrpt
+read -e -p "post-scrpt: "  -i "$SRVDIR/updatedb.sh $dstdir" scrpt
 
 # replace
-sed -i "s|xIPADDRESSx|$ip|g" $input
-sed -i "s|xUSERx|$user|g" $input
+sed -i "s|xIPADDRESSx|$IP|g" $input
+sed -i "s|xUSERx|$USER1|g" $input
 sed -i "s|xSYNCFOLDERSx|$syncfolders|g" $input
-sed -i "s|xDSTDIRx|$dstdir|g" $input
+sed -i "s|xDSTDIRx|$DSTDIR/tmp|g" $input
 sed -i "s|xSCRPTx|$scrpt|g" $input
 sed -i "s|xOPTSx|$opts|g" $input
+sed -i "s|xCLIDIRx|$CLIDIR|g" $input
 
 # make executable
 echo ""
 cp -v $input $syncscrpt
 chmod +x $syncscrpt
 
-# create destination dir on server
-echo -n "$(basename $0) : "
-read -p "Create cloud directory '$dstdir' on server ? [y/n]" yn
-if [ x"$yn" == x"y" ]; then
-  ssh ${ADMIN}@${ip} "sudo mkdir -p $dstdir && sudo chown ${user}:${grp} $dstdir && sudo chmod 750 $dstdir"
-fi
-
-# add user to group
-echo -n "$(basename $0) : "
-read -p "Add user 'www-data' to group '$grp' on server ? [y/n]" yn
-if [ x"$yn" == x"y" ]; then
-  ssh ${ADMIN}@${ip} "sudo adduser www-data $grp"
-fi    
-
 echo ""
 echo "$(basename $0) : remember: you can change sync-folders in the script ${syncscrpt}."
-echo "$(basename $0) : remember: you may want to run ${synscrpt} once per minute or so with a termux cronjob (crontab -e)."
+echo "$(basename $0) : remember: you may want to run ${syncscrpt} once per minute or so with a termux cronjob (crontab -e)."
 echo ""
-read -p "Press key to continue..."
+read -p "Press enter to continue..."
 ##--------------
 ##--------------
 #echo ""

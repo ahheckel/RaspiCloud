@@ -85,7 +85,7 @@ Download and extract zipped repository in user pi's home directory (*/home/pi*).
 <tr>
 <td>Design and Layout inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.</td>
 <td>Thumbnail view.</td>
-<td>Gallery with image manipulation based on <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox</a>.</td>
+<td>Gallery with Image Manipulation based on <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox</a>.</td>
 </tr>
 <tr>
 <td><img src="screenshot01.jpg" width="100%" </img></td>

@@ -30,15 +30,15 @@ export IP=$ip
 read -e -p "server admin user (for installation purposes): " -i "pi" admin
 export ADMIN=$admin
 read -e -p "installation source (on server): " -i "/home/$admin/RaspiCloud-master/install/" path
-read -e -p "client script dir (on server): " -i "RaspiCloud-master/client" clidir
+read -e -p "client script dir (on server):   " -i "RaspiCloud-master/client" clidir
 export CLIDIR=$clidir
-read -e -p "server script dir (on server): " -i "RaspiCloud-master/server" srvdir
+read -e -p "server script dir (on server):   " -i "RaspiCloud-master/server" srvdir
 export SRVDIR=$srvdir
-read -e -p "current user: "  -i "johndoe" user1
+read -e -p "current user:                    " -i "johndoe" user1
 export USER1=$user1
-read -e -p "cloud-dir on NAS: " -i "/media/cloud-NAS/${user1}" dstdir
+read -e -p "user's cloud-dir on NAS:         " -i "/media/cloud-NAS/${user1}" dstdir
 export DSTDIR=$dstdir
-read -e -p "cloud-dir group owner: "  -i "$user1" grp
+read -e -p "user's cloud-dir group owner:    " -i "$user1" grp
 export GRP=$grp
 
 #create keypair for installation

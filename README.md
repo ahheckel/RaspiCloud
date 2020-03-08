@@ -2,11 +2,10 @@
 Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted Web Interface.
 
 ## Features
-- syncs client directories automatically to private cloud storage
-- automatic categorization of synced files in audio, video, documents and pictures
-- automatic thumbnail generation
-- guest access possible
-- no 'rooting' of android devices required
+  Syncs client directories automatically to private cloud storage with
+  automatic categorization of synced files (audio, video, documents and pictures)
+  and thumbnail generation. Guest access possible.
+  No 'rooting' of android devices is required.
 - *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
 - *secure:* ssh-based file transfer (password protected or key-based)
 - *convenient:* nginx ssl-encrypted web interface for file browsing with image gallery functions (see screenshots)
@@ -49,7 +48,7 @@ geany v1.29 under Raspian Stretch
 - bourne-shell
 
 ## Installation
-Download and extract zipped repository in user pi's home directory (*/home/pi*), and mount USB harddisk 
+Download and extract zipped repository in user pi's home directory *(/home/pi)*, and mount USB harddisk 
 to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
 
 ### Install Client:
@@ -86,19 +85,19 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
 ## Screenshots
 <table>
 <tr>
-<td><img src="screenshot01.jpg" width="100%" </img></td>
-<td><img src="screenshot02.jpg" width="97%" </img></td>
-<td><img src="screenshot03.jpg" width="90%" </img></td>
-</tr>
-<tr>
 <td>Design and Layout inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.</td>
 <td>Thumbnail view.</td>
 <td>Gallery with Image Manipulation based on <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox</a>.</td>
 </tr>
+<tr>
+<td><img src="screenshot01.jpg" width="100%" </img></td>
+<td><img src="screenshot02.jpg" width="97%" </img></td>
+<td><img src="screenshot03.jpg" width="90%" </img></td>
+</tr>
 </table>
 
 ## Status
- alpha
+ pre-alpha
 
 ## Disclaimer
 The material embodied in this software is provided to you "as-is" and without warranty of any kind, express, implied or otherwise, including 

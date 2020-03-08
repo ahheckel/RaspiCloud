@@ -3,7 +3,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted
 
 ## Features
   Syncs client directories automatically to private cloud storage with
-  automatic categorization of synced files (audio, video, documents and pictures)
+  on-the-fly categorization of synced files (audio, video, documents and pictures)
   and thumbnail generation. Guest access possible.
   No 'rooting' of android devices is required.
 - *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts

@@ -49,7 +49,8 @@ geany v1.29 under Raspian Stretch
 - bourne-shell
 
 ## Installation
-Download and extract zipped repository in user pi's home directory (*/home/pi*).
+Download and extract zipped repository in user pi's home directory (*/home/pi*),
+and mount USB harddisk to /media/cloud-NAS (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
 
 ### Install Client:
   **On Android Client:**

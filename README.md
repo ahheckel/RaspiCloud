@@ -50,7 +50,7 @@ geany v1.29 under Raspian Stretch
 
 ## Installation
 Download and extract zipped repository in user pi's home directory (*/home/pi*), and mount USB harddisk 
-to */media/cloud-NAS* (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
+to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
 
 ### Install Client:
   **On Android Client:**
@@ -79,24 +79,26 @@ to */media/cloud-NAS* (see https://www.raspberrypi.org/documentation/configurati
   - execute it: 
     
     ```./RaspiCloud-master/install/install_web.sh```
+  
+  - go to *https://IP-ADDRESS/cloud/USER*, enter *USER*'s credentials and browse your cloud.
     
   
 ## Screenshots
 <table>
 <tr>
-<td>Design and Layout inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.</td>
-<td>Thumbnail view.</td>
-<td>Gallery with Image Manipulation based on <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox</a>.</td>
-</tr>
-<tr>
 <td><img src="screenshot01.jpg" width="100%" </img></td>
 <td><img src="screenshot02.jpg" width="97%" </img></td>
 <td><img src="screenshot03.jpg" width="90%" </img></td>
 </tr>
+<tr>
+<td>Design and Layout inspired by <a href="https://gitlab.com/devCoster/BetterListing">BetterListing</a>.</td>
+<td>Thumbnail view.</td>
+<td>Gallery with Image Manipulation based on <a href="https://www.cssscript.com/css-only-minimal-responsive-image-gallery-lightbox-cssbox/">cssbox</a>.</td>
+</tr>
 </table>
 
 ## Status
- experimental
+ alpha
 
 ## Disclaimer
 The material embodied in this software is provided to you "as-is" and without warranty of any kind, express, implied or otherwise, including 

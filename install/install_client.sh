@@ -5,10 +5,17 @@ start=$(date +%s)
 tmpdir=$(mktemp -d -t $(basename $0)-XXXXXXXXXX)
 wdir="$(pwd)"
 key="$HOME/.ssh/RaspiCloud-tmp$$.rsa"
+function remkeys {
+	    if [ x"$key" != x"$HOME/.ssh/id_rsa" ] ; then
+	      rm -fv $key ${key}.pub
+	    else
+	      echo "$(basename $0) : ...will not delete $key."
+	    fi
+}
 function finish {
 	    rm -rf $tmpdir
 	    rm -f $HOME/.$(basename $0).lock
-	    rm -f $key ${key}.pub
+	    remkeys; #rm -f $key ${key}.pub
 	    cd "$wdir"
 	    echo "$(basename $0) : exited."
 	    exit
@@ -25,7 +32,7 @@ read -p "Press enter to continue or abort with CTRL-C."
 echo ""
 
 #parse inputs
-read -e -p "server ip-address: " -i "192.168.178.38" ip
+read -e -p "server ip-address: " -i "172.16.0.10" ip
 export IP=$ip
 read -e -p "server admin user (for installation purposes): " -i "pi" admin
 export ADMIN=$admin
@@ -143,7 +150,9 @@ if [ x"$yn" != x"n" ]; then
   ssh-keygen -t rsa -b 2048 -f $HOME/.ssh/id_rsa
   echo "uploading user ${user1}'s public key to server ($ip)..."
   cat $HOME/.ssh/id_rsa.pub | ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys && chmod 700 /home/$user1/.ssh"
-fi  
+else
+  key="$HOME/.ssh/id_rsa"
+fi
 
 #adapt templates
 echo "--------------------------"
@@ -186,10 +195,10 @@ echo "Cleanup..."
 echo "--------------------------"
 read -p "Press enter to continue..."
 str_tmp="$(cat ${key}.pub)"
-echo "removing corresponding entry in admin ${admin}'s authorized_keys on server ($ip)..."
+echo "removing public key (that was used to authenticate this installation) from admin ${admin}'s authorized_keys file on server ($ip)..."
 ssh -i $key ${admin}@${ip} "if test -f \$HOME/.ssh/authorized_keys; then if grep -v \"$str_tmp\" \$HOME/.ssh/authorized_keys > \$HOME/.ssh/tmp; then cat \$HOME/.ssh/tmp > \$HOME/.ssh/authorized_keys && rm \$HOME/.ssh/tmp; else rm \$HOME/.ssh/authorized_keys && rm \$HOME/.ssh/tmp; fi; fi"
 echo "deleting installation keys on client..."
-rm -fv $key ${key}.pub
+remkeys;
 
 echo " "
 echo "--------------------------"

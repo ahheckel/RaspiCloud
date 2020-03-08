@@ -33,7 +33,7 @@ echo "--------------------------"
 read -e -p "install source:          "  -i "$HOME/RaspiCloud-master/nginx" installdir
 read -e -p "web-root directory:      "  -i "/var/www/html" webroot
 read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
-read -e -p "allowed ip-range:        "  -i "192.168.178.0/24" iprange
+read -e -p "allowed ip-range:        "  -i "172.16.0.0/24" iprange
 sudo ln -sfnv $nasdir $webroot/cloud
 sudo ln -sfnv  $webroot/cloud $webroot/.cloud01
 sudo ln -sfnv  $webroot/cloud $webroot/.cloud02
@@ -54,13 +54,13 @@ fi
 echo "--------------------------"
 echo "Create ssl-certificate..."
 echo "--------------------------"
-read -p "Create (new) certificate ? [Y/n]" yn
+read -p "Create certificate ? [Y/n]" yn
 if [ x"$yn" != x"n" ]; then
   sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/nginx.key -out /etc/nginx/nginx.crt
 fi
 
 echo "--------------------------"
-echo "Restart nginx..."
+echo "Restarting nginx..."
 echo "--------------------------"
 sudo service nginx restart
 

@@ -26,14 +26,14 @@ files="$srv/updatedb.sh $srv/_updatedb.sh $srv/parsefiles2link.sh $srv/create_th
 mkdir -p $tmpdir/$srv ; mkdir -p $tmpdir/$clnt
 for user in $users ; do
     echo "$(basename $0) : updating user ${user}..."
+    if [ ! -d /home/$user ] ; then echo "$(basename $0) : /home/$user not found - continuing..." ; continue ; fi
     sudo mkdir -p /home/$user/$srv ; sudo mkdir -p /home/$user/$clnt
-	for file in $files ; do
-		sudo cp /home/$admin/$file $tmpdir/$(dirname $file)/
-		sudo cp -v $tmpdir/$file /home/${user}/$(dirname $file)/
-		done
-		
-		sudo chown -R ${user}:${user} /home/${user}/$(dirname $file)
-		sudo chmod -R 770 /home/${user}/$(dirname $file)
+    for file in $files ; do
+	sudo cp /home/$admin/$file $tmpdir/$(dirname $file)/
+	sudo cp -v $tmpdir/$file /home/${user}/$(dirname $file)/
+	sudo chown ${user}:${user} /home/${user}/$file
+	sudo chmod 770 /home/${user}/$file
+    done
 done
 
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)

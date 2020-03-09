@@ -7,6 +7,7 @@ syncfolders="xSYNCFOLDERSx"
 dstdir="xDSTDIRx"
 scrpt="xSCRPTx"
 clidir="xCLIDIRx"
+ckey="xCKEYx"
 
 if [ -f $HOME/.$(basename $0).lock ] ; then echo "An instance is already running - exiting." ; exit 1 ; fi
 
@@ -32,7 +33,7 @@ for dir in $dirs ; do
 		rsync $opts $dir/* --exclude='*.*.part' --iconv=utf-8,ascii//TRANSLIT//IGNORE -e ssh ${user}@$ip:$dstdir
 		echo ""
 		echo "---updating cloud-scripts..."
-		rsync -av -e ssh ${user}@${ip}:$clidir/* $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/*
+		rsync -av -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/*
 		echo ""
 		echo "---updating database..."
 		ssh ${user}@$ip -t $scrpt

@@ -39,6 +39,7 @@ sed -i "s|xDSTDIRx|$DSTDIR/tmp|g" $input
 sed -i "s|xSCRPTx|$scrpt|g" $input
 sed -i "s|xOPTSx|$opts|g" $input
 sed -i "s|xCLIDIRx|$CLIDIR|g" $input
+sed -i "s|xCKEYx|$CKEY|g" $input
 
 # make executable
 echo ""

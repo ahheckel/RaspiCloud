@@ -34,12 +34,13 @@ read -e -p "install source:          "  -i "$HOME/RaspiCloud-master/nginx" insta
 read -e -p "web-root directory:      "  -i "/var/www/html" webroot
 read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
 read -e -p "allowed ip-range:        "  -i "172.16.0.0/24" iprange
+read -e -p "xslt storage:            "  -i "$installdir/xslt" xsltpath
 sudo ln -sfnv $nasdir $webroot/cloud
 sudo ln -sfnv  $webroot/cloud $webroot/.cloud01
 sudo ln -sfnv  $webroot/cloud $webroot/.cloud02
 sudo ln -sfnv  $webroot/cloud $webroot/.cloud03
 sudo rsync -rv $installdir/web-root/cloud/ $webroot/cloud/
-sudo cat $installdir/sites-available/default | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" > $tmpdir/default
+sudo cat $installdir/sites-available/default | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$xsltpath|g" > $tmpdir/default
 sudo mv $tmpdir/default /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
 
 echo "--------------------------"

@@ -4,7 +4,8 @@ if [ -f $HOME/.$(basename $0).lock ] ; then echo "$(basename $0) : An instance i
 start=$(date +%s)
 tmpdir=$(mktemp -d -t $(basename $0)-XXXXXXXXXX)
 wdir="$(pwd)"
-key="$HOME/.ssh/RaspiCloud-tmp$$.rsa"
+key="$HOME/.ssh/RaspiCloud-tmp$$.rsa" # temp key for installation
+ckey="$HOME/.ssh/raspicloud" # user's key
 function remkeys {
 	    if [ x"$key" != x"$HOME/.ssh/id_rsa" ] ; then
 	      rm -fv $key ${key}.pub
@@ -12,10 +13,15 @@ function remkeys {
 	      echo "$(basename $0) : ...will not delete $key."
 	    fi
 }
+function createuserkey {
+  ssh-keygen -t rsa -b 2048 -f $ckey
+  echo "uploading user ${user1}'s public key to server ($ip)..."
+  cat $ckey| ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys && chmod 700 /home/$user1/.ssh"
+}
 function finish {
 	    rm -rf $tmpdir
 	    rm -f $HOME/.$(basename $0).lock
-	    remkeys; #rm -f $key ${key}.pub
+	    remkeys;
 	    cd "$wdir"
 	    echo "$(basename $0) : exited."
 	    exit
@@ -30,6 +36,9 @@ echo "This is experimental software, which might damage your system."
 echo "Please be careful!"
 read -p "Press enter to continue or abort with CTRL-C."
 echo ""
+
+#export user's key
+export CKEY=$ckey
 
 #parse inputs
 read -e -p "server ip-address: " -i "172.16.0.10" ip
@@ -63,9 +72,9 @@ cat ${key}.pub | ssh ${admin}@${ip} "mkdir -p /home/$admin/.ssh && cat >> /home/
 
 #install missing progs on server
 echo "--------------------------"
-echo "Install missing packages on server ($ip)..."
+echo "Install some packages on server ($ip)..."
 echo "--------------------------"
-read -p "Install missing packages ? [Y/n]" yn
+read -p "Install packages ? [Y/n]" yn
 if [ x"$yn" != x"n" ]; then
   ssh -i $key ${admin}@${ip} "sudo apt-get install bc gawk fdupes"
 fi
@@ -74,9 +83,11 @@ fi
 echo "--------------------------"
 echo "Install Termux packages on client (1/2)..."
 echo "--------------------------"
-read -p "Press enter to continue..."
-pkg install openssh rsync lftp python neovim wget bc util-linux iconv
-termux-setup-storage
+read -p "Install packages ? [Y/n]" yn
+if [ x"$yn" != x"n" ]; then
+  pkg install openssh rsync lftp python neovim wget bc util-linux iconv
+  termux-setup-storage
+fi
 echo ""
 
 echo "downloading installation files from $ip (to temporary folder)..."
@@ -89,9 +100,11 @@ rsync -r $opts -e "ssh -i $key" ${admin}@${ip}:$path --exclude=ssh/ --iconv=utf-
 echo "--------------------------"
 echo "Install Termux packages on client (2/2)..."
 echo "--------------------------"
-read -p "Press enter to continue..."
-cp -f $localinstall/cpscr $HOME/
-. $HOME/cpscr $localinstall
+read -p "Install packages ? [Y/n]" yn
+if [ x"$yn" != x"n" ]; then
+  cp -f $localinstall/cpscr $HOME/
+  . $HOME/cpscr $localinstall
+fi
 
 #create user account on server
 echo "--------------------------"
@@ -114,14 +127,12 @@ cmd="ln -sfn $dstdir /home/${user1}/cloud-NAS"
 echo "executing $cmd on server..."
 ssh -i $key ${admin}@${ip} "sudo $cmd"
 
-read -p "Add user 'www-data' to group '$grp' on server ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
-  ssh -i $key ${admin}@${ip} "sudo adduser www-data $grp"
-fi
+echo "adding admin user '$admin' to group 'www-data' on server..."
+ssh -i $key ${admin}@${ip} "sudo adduser $admin www-data"
 
-read -p "Add admin user '$admin' to group 'www-data' on server ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
-  ssh -i $key ${admin}@${ip} "sudo adduser $admin www-data"
+if [ x"$grp" != x"www-data" ]; then
+  echo "adding user 'www-data' to group '$grp' on server..."
+  ssh -i $key ${admin}@${ip} "sudo adduser www-data $grp"
 fi
 
 #create cloud-dir 4 guests
@@ -145,13 +156,14 @@ ssh -i $key ${admin}@${ip} "chmod +x \$HOME/$srvdir/*.sh && \$HOME/$srvdir/updat
 echo "--------------------------"
 echo "Create user's ssh-keypair..."
 echo "--------------------------"
-read -p "Create keys ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
-  ssh-keygen -t rsa -b 2048 -f $HOME/.ssh/id_rsa
-  echo "uploading user ${user1}'s public key to server ($ip)..."
-  cat $HOME/.ssh/id_rsa.pub | ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys && chmod 700 /home/$user1/.ssh"
+if [ -f $ckey ]; then
+  read -p "Create new keys ? [Y/n]" yn
+  if [ x"$yn" != x"n" ]; then
+    createuserkey
+  fi
 else
-  key="$HOME/.ssh/id_rsa"
+  echo "creating keys..."
+  createuserkey
 fi
 
 #adapt templates
@@ -159,10 +171,9 @@ echo "--------------------------"
 echo "Configure templates for user..."
 echo "--------------------------"
 read -p "Press enter to continue..."
-$HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.sh #$HOME/.shortcuts/template_getgps.sh
+$HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.sh
 echo "uploading to server ($ip)..."
-scp $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/"
-#scp $HOME/.shortcuts/getgps.sh ${user1}@${ip}:"\$HOME/"
+scp -i $ckey $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/"
  
 #create cronjob
 echo "--------------------------"
@@ -197,15 +208,12 @@ read -p "Press enter to continue..."
 str_tmp="$(cat ${key}.pub)"
 echo "removing public key (that was used to authenticate this installation) from admin ${admin}'s authorized_keys file on server ($ip)..."
 ssh -i $key ${admin}@${ip} "if test -f \$HOME/.ssh/authorized_keys; then if grep -v \"$str_tmp\" \$HOME/.ssh/authorized_keys > \$HOME/.ssh/tmp; then cat \$HOME/.ssh/tmp > \$HOME/.ssh/authorized_keys && rm \$HOME/.ssh/tmp; else rm \$HOME/.ssh/authorized_keys && rm \$HOME/.ssh/tmp; fi; fi"
-echo "deleting installation keys on client..."
+echo "deleting temporary installation keys on client..."
 remkeys;
 
 echo " "
+echo " "
 echo "--------------------------"
-#echo "Replace ssh-keys with user-generated keys"
-#echo "   ssh-keygen -t rsa -b 2048 -f id_rsa"
-#echo "   cat ~/.ssh/id_rsa.pub | ssh ${user1}@${ip} \"cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys\""
-#echo "and adapt authorized_keys file on the server"
 echo "Now restart Termux (with 'WakeLock' enabled)."
 echo "--------------------------"
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)

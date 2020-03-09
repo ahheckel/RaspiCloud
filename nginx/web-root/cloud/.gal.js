@@ -162,7 +162,7 @@ var href_thumb;
 var imgiter_prev = imgiter - 1;
 var imgiter_next = imgiter + 1;
 var isimg = 0;
-var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif"];
+var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif", "odt"];
 var fileExt;
 var imgiter = 0;
 var lastobj;
@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         }                        
                         
                         a.children[1].style.backgroundColor = "#202020";                        
-                        if (fileExt == "pdf" || fileExt == "doc" || fileExt == "ppt" || fileExt == "xls" || fileExt == "txt" || fileExt == "docx" || fileExt == "pptx" || fileExt == "xlsx" || fileExt == "ppsx" || fileExt == "pps" ) {
+                        if (fileExt == "pdf" || fileExt == "doc" || fileExt == "ppt" || fileExt == "xls" || fileExt == "txt" || fileExt == "docx" || fileExt == "pptx" || fileExt == "xlsx" || fileExt == "ppsx" || fileExt == "pps" || fileExt == "odt" ) {
                                 img_href = href_thumb;
                         } else {
                                 img_href = href_full;
@@ -371,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                                 } else {
                                                         obj.children("img.cssbox_thumb").attr("data-src", href_thumb);
                                                 }
-                                                if (fileExt == "pdf" || fileExt == "doc" || fileExt == "ppt" || fileExt == "xls" || fileExt == "txt" || fileExt == "docx" || fileExt == "pptx" || fileExt == "xlsx" || fileExt == "ppsx" || fileExt == "pps" ) {
+                                                if (fileExt == "pdf" || fileExt == "doc" || fileExt == "ppt" || fileExt == "xls" || fileExt == "txt" || fileExt == "docx" || fileExt == "pptx" || fileExt == "xlsx" || fileExt == "ppsx" || fileExt == "pps" || fileExt == "odt" ) {
                                                         obj.children("span.cssbox_full").children("img.img_full").attr("data-src", href_thumb);
                                                 } else { 
                                                         obj.children("span.cssbox_full").children("img.img_full").attr("data-src", href_full);

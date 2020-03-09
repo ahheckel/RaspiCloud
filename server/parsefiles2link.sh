@@ -83,7 +83,7 @@ for i in $(cat $tmpdir/list) ; do
       categ="docs"
       _dir="$dir/$categ"
       find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
-      for j in pdf doc docx htm html odt xls xlsx ods ppt pptx txt pps ppsx ; do
+      for j in pdf doc docx htm html odt xls xlsx ods ppt pptx txt pps ppsx odt ; do
 	    if [ x"$ext" = "x${j}" ] ; then		  
 		  echo "$i" >> $tmpdir/${categ}
 		  inode=$(stat -c %i "$i")		  

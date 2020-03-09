@@ -1,0 +1,15 @@
+
+Install routine:
+Key issue
+one temp key
+One client key
+dont del client key
+Insert -i key in pushtocloud!
+
+Fix thumbnail libreoff problem...
+
+Update_cloud : raspicloud-master is hardcoded, not good
+
+Finish odt extension implementation
+
+Xslt files must be in separate dir outside webroot for safety !

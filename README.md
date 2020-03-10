@@ -97,7 +97,7 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
 </table>
 
 ## Status
- pre-alpha
+ alpha
 
 ## Disclaimer
 The material embodied in this software is provided to you "as-is" and without warranty of any kind, express, implied or otherwise, including 

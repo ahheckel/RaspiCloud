@@ -18,9 +18,15 @@ else
     users="$1"
 fi
 
+#get parentfolder of this script
+cd $(dirname $0)/..
+pfld=$(basename $(pwd))
+cd - 1>/dev/null
+
+#def vars
+srv=$pfld/server
+clnt=$pfld/client
 admin="pi" # admin user
-srv=$(basename $(dirname $(dirname $(dirname "$(pwd)/$0"))))/server
-clnt=$(basename $(dirname $(dirname $(dirname "$(pwd)/$0"))))/client
 files="$srv/updatedb.sh $srv/_updatedb.sh $srv/parsefiles2link.sh $srv/create_thumbs.sh $srv/_create_thumbs.sh $clnt/runscrpt.sh"
 
 mkdir -p $tmpdir/$srv ; mkdir -p $tmpdir/$clnt

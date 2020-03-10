@@ -4,27 +4,37 @@ if [ -f $HOME/.$(basename $0).lock ] ; then echo "$(basename $0) : An instance i
 start=$(date +%s)
 tmpdir=$(mktemp -d -t $(basename $0)-XXXXXXXXXX)
 wdir="$(pwd)"
-key="$HOME/.ssh/RaspiCloud-tmp$$.rsa" # temp key for installation
-ckey="$HOME/.ssh/raspicloud" # user's key
 function remkeys {
-	    if [ x"$key" != x"$HOME/.ssh/id_rsa" ] ; then
-	      rm -fv $key ${key}.pub
-	    else
-	      echo "$(basename $0) : ...will not delete $key."
-	    fi
+  if [ x"$key" != x"$HOME/.ssh/id_rsa" ] ; then
+    rm -fv $key ${key}.pub
+  else
+    echo "$(basename $0) : ...will not delete $key."
+  fi
 }
 function createuserkey {
   ssh-keygen -t rsa -b 2048 -f $ckey
   echo "uploading user ${user1}'s public key to server ($ip)..."
-  cat $ckey| ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys && chmod 700 /home/$user1/.ssh"
+  cat ${ckey}.pub| ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys && chmod 700 /home/$user1/.ssh" && echo "...done."
+}
+function getownip {
+  ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
+}
+function checkyn {
+  if [ $(echo $yn | grep ^[Nn] | wc -l) -gt 0 ]; then 
+    echo "xn"
+  elif [ $(echo $yn | grep ^[Yy] | wc -l) -gt 0 ]; then 
+    echo "xy"
+  else
+    echo "x"
+  fi
 }
 function finish {
-	    rm -rf $tmpdir
-	    rm -f $HOME/.$(basename $0).lock
-	    remkeys;
-	    cd "$wdir"
-	    echo "$(basename $0) : exited."
-	    exit
+  rm -rf $tmpdir
+  rm -f $HOME/.$(basename $0).lock
+  remkeys;
+  cd "$wdir"
+  echo "$(basename $0) : exited."
+  exit
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM 
 touch $HOME/.$(basename $0).lock
@@ -37,11 +47,12 @@ echo "Please be careful!"
 read -p "Press enter to continue or abort with CTRL-C."
 echo ""
 
-#export user's key
+#define keys
+key="$HOME/.ssh/RaspiCloud-tmp$$.rsa" # temp key for installation
+ckey="$HOME/.ssh/raspicloud" # user's key
 export CKEY=$ckey
-
 #parse inputs
-read -e -p "server ip-address: " -i "172.16.0.10" ip
+read -e -p "server (Raspberry) ip-address:   " -i "$(getownip|cut -d . -f 1-3).1" ip
 export IP=$ip
 read -e -p "server admin user (for installation purposes): " -i "pi" admin
 export ADMIN=$admin
@@ -61,47 +72,42 @@ export GRP=$grp
 echo "--------------------------"
 echo "Create temporary ssh-keypair for installation..."
 echo "--------------------------"
-read -p "Create keys ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
-  ssh-keygen -t rsa -b 2048 -f $key
-else
-  key="$HOME/.ssh/id_rsa"
-fi
-echo -n "uploading public key..."
+echo "creating temporary keys..."
+ssh-keygen -t rsa -b 2048 -f $key
+echo "uploading public key..."
 cat ${key}.pub | ssh ${admin}@${ip} "mkdir -p /home/$admin/.ssh && cat >> /home/$admin/.ssh/authorized_keys && chmod 600 /home/$admin/.ssh/authorized_keys && chmod 700 /home/$admin/.ssh" && echo "...done."
 
 #install missing progs on server
 echo "--------------------------"
-echo "Install some packages on server ($ip)..."
+echo "Install packages on server ($ip)..."
 echo "--------------------------"
 read -p "Install packages ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
+if [ $(checkyn) != x"n" ]; then
   ssh -i $key ${admin}@${ip} "sudo apt-get install bc gawk fdupes"
 fi
 
 #install Termux packages 1
 echo "--------------------------"
-echo "Install Termux packages on client (1/2)..."
+echo "Install Termux packages on client..."
 echo "--------------------------"
 read -p "Install packages ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
+if [ $(checkyn) != x"n" ]; then
   pkg install openssh rsync lftp python neovim wget bc util-linux iconv
   termux-setup-storage
 fi
-echo ""
 
+echo "--------------------------"
 echo "downloading installation files from $ip (to temporary folder)..."
 localinstall=$tmpdir
 mkdir -p $localinstall
 opts="-v --size-only --no-perms --no-owner --no-group --progress"
 rsync -r $opts -e "ssh -i $key" ${admin}@${ip}:$path --exclude=ssh/ --iconv=utf-8,ascii//TRANSLIT//IGNORE $localinstall
+echo "--------------------------"
 
-#install Termux packages 2
-echo "--------------------------"
-echo "Install Termux packages on client (2/2)..."
-echo "--------------------------"
-read -p "Install packages ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
+if [ $(checkyn) != x"n" ]; then
+  pkg install openssh rsync lftp python neovim wget bc util-linux iconv
+  termux-setup-storage
+  echo "--------------------------"  
   cp -f $localinstall/cpscr $HOME/
   . $HOME/cpscr $localinstall
 fi
@@ -114,7 +120,7 @@ read -p "Press enter to continue..."
 echo "creating account '$user1' on ${ip}..."
 ssh -i $key ${admin}@${ip} "sudo adduser $user1 && sudo adduser $admin $user1 && sudo adduser $user1 www-data" # add admin to private group, and add user to www-data
 
-#create cloud-dir
+#create user's cloud-dir
 echo "--------------------------"
 echo "Create user's cloud-dir on server ($ip)..."
 echo "--------------------------"
@@ -139,11 +145,8 @@ fi
 echo "--------------------------"
 echo "Create guests' cloud-dir on server ($ip)..."
 echo "--------------------------"
-read -p "Create directory for guests ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
-  read -e -p "guest directory on NAS: " -i "/media/cloud-NAS/guest" gstdstdir
-  ssh -i $key ${admin}@${ip} "sudo mkdir -p ${gstdstdir} && sudo chown ${admin}:www-data ${gstdstdir} && sudo chmod 777 ${gstdstdir}"
-fi
+read -e -p "guest directory on NAS: " -i "/media/cloud-NAS/guest" gstdstdir
+ssh -i $key ${admin}@${ip} "sudo mkdir -p ${gstdstdir} && sudo chown ${admin}:www-data ${gstdstdir} && sudo chmod 777 ${gstdstdir}"
 
 #copy scripts to user's home on server
 echo "--------------------------"
@@ -152,13 +155,13 @@ echo "--------------------------"
 read -p "Press enter to continue..."
 ssh -i $key ${admin}@${ip} "chmod +x \$HOME/$srvdir/*.sh && \$HOME/$srvdir/update_cloud.sh $user1"
 
-#upload authorized_keys
+#create user's keys
 echo "--------------------------"
 echo "Create user's ssh-keypair..."
 echo "--------------------------"
 if [ -f $ckey ]; then
-  read -p "Create new keys ? [Y/n]" yn
-  if [ x"$yn" != x"n" ]; then
+  read -p "Create new keys ? [y/N]" yn
+  if [ $(checkyn) == x"y" ]; then
     createuserkey
   fi
 else
@@ -173,19 +176,19 @@ echo "--------------------------"
 read -p "Press enter to continue..."
 $HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.sh
 echo "uploading to server ($ip)..."
-scp -i $ckey $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/"
+scp -i $ckey $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/" && echo "...done."
  
 #create cronjob
 echo "--------------------------"
 echo "Create cronjob on client..."
 echo "--------------------------"
 read -p "Create cronjob ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
+if [ $(checkyn) != x"n" ]; then
     touch $HOME/../usr/var/spool/cron/crontabs/$(whoami) && cp $HOME/../usr/var/spool/cron/crontabs/$(whoami) $tmpdir/t
     cmd='* * * * * $HOME/.shortcuts/runscrpt.sh $HOME/.shortcuts/push-to-cloud-tmp.sh'
     echo "$cmd"
     read -p "Add above line to crontab ? [Y/n]" yn
-    if [ x"$yn" != x"n" ]; then
+    if [ $(checkyn) != x"n" ]; then
         echo "$cmd" >> $tmpdir/t
     fi
     cat $tmpdir/t | sort -u > $HOME/../usr/var/spool/cron/crontabs/$(whoami)
@@ -194,7 +197,7 @@ if [ x"$yn" != x"n" ]; then
 fi
 
 read -p "Autostart cron-daemon on login ? [Y/n]" yn
-if [ x"$yn" != x"n" ]; then
+if [ $(checkyn) != x"n" ]; then
 	cp -v $localinstall/bash_profile $HOME/.bash_profile
 	echo ""
 	echo "Starting framework..."
@@ -212,9 +215,8 @@ echo "deleting temporary installation keys on client..."
 remkeys;
 
 echo " "
-echo " "
 echo "--------------------------"
-echo "Now restart Termux (with 'WakeLock' enabled)."
+echo "...now restart Termux (with 'WakeLock' enabled)."
 echo "--------------------------"
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)
 echo "$(basename $0) : finished. - $(date) ($elapsed sec elapsed)"

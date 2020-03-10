@@ -7,14 +7,14 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted
   and thumbnail generation. Guest access possible.
   No 'rooting' of android devices is required.
 - *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
-- *secure:* ssh-based file transfer (password protected or key-based)
+- *secure:* ssh-based file transfer (key-based encryption)
 - *convenient:* nginx ssl-encrypted web interface for file browsing with image gallery functions (see screenshots)
 - *cross-platform:* client-side linux environment available on many platforms
 - *low cost:* using Raspberry-Pi as server with standard USB storage as NAS 
 
 ## Requirements
 - linux server (tested with Raspian Stretch on a Raspberry Pi 3b+) 
-- nginx web server (1.10.3) and OpenSSH server (7.4) installed
+- nginx web server (1.10.3) and OpenSSH server (7.4)
 - NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the Raspberry Pi)
 - imagemagick v6 and libreoffice v5 for thumbnail generation (server-side)
 - client requires termux (android) or cygwin (windows) environment
@@ -48,7 +48,7 @@ geany v1.29 under Raspian Stretch
 - bourne-shell
 
 ## Installation
-Download and extract zipped repository in user pi's home directory *(/home/pi)*, and mount USB harddisk 
+Download and extract zipped repository in pi's home directory *(/home/pi)*, and mount USB harddisk 
 to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
 
 ### Install Client:

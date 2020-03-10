@@ -108,8 +108,8 @@ if [ $(checkyn) != x"n" ]; then
   pkg install openssh rsync lftp python neovim wget bc util-linux iconv
   termux-setup-storage
   echo "--------------------------"  
-  cp -f $localinstall/cpscr $HOME/
-  . $HOME/cpscr $localinstall
+  cp -f $localinstall/cpscr $tmpdir/
+  . $tmpdir/cpscr $localinstall
 fi
 
 #create user account on server

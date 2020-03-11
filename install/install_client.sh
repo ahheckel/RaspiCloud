@@ -5,15 +5,23 @@ start=$(date +%s)
 tmpdir=$(mktemp -d -t $(basename $0)-XXXXXXXXXX)
 wdir="$(pwd)"
 function remkeys {
+  echo "$(basename $0) : removing installation keys on client..."
   if [ x"$key" != x"$HOME/.ssh/id_rsa" ] ; then
     rm -fv $key ${key}.pub
   else
     echo "$(basename $0) : ...will not delete $key."
   fi
 }
+function remauth {
+  if [ -f "${key}.pub" ] && [ x"$admin" != "x" ] && [ x"$ip" != "x" ]; then
+    echo "$(basename $0) : removing public installation key from admin ${admin}'s 'authorized_keys' on server ($ip)..."
+    str_tmp="$(cat ${key}.pub)"
+    ssh -i $key ${admin}@${ip} "if test -f \$HOME/.ssh/authorized_keys; then if grep -v \"$str_tmp\" \$HOME/.ssh/authorized_keys > \$HOME/.ssh/tmp; then cat \$HOME/.ssh/tmp > \$HOME/.ssh/authorized_keys && rm \$HOME/.ssh/tmp; else rm \$HOME/.ssh/authorized_keys && rm \$HOME/.ssh/tmp; fi; fi"
+  fi
+}
 function createuserkey {
   ssh-keygen -t rsa -b 2048 -f $ckey
-  echo "uploading user ${user1}'s public key to server ($ip)..."
+  echo "$(basename $0) : uploading user ${user1}'s public key to server ($ip)..."
   cat ${ckey}.pub| ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys && chmod 700 /home/$user1/.ssh" && echo "...done."
 }
 function getownip {
@@ -31,6 +39,7 @@ function checkyn {
 function finish {
   rm -rf $tmpdir
   rm -f $HOME/.$(basename $0).lock
+  remauth;
   remkeys;
   cd "$wdir"
   echo "$(basename $0) : exited."
@@ -53,7 +62,10 @@ ckey="$HOME/.ssh/raspicloud" # user's key
 export CKEY=$ckey
 #parse inputs
 read -e -p "server (Raspberry) ip-address:   " -i "$(getownip|cut -d . -f 1-3).1" ip
+ping -c3 $ip
+if [ $? -ne 0 ] ; then echo "PING failed." ; finish ; fi
 export IP=$ip
+echo ""
 read -e -p "server admin user (for installation purposes): " -i "pi" admin
 export ADMIN=$admin
 read -e -p "installation source (on server): " -i "/home/$admin/RaspiCloud-master/install/" path
@@ -208,10 +220,7 @@ echo "--------------------------"
 echo "Cleanup..."
 echo "--------------------------"
 read -p "Press enter to continue..."
-str_tmp="$(cat ${key}.pub)"
-echo "removing public key (that was used to authenticate this installation) from admin ${admin}'s authorized_keys file on server ($ip)..."
-ssh -i $key ${admin}@${ip} "if test -f \$HOME/.ssh/authorized_keys; then if grep -v \"$str_tmp\" \$HOME/.ssh/authorized_keys > \$HOME/.ssh/tmp; then cat \$HOME/.ssh/tmp > \$HOME/.ssh/authorized_keys && rm \$HOME/.ssh/tmp; else rm \$HOME/.ssh/authorized_keys && rm \$HOME/.ssh/tmp; fi; fi"
-echo "deleting temporary installation keys on client..."
+remauth;
 remkeys;
 
 echo " "

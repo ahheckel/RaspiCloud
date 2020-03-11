@@ -16,6 +16,15 @@ function checkyn {
     echo "x"
   fi
 }
+function savfile {
+  local file="$1"
+  if [ -f "$file" ]; then
+    read -p "$file already exists - save file ? [Y/n]" yn
+    if [ $(checkyn) != x"n" ]; then
+      sudo cp -v "$file" "$file".raspicloud$$.sav
+    fi
+  fi
+}
 function parentpath {
   cd $(dirname $0)/..
   echo $(pwd)
@@ -58,6 +67,7 @@ sudo ln -sfnv  $webroot/cloud $webroot/.cloud02
 sudo ln -sfnv  $webroot/cloud $webroot/.cloud03
 sudo rsync -rv $installdir/web-root/cloud/ $webroot/cloud/
 sudo cat $installdir/sites-available/default | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$xsltpath|g" > $tmpdir/default
+savfile /etc/nginx/sites-available/default
 sudo mv -v $tmpdir/default /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
 
 echo "--------------------------"
@@ -65,6 +75,7 @@ echo "Create encrypted password for web access..."
 echo "--------------------------"
 read -p "Create password ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
+  savfile /etc/nginx/.htpasswd
   read -e -p "user: "  -i "webmaster" user
   sudo htpasswd -c /etc/nginx/.htpasswd $user
 fi
@@ -74,6 +85,8 @@ echo "Create ssl-certificate..."
 echo "--------------------------"
 read -p "Create certificate ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
+  savfile /etc/nginx/nginx.key
+  savfile /etc/nginx/nginx.crt
   sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/nginx.key -out /etc/nginx/nginx.crt
 fi
 

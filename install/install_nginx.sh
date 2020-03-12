@@ -19,7 +19,7 @@ function checkyn {
 function savfile {
   local file="$1"
   if [ -f "$file" ]; then
-    read -p "$file already exists - save file ? [Y/n]" yn
+    read -p "$(basename $0) : $file already exists - save file ? [Y/n]" yn
     if [ $(checkyn) != x"n" ]; then
       sudo cp -v "$file" "$file".raspicloud$$.sav
     fi

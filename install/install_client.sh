@@ -39,6 +39,7 @@ function checkyn {
 function finish {
   rm -rf $tmpdir
   rm -f $HOME/.$(basename $0).lock
+  echo ""
   remauth;
   remkeys;
   cd "$wdir"
@@ -60,6 +61,7 @@ echo ""
 key="$HOME/.ssh/RaspiCloud-tmp$$.rsa" # temp key for installation
 ckey="$HOME/.ssh/raspicloud" # user's key
 export CKEY=$ckey
+
 #parse inputs
 read -e -p "server (Raspberry) ip-address:   " -i "$(getownip|cut -d . -f 1-3).1" ip
 ping -c3 $ip
@@ -75,10 +77,11 @@ read -e -p "server script dir (on server):   " -i "RaspiCloud-master/server" srv
 export SRVDIR=$srvdir
 read -e -p "current user:                    " -i "johndoe" user1
 export USER1=$user1
-read -e -p "user's cloud-dir on NAS:         " -i "/media/cloud-NAS/${user1}" dstdir
+read -e -p "user's cloud-dir (on server):    " -i "/media/cloud-NAS/${user1}" dstdir
 export DSTDIR=$dstdir
 read -e -p "user's cloud-dir group owner:    " -i "$user1" grp
 export GRP=$grp
+read -e -p "guest's cloud-dir (on server):   " -i "/media/cloud-NAS/guest" gstdstdir
 
 #create keypair for installation
 echo "--------------------------"
@@ -98,16 +101,15 @@ if [ $(checkyn) != x"n" ]; then
   ssh -i $key ${admin}@${ip} "sudo apt-get install bc gawk fdupes"
 fi
 
-#install Termux packages 1
+#install Termux packages
 echo "--------------------------"
 echo "Install Termux packages on client..."
 echo "--------------------------"
 read -p "Install packages ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
-  pkg install openssh rsync lftp python neovim wget bc util-linux iconv
+  pkg install openssh rsync bc util-linux iconv
   termux-setup-storage
 fi
-
 echo "--------------------------"
 echo "downloading installation files from $ip (to temporary folder)..."
 localinstall=$tmpdir
@@ -115,10 +117,7 @@ mkdir -p $localinstall
 opts="-v --size-only --no-perms --no-owner --no-group --progress"
 rsync -r $opts -e "ssh -i $key" ${admin}@${ip}:$path --exclude=ssh/ --iconv=utf-8,ascii//TRANSLIT//IGNORE $localinstall
 echo "--------------------------"
-
 if [ $(checkyn) != x"n" ]; then
-  pkg install openssh rsync lftp python neovim wget bc util-linux iconv
-  termux-setup-storage
   echo "--------------------------"  
   cp -f $localinstall/cpscr $tmpdir/
   . $tmpdir/cpscr $localinstall
@@ -139,33 +138,22 @@ echo "--------------------------"
 read -p "Press enter to continue..."
 echo "creating cloud-dir '${dstdir}/tmp' on NAS..."
 ssh -i $key ${admin}@${ip} "sudo mkdir -p ${dstdir}/tmp && sudo chown -R ${user1}:${grp} ${dstdir} && sudo chmod -R 750 ${dstdir}"
-
+echo "--------------------------"
+echo "installing user's scripts on server ($ip)..."
+ssh -i $key ${admin}@${ip} "chmod +x \$HOME/$srvdir/*.sh && \$HOME/$srvdir/update_cloud.sh $user1"
+echo "--------------------------"  
 echo "creating link to NAS in ${user1}'s home folder..."
 cmd="ln -sfn $dstdir /home/${user1}/cloud-NAS"
 echo "executing $cmd on server..."
 ssh -i $key ${admin}@${ip} "sudo $cmd"
-
+echo "--------------------------"  
 echo "adding admin user '$admin' to group 'www-data' on server..."
 ssh -i $key ${admin}@${ip} "sudo adduser $admin www-data"
-
 if [ x"$grp" != x"www-data" ]; then
+  echo "--------------------------"  
   echo "adding user 'www-data' to group '$grp' on server..."
   ssh -i $key ${admin}@${ip} "sudo adduser www-data $grp"
 fi
-
-#create cloud-dir 4 guests
-echo "--------------------------"
-echo "Create guests' cloud-dir on server ($ip)..."
-echo "--------------------------"
-read -e -p "guest directory on NAS: " -i "/media/cloud-NAS/guest" gstdstdir
-ssh -i $key ${admin}@${ip} "sudo mkdir -p ${gstdstdir} && sudo chown ${admin}:www-data ${gstdstdir} && sudo chmod 777 ${gstdstdir}"
-
-#copy scripts to user's home on server
-echo "--------------------------"
-echo "Install user's scripts on server ($ip)..."
-echo "--------------------------"
-read -p "Press enter to continue..."
-ssh -i $key ${admin}@${ip} "chmod +x \$HOME/$srvdir/*.sh && \$HOME/$srvdir/update_cloud.sh $user1"
 
 #create user's keys
 echo "--------------------------"
@@ -189,7 +177,14 @@ read -p "Press enter to continue..."
 $HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.sh
 echo "uploading to server ($ip)..."
 scp -i $ckey $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/" && echo "...done."
- 
+
+#create cloud-dir 4 guests
+echo "--------------------------"
+echo "Create guests' cloud-dir on server ($ip)..."
+echo "--------------------------"
+read -p "Press enter to continue..."
+ssh -i $key ${admin}@${ip} "sudo mkdir -p ${gstdstdir} && sudo chown ${admin}:www-data ${gstdstdir} && sudo chmod 777 ${gstdstdir}"
+
 #create cronjob
 echo "--------------------------"
 echo "Create cronjob on client..."
@@ -204,15 +199,15 @@ if [ $(checkyn) != x"n" ]; then
         echo "$cmd" >> $tmpdir/t
     fi
     cat $tmpdir/t | sort -u > $HOME/../usr/var/spool/cron/crontabs/$(whoami)
-    echo "Crontab:"
+    echo "crontab:"
     crontab -l
 fi
-
+echo "--------------------------"
 read -p "Autostart cron-daemon on login ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
 	cp -v $localinstall/bash_profile $HOME/.bash_profile
 	echo ""
-	echo "Starting framework..."
+	echo "starting framework..."
 	. $HOME/.bash_profile
 fi
 

@@ -31,7 +31,8 @@ server {
 	index index.html index.htm index.nginx-debian.html;
 
 	server_name _;
-		
+	
+	# LIST VIEW
 	location /cloud {
 		allow XXX.XXX.XXX.XXX/XX;
 		deny all;
@@ -77,7 +78,7 @@ server {
 	    autoindex_exact_size off;
 	}
 	
-	# GALLERIES
+	# GALLERY VIEW
 	location ~ /cloud/(.*/tmp/(pics)) {
 		allow XXX.XXX.XXX.XXX/XX;
 		deny all;
@@ -127,25 +128,15 @@ server {
 	    autoindex_exact_size off;
 	    }
 	#location ~ /.cloud02/(.*/tmp/(vids|auds|docs|pics)) {
-		#allow XXX.XXX.XXX.XXX/XX;
-		#deny all;
-		#auth_basic "Restricted Content";
-		#auth_basic_user_file /etc/nginx/.htpasswd;
-	    #autoindex on;
-	    #autoindex_format xml;
-	    #xslt_stylesheet PPPPPPPPPP/.gal02.xslt; # by-date sort order
-	    #xslt_string_param title $1;
-	    #autoindex_localtime on;
-	    #autoindex_exact_size off;
-	#}	    
-	## 4GUESTS
+	
+	## GUESTS
 	#location /cloud/guest {
         #gzip off; # because of ssl related vulnerability
 	    
 	    #auth_basic "Restricted Content";
-	    #auth_basic_user_file /path/to/.htpasswd-guest;
+	    #auth_basic_user_file /etc/nginx/.htpasswd-guest;
 	    #autoindex_format xml;
-	    #xslt_stylesheet /path/to/guest/custom01.xslt;
+	    #xslt_stylesheet PPPPPPPPPP/.custom01.xslt;
 	    #xslt_string_param title $1;
 	    #autoindex on;
 	    #autoindex_localtime on;

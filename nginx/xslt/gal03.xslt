@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="utf-8" indent="yes" />
-<xsl:include href=".get-file-extension.xsl"/>    
+<xsl:include href="get-file-extension.xsl"/>    
     <xsl:template match="/">                  
     <html>
     <!-- ENTRY03 -->
@@ -67,8 +67,8 @@
             <td class="icon"><img id="mode" src=""/></td>
             <!-- ENTRY01 -->
             <td class="header" align="left"><a class="high3" href="/cloud/" id="sortname">Name</a></td>
-            <td class="header" align="left"><a class="high3" href="/cloud/" id="sortsize">Size</a></td>
-            <td class="header" align="left"><a class="high3" href="/cloud/" id="sortdate" style="color:#fff">Date</a></td>
+            <td class="header" align="left"><a class="high3" href="/cloud/" id="sortsize" style="color:#fff">Size</a></td>
+            <td class="header" align="left"><a class="high3" href="/cloud/" id="sortdate">Date</a></td>
         </tr>
         <script src="/cloud/.jquery.min.js"></script>
         <!-- ENTRY04 -->
@@ -101,7 +101,7 @@
         <!-- FILE LISTING -->
         <xsl:for-each select="list/*">
         <!-- ENTRY02 -->
-        <xsl:sort order="descending" select="@mtime"/>
+        <xsl:sort order="descending" select="@size" data-type="number"/>
             <xsl:if test="string-length(@size) &gt; 0">   
             <xsl:variable name="name">
                 <xsl:value-of select="."/>

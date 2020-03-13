@@ -116,7 +116,6 @@ localinstall=$tmpdir
 mkdir -p $localinstall
 opts="-v --size-only --no-perms --no-owner --no-group --progress"
 rsync -r $opts -e "ssh -i $key" ${admin}@${ip}:$path --exclude=ssh/ --iconv=utf-8,ascii//TRANSLIT//IGNORE $localinstall
-echo "--------------------------"
 if [ $(checkyn) != x"n" ]; then
   echo "--------------------------"  
   cp -f $localinstall/cpscr $tmpdir/

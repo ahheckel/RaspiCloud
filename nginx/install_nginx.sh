@@ -48,36 +48,44 @@ read -p "Press enter to continue or abort with CTRL-C."
 
 echo ""
 echo "--------------------------"
-echo "Install packages..."
-echo "--------------------------"
-read -p "Press enter to continue..."
-sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice
-
-echo "--------------------------"
 echo "Install web interface..."
 echo "--------------------------"
 read -e -p "install source:          "  -i "$(parentpath)/nginx" installdir
 read -e -p "web-root directory:      "  -i "/var/www/html" webroot
 read -e -p "xslt storage:            "  -i "$installdir/xslt" xsltpath
-read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
+read -e -p "NAS storage mountpoint:  "  -i "/media/cloud-NAS" nasdir
 read -e -p "allowed ip-range:        "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
-sudo ln -sfnv $nasdir $webroot/cloud
-sudo ln -sfnv  $webroot/cloud $webroot/.cloud01
-sudo ln -sfnv  $webroot/cloud $webroot/.cloud02
-sudo ln -sfnv  $webroot/cloud $webroot/.cloud03
-sudo rsync -rv $installdir/web-root/cloud/ $webroot/cloud/
-sudo cat $installdir/sites-available/default | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$xsltpath|g" > $tmpdir/default
+htpasswd_pref="$installdir/htpasswd/.htpasswd" #prefix filename
+ssl_pref="$installdir/ssl/nginx" #prefix filename
+
+echo "--------------------------"
+echo "Install packages..."
+echo "--------------------------"
+read -p "Press enter to continue..."
+sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice
+
+sudo ln -sfn  $nasdir $webroot/cloud
+sudo ln -sfn  $webroot/cloud $webroot/.cloud01
+sudo ln -sfn  $webroot/cloud $webroot/.cloud02
+sudo ln -sfn  $webroot/cloud $webroot/.cloud03
+sudo rsync -r $installdir/web-root/cloud/ $webroot/cloud/
+sudo cat $installdir/sites-available/default_template | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$xsltpath|g" | sed -e "s|CCCCCCCCCC|$htpasswd_pref|g" | sed -e "s|SSSSSSSSSS|$ssl_pref|g" > $tmpdir/default
 savfile /etc/nginx/sites-available/default
-sudo mv -v $tmpdir/default /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
+if [ -f /etc/nginx/sites-available/default.raspicloud$$.sav ]; then
+  sudo ln -sfn /etc/nginx/sites-available/default.raspicloud$$.sav $installdir/sites-available/default.raspicloud$$.sav 
+fi
+sudo mv $tmpdir/default /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
+#echo ""
+sudo ln -sfn /etc/nginx/sites-available/default $installdir/sites-available/default
 
 echo "--------------------------"
 echo "Create encrypted password for web access..."
 echo "--------------------------"
 read -p "Create password ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
-  savfile /etc/nginx/.htpasswd
+  savfile $htpasswd_pref
   read -e -p "user: "  -i "webmaster" user
-  sudo htpasswd -c /etc/nginx/.htpasswd $user
+  sudo htpasswd -c $htpasswd_pref $user
 fi
 
 echo "--------------------------"
@@ -85,9 +93,9 @@ echo "Create ssl-certificate..."
 echo "--------------------------"
 read -p "Create certificate ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
-  savfile /etc/nginx/nginx.key
-  savfile /etc/nginx/nginx.crt
-  sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/nginx.key -out /etc/nginx/nginx.crt
+  savfile ${ssl_pref}.key
+  savfile ${ssl_pref}.crt
+  sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${ssl_pref}.key -out ${ssl_pref}.crt
 fi
 
 echo "--------------------------"

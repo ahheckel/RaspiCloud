@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="utf-8" indent="yes" />
-<xsl:include href=".get-file-extension.xsl"/>    
+<xsl:include href="get-file-extension.xsl"/>    
     <xsl:template match="/">                  
     <html>
     <!-- ENTRY03 -->
-    <link href="/cloud/.custom.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="/cloud/.gal.css" rel="stylesheet" type="text/css" media="all"/>
         <body>  
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=0.1" />
@@ -66,13 +66,13 @@
         <tr class="head">
             <td class="icon"><img id="mode" src=""/></td>
             <!-- ENTRY01 -->
-            <td class="header" align="left"><a class="high3" href="/cloud/" id="sortname" style="color:#fff">Name</a></td>
+            <td class="header" align="left"><a class="high3" href="/cloud/" id="sortname">Name</a></td>
             <td class="header" align="left"><a class="high3" href="/cloud/" id="sortsize">Size</a></td>
-            <td class="header" align="left"><a class="high3" href="/cloud/" id="sortdate">Date</a></td>
+            <td class="header" align="left"><a class="high3" href="/cloud/" id="sortdate" style="color:#fff">Date</a></td>
         </tr>
         <script src="/cloud/.jquery.min.js"></script>
         <!-- ENTRY04 -->
-        <script src="/cloud/.custom.js"></script>
+        <script src="/cloud/.gal.js"></script>
         
         <!-- DIR LISTING -->
         <td class="icon"><a href="#"><img class="icon" src="/cloud/.icons/folder-home.png"/></a></td>
@@ -101,7 +101,7 @@
         <!-- FILE LISTING -->
         <xsl:for-each select="list/*">
         <!-- ENTRY02 -->
-        <xsl:sort order="ascending" select="translate(., 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
+        <xsl:sort order="descending" select="@mtime"/>
             <xsl:if test="string-length(@size) &gt; 0">   
             <xsl:variable name="name">
                 <xsl:value-of select="."/>

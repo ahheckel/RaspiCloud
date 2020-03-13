@@ -73,11 +73,11 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
   **On Raspbian Server:**
   - make install script executable:
   
-    ```chmod +x ./RaspiCloud-master/install/install_nginx.sh```
+    ```chmod +x ./RaspiCloud-master/nginx/install_nginx.sh```
   
   - execute it: 
     
-    ```./RaspiCloud-master/install/install_nginx.sh```
+    ```./RaspiCloud-master/nginx/install_nginx.sh```
   
   **On Client:**  
   - go to *https://IP-ADDRESS/cloud/USER*, enter *USER*'s credentials and browse your cloud.

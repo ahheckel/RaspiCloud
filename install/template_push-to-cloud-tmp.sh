@@ -12,7 +12,7 @@ ckey="xCKEYx"
 if [ -f $HOME/.$(basename $0).lock ] ; then echo "An instance is already running - exiting." ; exit 1 ; fi
 
 function finish {
-	    rm -f $HOME/.$(basename $0).lock
+	rm -f $HOME/.$(basename $0).lock
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 

@@ -8,12 +8,12 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted
   No 'rooting' of android devices is required.
 - *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
 - *secure:* ssh-based file transfer (key-based encryption)
-- *convenient:* nginx ssl-encrypted web interface with image gallery functions for file browsing on your mobile (see screenshots)
+- *convenient:* ssl-encrypted web interface with instant search and image gallery functions for file browsing on your mobile (see screenshots)
 - *cross-platform:* client-side linux environment available on many platforms
 - *low cost:* using Raspberry-Pi as server with standard USB storage as NAS 
 
 ## Requirements
-- linux server (tested with Raspian Stretch on a Raspberry Pi 3b+) 
+- linux server (tested with Raspian Stretch/Buster on a Raspberry Pi 3b+) 
 - nginx web server (1.10.3) and OpenSSH server (7.4)
 - NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the Raspberry Pi)
 - imagemagick v6 and libreoffice v5 for thumbnail generation (server-side)
@@ -54,7 +54,7 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
 ### Install Client:
   **On Android Client:**
   - install Termux app (see google playstore).
-  - open Termux and install openssh:
+  - open Termux console and install openssh:
   
     ```pkg install openssh```
   
@@ -71,7 +71,7 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
    
 ### Install Nginx Web Interface:
   **On Raspbian Server:**
-  - make install script executable:
+  - open a terminal and make install-script executable:
   
     ```chmod +x ./RaspiCloud-master/nginx/install_nginx.sh```
   

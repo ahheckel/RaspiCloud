@@ -48,34 +48,44 @@ read -p "Press enter to continue or abort with CTRL-C."
 
 echo ""
 echo "--------------------------"
-echo "Install web interface..."
+echo "Define inputs..."
 echo "--------------------------"
 read -e -p "install source:          "  -i "$(parentpath)/nginx" installdir
 read -e -p "web-root directory:      "  -i "/var/www/html" webroot
 read -e -p "xslt storage:            "  -i "$installdir/xslt" xsltpath
 read -e -p "NAS storage mountpoint:  "  -i "/media/cloud-NAS" nasdir
 read -e -p "allowed ip-range:        "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
+mkdir $installdir/htpasswd
+mkdir $installdir/ssl
 htpasswd_pref="$installdir/htpasswd/.htpasswd" #prefix filename
 ssl_pref="$installdir/ssl/nginx" #prefix filename
 
 echo "--------------------------"
-echo "Install packages..."
+echo "Install..."
 echo "--------------------------"
-read -p "Press enter to continue..."
-sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice
+read -p "Install apt packages? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+  sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice
+fi
+read -p "Install webinterface? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+  sudo ln -sfn  $nasdir $webroot/cloud
+  sudo ln -sfn  $webroot/cloud $webroot/.cloud01
+  sudo ln -sfn  $webroot/cloud $webroot/.cloud02
+  sudo ln -sfn  $webroot/cloud $webroot/.cloud03
+  sudo rsync -r $installdir/webroot/cloud/ $webroot/cloud/
+  sudo ln -sfn /etc/nginx/nginx.conf $installdir/nginx.conf
+fi
 
-sudo ln -sfn  $nasdir $webroot/cloud
-sudo ln -sfn  $webroot/cloud $webroot/.cloud01
-sudo ln -sfn  $webroot/cloud $webroot/.cloud02
-sudo ln -sfn  $webroot/cloud $webroot/.cloud03
-sudo rsync -r $installdir/web-root/cloud/ $webroot/cloud/
-sudo cat $installdir/sites-available/default_template | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$xsltpath|g" | sed -e "s|CCCCCCCCCC|$htpasswd_pref|g" | sed -e "s|SSSSSSSSSS|$ssl_pref|g" > $tmpdir/default
+echo "--------------------------"
+echo "Adapt available sites ('default' file)..."
+echo "--------------------------"
+sudo cat $installdir/sites-available/default_template | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$xsltpath|g" | sed -e "s|CCCCCCCCCC|$htpasswd_pref|g" | sed -e "s|SSSSSSSSSS|$ssl_pref|g" | sed -e "s|RRRRRRRRRR|$webroot|g" > $tmpdir/default
 savfile /etc/nginx/sites-available/default
 if [ -f /etc/nginx/sites-available/default.raspicloud$$.sav ]; then
   sudo ln -sfn /etc/nginx/sites-available/default.raspicloud$$.sav $installdir/sites-available/default.raspicloud$$.sav 
 fi
 sudo mv $tmpdir/default /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
-#echo ""
 sudo ln -sfn /etc/nginx/sites-available/default $installdir/sites-available/default
 
 echo "--------------------------"

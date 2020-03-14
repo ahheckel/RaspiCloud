@@ -132,18 +132,18 @@ ssh -i $key ${admin}@${ip} "sudo adduser $user1 && sudo adduser $admin $user1 &&
 
 #create user's cloud-dir
 echo "--------------------------"
-echo "Create user's cloud-dir on server ($ip)..."
+echo "Create user's cloud-dir '${dstdir}/tmp' on server ($ip)..."
 echo "--------------------------"
 read -p "Press enter to continue..."
-echo "creating cloud-dir '${dstdir}/tmp' on NAS..."
+echo "creating cloud-dir ('${dstdir}/tmp') on NAS..."
 ssh -i $key ${admin}@${ip} "sudo mkdir -p ${dstdir}/tmp && sudo chown -R ${user1}:${grp} ${dstdir} && sudo chmod -R 750 ${dstdir}"
 echo "--------------------------"
 echo "installing user's scripts on server ($ip)..."
 ssh -i $key ${admin}@${ip} "chmod +x \$HOME/$srvdir/*.sh && \$HOME/$srvdir/update_cloud.sh $user1"
 echo "--------------------------"  
-echo "creating link to NAS in ${user1}'s home folder..."
-cmd="ln -sfn $dstdir /home/${user1}/cloud-NAS"
-echo "executing $cmd on server..."
+echo "creating symlink to NAS in ${user1}'s home folder..."
+cmd="ln -sfnv $dstdir /home/${user1}/cloud-NAS"
+#echo "executing $cmd on server..."
 ssh -i $key ${admin}@${ip} "sudo $cmd"
 echo "--------------------------"  
 echo "adding admin user '$admin' to group 'www-data' on server..."
@@ -179,7 +179,7 @@ scp -i $ckey $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidi
 
 #create cloud-dir 4 guests
 echo "--------------------------"
-echo "Create guests' cloud-dir on server ($ip)..."
+echo "Create guests' cloud-dir '${gstdstdir}' on server ($ip)..."
 echo "--------------------------"
 read -p "Press enter to continue..."
 ssh -i $key ${admin}@${ip} "sudo mkdir -p ${gstdstdir} && sudo chown ${admin}:www-data ${gstdstdir} && sudo chmod 777 ${gstdstdir}"
@@ -198,7 +198,7 @@ if [ $(checkyn) != x"n" ]; then
         echo "$cmd" >> $tmpdir/t
     fi
     cat $tmpdir/t | sort -u > $HOME/../usr/var/spool/cron/crontabs/$(whoami)
-    echo "crontab:"
+    echo "current crontab:"
     crontab -l
 fi
 echo "--------------------------"
@@ -219,7 +219,8 @@ remkeys;
 
 echo " "
 echo "--------------------------"
-echo "...now restart Termux (with 'WakeLock' enabled)."
+echo "...type 'exit' & restart Termux"
+echo "(consider enabling 'WakeLock')."
 echo "--------------------------"
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)
 echo "$(basename $0) : finished. - $(date) ($elapsed sec elapsed)"

@@ -25,7 +25,7 @@ server {
 	ssl_buffer_size 8k;
 
 
-	root /var/www/html;
+	root RRRRRRRRRR;
 
 	# Add index.php to the list if you are using PHP
 	index index.html index.htm index.nginx-debian.html;
@@ -127,7 +127,6 @@ server {
 	    autoindex_localtime on;
 	    autoindex_exact_size off;
 	    }
-	#location ~ /.cloud02/(.*/tmp/(vids|auds|docs|pics)) {
 	
 	## GUESTS
 	#location /cloud/guest {

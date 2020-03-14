@@ -38,7 +38,7 @@ for user in $users ; do
 	sudo cp /home/$admin/$file $tmpdir/$(dirname $file)/
 	sudo cp -v $tmpdir/$file /home/${user}/$(dirname $file)/
 	sudo chown ${user}:${user} /home/${user}/$file
-	sudo chmod 770 /home/${user}/$file
+	sudo chmod 750 /home/${user}/$file
     done
 done
 

@@ -10,11 +10,11 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted
 - *secure:* ssh-based file transfer (key-based encryption)
 - *convenient:* ssl-encrypted web interface with instant search and image gallery functions for file browsing on your mobile (see screenshots)
 - *cross-platform:* client-side linux environment available on many platforms
-- *low cost:* using Raspberry-Pi as server with standard USB storage as NAS 
+- *low cost:* using Raspberry-Pi as server with standard USB drive as network access storage
 
 ## Requirements
 - linux server (tested with Raspian Stretch/Buster on a Raspberry Pi 3b+) 
-- nginx web server (1.10.3) and OpenSSH server (7.4)
+- nginx web server (v1.10.3) and OpenSSH server (v7.4)
 - NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the Raspberry Pi)
 - imagemagick v6 and libreoffice v5 for thumbnail generation (server-side)
 - client requires termux (android) or cygwin (windows) environment

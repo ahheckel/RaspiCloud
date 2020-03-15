@@ -28,6 +28,7 @@ function issameinode () {
 # parse input
 if [ x"$1" == "x" ] ; then
       echo "$(basename $0) : no directory name given... exiting."
+      exit 1
 else
       dir="$1"
 fi

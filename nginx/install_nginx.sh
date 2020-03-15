@@ -80,15 +80,18 @@ if [ $(checkyn) != x"n" ]; then
 fi
 
 echo "--------------------------"
-echo "Adapt available sites ('default' file)..."
+echo "Adapt available sites..."
 echo "--------------------------"
-sudo cat $installdir/sites-available/default_template | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$xsltpath|g" | sed -e "s|CCCCCCCCCC|$htpasswd_pref|g" | sed -e "s|SSSSSSSSSS|$ssl_pref|g" | sed -e "s|RRRRRRRRRR|$webroot|g" > $tmpdir/default
-savfile /etc/nginx/sites-available/default
-if [ -f /etc/nginx/sites-available/default.raspicloud$$.sav ]; then
-  sudo ln -sfn /etc/nginx/sites-available/default.raspicloud$$.sav $installdir/sites-available/default.raspicloud$$.sav 
+read -p "Adapt 'default' file ? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+  sudo cat $installdir/sites-available/default_template | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$xsltpath|g" | sed -e "s|CCCCCCCCCC|$htpasswd_pref|g" | sed -e "s|SSSSSSSSSS|$ssl_pref|g" | sed -e "s|RRRRRRRRRR|$webroot|g" > $tmpdir/default
+  savfile /etc/nginx/sites-available/default
+  if [ -f /etc/nginx/sites-available/default.raspicloud$$.sav ]; then
+    sudo ln -sfn /etc/nginx/sites-available/default.raspicloud$$.sav $installdir/sites-available/default.raspicloud$$.sav 
+  fi
+  sudo mv $tmpdir/default /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
+  sudo ln -sfn /etc/nginx/sites-available/default $installdir/sites-available/default
 fi
-sudo mv $tmpdir/default /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
-sudo ln -sfn /etc/nginx/sites-available/default $installdir/sites-available/default
 
 echo "--------------------------"
 echo "Create encrypted password for web access..."

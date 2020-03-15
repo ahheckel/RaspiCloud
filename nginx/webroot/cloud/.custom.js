@@ -162,8 +162,8 @@ var href_thumb;
 var imgiter_prev = imgiter - 1;
 var imgiter_next = imgiter + 1;
 var isimg = 0;
-//var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif", "odt"]; //because of libreoffice convert bug under raspbian buster
-var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "jfif"];
+var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif", "odt"]; //because of libreoffice convert bug under raspbian buster
+//var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "jfif"];
 var fileExt;
 var imgiter = 0;
 var lastobj;

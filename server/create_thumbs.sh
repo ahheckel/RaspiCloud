@@ -36,8 +36,8 @@ if [ ! -d $dirn/.thumbs ] ; then
 fi
 
 # convert
-#for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt ; do # because of libreoffice convert bug
-for j in jpeg jpg png gif webp tif tiff psd bmp pdf jfif ; do
+for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt ; do # because of libreoffice convert bug
+#for j in jpeg jpg png gif webp tif tiff psd bmp pdf jfif ; do
 	if [ x"$ext" == "x${j}" ] ; then
 		echo "$(basename $0) : creating thumbnail for ${dirn}/${file}..."
 		if [ ${j} == "pdf" ] ; then
@@ -56,13 +56,13 @@ for j in jpeg jpg png gif webp tif tiff psd bmp pdf jfif ; do
 				if [ -f ${dirn}/.thumbs/${file} ] ; then
 					if [ $ow -eq 1 ] ; then
 						soffice  --headless --invisible --convert-to png "${dirn}/${file}" --outdir $tmpdir/
-						convert -thumbnail x${res_pdf} -background white -alpha remove :$tmpdir/"${file%.*}.png"[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
+						convert -thumbnail x${res_pdf} -background white -alpha remove $tmpdir/"${file%.*}.png"[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
 					else
 						echo "$(basename $0) : thumbnail for ${dirn}/${file} already exists - is not overwritten..."
 					fi
 				else
 						soffice  --headless --invisible --convert-to png "${dirn}/${file}" --outdir $tmpdir/
-						convert -thumbnail x${res_pdf} -background white -alpha remove :$tmpdir/"${file%.*}.png"[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
+						convert -thumbnail x${res_pdf} -background white -alpha remove $tmpdir/"${file%.*}.png"[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
 				fi	
 		else
 			if [ -f ${dirn}/.thumbs/${file} ] ; then

@@ -55,8 +55,8 @@ read -e -p "web-root directory:      "  -i "/var/www/html" webroot
 read -e -p "xslt storage:            "  -i "$installdir/xslt" xsltpath
 read -e -p "NAS storage mountpoint:  "  -i "/media/cloud-NAS" nasdir
 read -e -p "allowed ip-range:        "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
-mkdir $installdir/htpasswd
-mkdir $installdir/ssl
+mkdir -p $installdir/htpasswd
+mkdir -p $installdir/ssl
 htpasswd_pref="$installdir/htpasswd/.htpasswd" #prefix filename
 ssl_pref="$installdir/ssl/nginx" #prefix filename
 
@@ -65,7 +65,7 @@ echo "Install..."
 echo "--------------------------"
 read -p "Install apt packages? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
-  sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice
+  sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice coreutils
 fi
 read -p "Install webinterface? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
@@ -75,6 +75,8 @@ if [ $(checkyn) != x"n" ]; then
   sudo ln -sfn  $webroot/cloud $webroot/.cloud03
   sudo rsync -r $installdir/webroot/cloud/ $webroot/cloud/
   sudo ln -sfn /etc/nginx/nginx.conf $installdir/nginx.conf
+  chmod +x $(dirname $0)/_create_xslt.sh
+  $(dirname $0)/_create_xslt.sh $installdir/xslt/template.xslt $installdir/xslt/
 fi
 
 echo "--------------------------"

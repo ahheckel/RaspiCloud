@@ -79,7 +79,7 @@ server {
 	}
 	
 	# GALLERY VIEW
-	location ~ /cloud/(.*/tmp/(pics)) {
+	location ~ /cloud/(.*/tmp/(pics|docs)) {
 		allow XXX.XXX.XXX.XXX/XX;
 		deny all;
 		auth_basic "Restricted Content";
@@ -91,7 +91,7 @@ server {
 	    autoindex_localtime on;
 	    autoindex_exact_size off;
 	}
-	location ~ /.cloud01/(.*/tmp/(pics)) {
+	location ~ /.cloud01/(.*/tmp/(pics|docs)) {
 		allow XXX.XXX.XXX.XXX/XX;
 		deny all;
 		auth_basic "Restricted Content";
@@ -103,7 +103,7 @@ server {
 	    autoindex_localtime on;
 	    autoindex_exact_size off;
 	}
-	location ~ /.cloud02/(.*/tmp/(pics)) {
+	location ~ /.cloud02/(.*/tmp/(pics|docs)) {
 		allow XXX.XXX.XXX.XXX/XX;
 		deny all;
 		auth_basic "Restricted Content";
@@ -115,7 +115,7 @@ server {
 	    autoindex_localtime on;
 	    autoindex_exact_size off;
 	}
-	location ~ /.cloud03/(.*/tmp/(pics)) {
+	location ~ /.cloud03/(.*/tmp/(pics|docs)) {
 		allow XXX.XXX.XXX.XXX/XX;
 		deny all;
 		auth_basic "Restricted Content";

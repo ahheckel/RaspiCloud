@@ -13,6 +13,9 @@ IFS=$(echo -en "\n\b")
 orig="$1"
 destdir="$2"
 webroot="$3"
+if [ "$#" -ne 3 ]; then
+  echo "$(basename $0) : ilegal number of parameters - exiting..." ; exit 1
+fi
 if [ ! -f $orig ] ; then
   echo "$(basename $0) : $orig does not exist - exiting..." ; exit 1
 fi

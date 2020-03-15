@@ -72,7 +72,10 @@ for file in custom gal ; do
 	n=$[$n+1]
 	sed -i "${n}i <a href=\"/cloud/$user/tmp\">Cloud $user</a>" $dest
       done
-      
+      n=$[$n+1]
+      sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
+      n=$[$n+1]
+      sed -i "${n}i <a href=\"/cloud/guest\">Guest</a>" $dest
       #02
       dest=$destdir/${file}02.xslt
       echo "$(basename $0) : creating $dest..."
@@ -97,7 +100,10 @@ for file in custom gal ; do
 	n=$[$n+1]
 	sed -i "${n}i <a href=\"/cloud/$user/tmp\">Cloud $user</a>" $dest
       done
-      
+      n=$[$n+1]
+      sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
+      n=$[$n+1]
+      sed -i "${n}i <a href=\"/cloud/guest\">Guest</a>" $dest
       #03
       dest=$destdir/${file}03.xslt
       echo "$(basename $0) : creating $dest..."
@@ -122,6 +128,10 @@ for file in custom gal ; do
 	n=$[$n+1]
 	sed -i "${n}i <a href=\"/cloud/$user/tmp\">Cloud $user</a>" $dest
       done
+      n=$[$n+1]
+      sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
+      n=$[$n+1]
+      sed -i "${n}i <a href=\"/cloud/guest\">Guest</a>" $dest
       
       cp $destdir/${file}02.xslt $destdir/${file}.xslt
 done

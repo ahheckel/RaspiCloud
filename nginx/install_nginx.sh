@@ -53,7 +53,7 @@ echo "--------------------------"
 read -e -p "install source:          "  -i "$(parentpath)/nginx" installdir
 read -e -p "web-root directory:      "  -i "/var/www/html" webroot
 read -e -p "xslt storage:            "  -i "$installdir/xslt" xsltpath
-read -e -p "NAS storage mountpoint:  "  -i "/media/cloud-NAS" nasdir
+read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
 read -e -p "allowed ip-range:        "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
 mkdir -p $installdir/htpasswd
 mkdir -p $installdir/ssl
@@ -76,7 +76,7 @@ if [ $(checkyn) != x"n" ]; then
   sudo rsync -r $installdir/webroot/cloud/ $webroot/cloud/
   sudo ln -sfn /etc/nginx/nginx.conf $installdir/nginx.conf
   chmod +x $(dirname $0)/_create_xslt.sh
-  $(dirname $0)/_create_xslt.sh $installdir/xslt/template.xslt $installdir/xslt/
+  $(dirname $0)/_create_xslt.sh $installdir/xslt/template.xslt $installdir/xslt $webroot/cloud
 fi
 
 echo "--------------------------"

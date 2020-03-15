@@ -10,15 +10,19 @@ trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 SAVEIFS=$IFS
 IFS=$(echo -en "\n\b")
 
-users=$(ls -1p /home | grep /$ | rev | cut -c 2- | rev)
 orig="$1"
 destdir="$2"
+webroot="$3"
 if [ ! -f $orig ] ; then
   echo "$(basename $0) : $orig does not exist - exiting..." ; exit 1
 fi
 if [ ! -d $destdir ] ; then
   echo "$(basename $0) : $destdir does not exist - exiting..." ; exit 1
 fi
+if [ ! -d $webroot ] ; then
+  echo "$(basename $0) : $webroot does not exist - exiting..." ; exit 1
+fi
+users=$(ls -1p $webroot | grep /$ | rev | cut -c 2- | rev | grep -v guest)
 
 #custom
 dest=$tmpdir/custom

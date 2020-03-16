@@ -94,13 +94,19 @@ if [ $(checkyn) != x"n" ]; then
 fi
 
 echo "--------------------------"
-echo "Create encrypted password for web access..."
+echo "Create encrypted password for web-access..."
 echo "--------------------------"
-read -p "Create password ? [Y/n]" yn
+read -p "Create user password ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
   savfile $htpasswd_pref
   read -e -p "user: "  -i "webmaster" user
   sudo htpasswd -c $htpasswd_pref $user
+fi
+read -p "Create guest password ? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+  savfile ${htpasswd_pref}-guest
+  read -e -p "user: "  -i "guest" guest
+  sudo htpasswd -c ${htpasswd_pref}-guest $guest
 fi
 
 echo "--------------------------"

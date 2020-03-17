@@ -9,6 +9,7 @@
         <body>  
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=0.1" />
+            <!-- ENTRY06 -->
             <script src="/cloud/.yall.min.js"></script>
         </head>
         
@@ -64,6 +65,7 @@
             <td class="header" align="left"><a class="high3" href="/cloud/" id="sortsize">Size</a></td>
             <td class="header" align="left"><a class="high3" href="/cloud/" id="sortdate" style="color:#fff">Date</a></td>
         </tr>
+        <!-- ENTRY07 -->
         <script src="/cloud/.jquery.min.js"></script>
         <!-- ENTRY04 -->
         <script src="/cloud/.custom.js"></script>

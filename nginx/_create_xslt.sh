@@ -36,6 +36,21 @@ sed -i "${n}s|.*| <link href=\"/cloud/.custom.css\" rel=\"stylesheet\" type=\"te
 n=$(cat $dest | grep -n  \<\!--\ ENTRY04 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s|.*| <script src=\"/cloud/.custom.js\"></script>|g" $dest
+#custom-guest
+dest=$tmpdir/custom-guest
+cp $orig $dest
+n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*| <link href=\"/cloud/guest/.custom.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\"/>|g" $dest
+n=$(cat $dest | grep -n  \<\!--\ ENTRY04 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*| <script src=\"/cloud/guest/.custom.js\"></script>|g" $dest
+n=$(cat $dest | grep -n  \<\!--\ ENTRY06 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*| <script src=\"/cloud/guest/.yall.min.js\"></script>|g" $dest
+n=$(cat $dest | grep -n  \<\!--\ ENTRY07 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*| <script src=\"/cloud/guest/.jquery.min.js\"></script>|g" $dest
 #gal
 dest=$tmpdir/gal
 cp $orig $dest
@@ -45,6 +60,25 @@ sed -i "${n}s|.*| <link href=\"/cloud/.gal.css\" rel=\"stylesheet\" type=\"text/
 n=$(cat $dest | grep -n  \<\!--\ ENTRY04 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s|.*| <script src=\"/cloud/.gal.js\"></script>|g" $dest
+      
+      
+      orig=$tmpdir/custom-guest
+      #01-guest
+      dest=$destdir/custom01-guest.xslt
+      echo "$(basename $0) : creating $dest..."
+      cp $orig $dest
+      n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
+      n=$[$n+1]
+      sed -i "${n}s|.*|            <td class=\"header\" align=\"left\"><a class=\"high3\" href=\"/cloud/\" id=\"sortname\" style=\"color:#fff\">Name</a></td>|g" $dest
+      n=$[$n+1]
+      sed -i "${n}s|.*|            <td class=\"header\" align=\"left\"><a class=\"high3\" href=\"/cloud/\" id=\"sortsize\">Size</a></td>|g" $dest
+      n=$[$n+1]
+      sed -i "${n}s|.*|            <td class=\"header\" align=\"left\"><a class=\"high3\" href=\"/cloud/\" id=\"sortdate\">Date</a></td>|g" $dest
+      n=$(cat $dest | grep -n  \<\!--\ ENTRY02 | cut -d : -f 1)
+      n=$[$n+1]
+      sed -i "${n}s|.*|        <xsl:sort order=\"ascending\" select=\"translate\(., 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')\"/>|g" $dest
+      sed -i "s|/cloud/.icons|/cloud/guest/.icons|g" $dest
+
 
 for file in custom gal ; do
       orig=$tmpdir/$file

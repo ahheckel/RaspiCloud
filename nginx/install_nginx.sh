@@ -73,6 +73,7 @@ read -p "Install apt packages? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
   sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice coreutils
 fi
+echo "--------------------------"
 read -p "Install webinterface? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
   if [ ! -d $nasdir ]; then
@@ -124,6 +125,7 @@ if [ $(checkyn) != x"n" ]; then
   read -e -p "user: "  -i "webmaster" user
   sudo htpasswd -c $htpasswd_pref $user
 fi
+echo "--------------------------"
 read -p "Create guest password ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
   savfile ${htpasswd_pref}-guest

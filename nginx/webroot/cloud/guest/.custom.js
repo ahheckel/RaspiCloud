@@ -100,9 +100,9 @@ path.shift()
 path.unshift("/.cloud03")
 var pathSize = path.join("/")
 document.getElementById("cwd").innerHTML = basename(a).toUpperCase(); 
-document.getElementById("sortname").href = pathName; 
-document.getElementById("sortdate").href = pathDate; 
-document.getElementById("sortsize").href = pathSize;
+document.getElementById("sortname").href = "#"; 
+document.getElementById("sortdate").href = "#"; 
+document.getElementById("sortsize").href = "#";
 // clickable path
 a = window.location.pathname
 var path_array = a.split('/')
@@ -115,43 +115,16 @@ for (var i = 1; i < path_array.length; i++) {
         $("#dirinfo").before('<a class="clickpath" href=/' + new_array.join("/") + '> ' + decodeURI(path_array[i]) + ' </a>' + "|")
 }
 $("a.clickpath").eq(0).html('&nbsp;&lt&gt ')
-// shortcut panels
-function createpanels(){
-	var libpath = "/" + ".cloud02" + "/" + user + "/tmp";
-	var parentdir2 = ".cloud01";
-	$('<div id=\"panel01\" style=\"display:none\"><a class="cloudlib all" href="' + libpath + '">&nbsp;<>&nbsp;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="cloudlib auds" href="' + libpath + '/auds">auds</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib docs" href="' + libpath + '/docs">docs</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib pics" href="' + libpath + '/pics">pics</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib vids" href="' + libpath + '/vids">vids</a></div>').insertAfter($("#dirinfo"))
-}
-createpanels();
-// panel & menu display conditions
-if ( typeof path_array[2] !== 'undefined' && path_array[2] !== "guest" ) {
-        $('#panel01').css("display","block");
-}
+
 if ( user == "guest" ) { $("#dropdown").css("display","none")}
-// shortcut panel highlighting
-if ( path_array[3] == "tmp" ) {
-        if ( typeof path_array[4] === 'undefined' ) {
-                $('#panel01').find("a.all").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
-        } 
-        else if ( path_array[4] == "auds" ) {
-                $('#panel01').find("a.auds").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
-        }
-        else if ( path_array[4] == "docs" ) {
-                $('#panel01').find("a.docs").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
-        }
-        else if ( path_array[4] == "pics" ) {
-                $('#panel01').find("a.pics").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
-        }
-        else if ( path_array[4] == "vids" ) {                
-                $('#panel01').find("a.vids").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
-        }
-}
+
 // switch list mode vs image mode
 // ENTRY01
 var x = 0;
 if (x == 1) {
-        document.getElementById("mode").src="/cloud/.icons/view-list-icons.png";
+        document.getElementById("mode").src="/cloud/guest/.icons/view-list-icons.png";
 } else {
-        document.getElementById("mode").src="/cloud/.icons/view-list-compact.png";
+        document.getElementById("mode").src="/cloud/guest/.icons/view-list-compact.png";
 }
 
 // global vars
@@ -283,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         } 
                         var irow = document.createElement("tr");
                         irow.className = "insert"
-                        irow.innerHTML = '<td></td><td class="img" colspan="3"><div class="cssbox"><a id="image' + imgiter + '" href="#image' + imgiter + '"><img class="cssbox_thumb lazy" ' + thumb_src + '="' + href_thumb + '" alt=""/><span class="cssbox_full"><img class="img_full" style="width:' + img_width + '; height:' + img_height + '; max-width:' + img_w + ';max-height:' + img_h + ';object-fit: contain" data-src="' + img_href + '"/></span></a><a class="cssbox_close" href="#void"></a><a class="cssbox_prev" href="' + imgiter_prev + '">&lt;</a><a class="cssbox_next" href="#image' + imgiter_next + '">&gt;</a><a class="cssbox_title" href=' + href_full + '>' + decodeURI(href_full) + '</a><a class="cssbox_rotate-right"><img src="/cloud/.icons/object-rotate-right.png"/></a><a class="cssbox_rotate-left"><img src="/cloud/.icons/object-rotate-left.png"/></a><a class="cssbox_rotate-reset">0°</a><a class="cssbox_zoomin"><img src="/cloud/.icons/gtk-zoom-out.png"/></a></div></td>';
+                        irow.innerHTML = '<td></td><td class="img" colspan="3"><div class="cssbox"><a id="image' + imgiter + '" href="#image' + imgiter + '"><img class="cssbox_thumb lazy" ' + thumb_src + '="' + href_thumb + '" alt=""/><span class="cssbox_full"><img class="img_full" style="width:' + img_width + '; height:' + img_height + '; max-width:' + img_w + ';max-height:' + img_h + ';object-fit: contain" data-src="' + img_href + '"/></span></a><a class="cssbox_close" href="#void"></a><a class="cssbox_prev" href="' + imgiter_prev + '">&lt;</a><a class="cssbox_next" href="#image' + imgiter_next + '">&gt;</a><a class="cssbox_title" href=' + href_full + '>' + decodeURI(href_full) + '</a><a class="cssbox_rotate-right"><img src="/cloud/guest/.icons/object-rotate-right.png"/></a><a class="cssbox_rotate-left"><img src="/cloud/guest/.icons/object-rotate-left.png"/></a><a class="cssbox_rotate-reset">0°</a><a class="cssbox_zoomin"><img src="/cloud/guest/.icons/gtk-zoom-out.png"/></a></div></td>';
                         a.parentNode.insertBefore(irow,a.nextSibling);
                         imgiter = imgiter + 1;                        
                 }
@@ -447,7 +420,7 @@ $(document).ready(function(){
         $("#mode").on('click',function(){
                 x = (x+1)%2;
                 if (x == 1){
-                        document.getElementById("mode").src="/cloud/.icons/view-list-icons.png";
+                        document.getElementById("mode").src="/cloud/guest/.icons/view-list-icons.png";
                         for (var i = 0, o = document.getElementsByClassName("row"), len = o.length;  i < len; i++) {
                                 insertImgRow2(o[i]);
                         }         
@@ -456,7 +429,7 @@ $(document).ready(function(){
                         yall();                        
                         imgview();
                 } else {
-                        document.getElementById("mode").src="/cloud/.icons/view-list-compact.png";                        
+                        document.getElementById("mode").src="/cloud/guest/.icons/view-list-compact.png";                        
                         for (var j = 0, o = document.querySelectorAll(".insert"), len = o.length;  j < len; j++) {
                                 o[j].previousElementSibling.style.backgroundColor = "";
                                 o[j].previousElementSibling.children[1].style.backgroundColor = "";

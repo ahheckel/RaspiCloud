@@ -190,6 +190,7 @@ if [ $(checkyn) != x"n" ]; then
         echo "$cmd" >> $tmpdir/t
     fi
     cat $tmpdir/t | sort -u > $HOME/../usr/var/spool/cron/crontabs/$(whoami)
+    echo "--------------------------"
     echo "current crontab:"
     crontab -l
 fi

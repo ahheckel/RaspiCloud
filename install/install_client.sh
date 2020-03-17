@@ -70,18 +70,17 @@ export IP=$ip
 echo ""
 read -e -p "server admin user (for installation purposes): " -i "pi" admin
 export ADMIN=$admin
-read -e -p "installation source (on server): " -i "/home/$admin/RaspiCloud-master/install/" path
-read -e -p "client script dir (on server):   " -i "RaspiCloud-master/client" clidir
+read -e -p "installation source (on server):    " -i "/home/$admin/RaspiCloud-master/install/" path
+read -e -p "client script subdir (on server):   " -i "$(dirname ${path#/home/$admin/})/client" clidir
 export CLIDIR=$clidir
-read -e -p "server script dir (on server):   " -i "RaspiCloud-master/server" srvdir
+read -e -p "server script subdir (on server):   " -i "$(dirname ${path#/home/$admin/})/server" srvdir
 export SRVDIR=$srvdir
-read -e -p "current user:                    " -i "johndoe" user1
+read -e -p "current user:                       " -i "john" user1
 export USER1=$user1
-read -e -p "user's cloud-dir (on server):    " -i "/media/cloud-NAS/${user1}" dstdir
+read -e -p "user's cloud-dir (on server):       " -i "/media/cloud-NAS/${user1}" dstdir
 export DSTDIR=$dstdir
-read -e -p "user's cloud-dir group owner:    " -i "$user1" grp
+read -e -p "user's cloud-dir group owner:       " -i "$user1" grp
 export GRP=$grp
-read -e -p "guest's cloud-dir (on server):   " -i "/media/cloud-NAS/guest" gstdstdir
 
 #create keypair for installation
 echo "--------------------------"
@@ -176,13 +175,6 @@ read -p "Press enter to continue..."
 $HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.sh
 echo "uploading to server ($ip)..."
 scp -i $ckey $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/" && echo "...done."
-
-#create cloud-dir 4 guests
-echo "--------------------------"
-echo "Create guests' cloud-dir '${gstdstdir}' on server ($ip)..."
-echo "--------------------------"
-read -p "Press enter to continue..."
-ssh -i $key ${admin}@${ip} "sudo mkdir -p ${gstdstdir} && sudo chown ${admin}:www-data ${gstdstdir} && sudo chmod 777 ${gstdstdir}"
 
 #create cronjob
 echo "--------------------------"

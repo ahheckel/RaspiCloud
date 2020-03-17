@@ -54,11 +54,17 @@ read -e -p "install source:          "  -i "$(parentpath)/nginx" installdir
 read -e -p "web-root directory:      "  -i "/var/www/html" webroot
 read -e -p "xslt storage:            "  -i "$installdir/xslt" xsltpath
 read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
+#read -e -p "NAS guest's directory:   "  -i "/media/cloud-NAS/guest" gstdstdir
+gstdstdir="/media/cloud-NAS/guest"
 read -e -p "allowed ip-range:        "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
-mkdir -p $installdir/htpasswd
-mkdir -p $installdir/ssl
 htpasswd_pref="$installdir/htpasswd/.htpasswd" #prefix filename
 ssl_pref="$installdir/ssl/nginx" #prefix filename
+mkdir -p $installdir/htpasswd
+mkdir -p $installdir/ssl
+mkdir -p $installdir/log
+sudo ln -sfn /var/log/nginx/error.log $installdir/log/error.log
+sudo ln -sfn /var/log/nginx/access.log $installdir/log/access.log
+sudo ln -sfn /etc/nginx/nginx.conf $installdir/nginx.conf
 
 echo "--------------------------"
 echo "Install..."
@@ -69,14 +75,30 @@ if [ $(checkyn) != x"n" ]; then
 fi
 read -p "Install webinterface? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
+  if [ ! -d $nasdir ]; then
+    echo "$(basename $0) : '$nasdir' does not exist... exiting."; exit 1
+  fi
   sudo ln -sfn  $nasdir $webroot/cloud
   sudo ln -sfn  $webroot/cloud $webroot/.cloud01
   sudo ln -sfn  $webroot/cloud $webroot/.cloud02
   sudo ln -sfn  $webroot/cloud $webroot/.cloud03
-  sudo rsync -r $installdir/webroot/cloud/ $webroot/cloud/
-  sudo ln -sfn /etc/nginx/nginx.conf $installdir/nginx.conf
+  sudo rsync -r --exclude='guest/' $installdir/webroot/cloud/ $webroot/cloud/
   chmod +x $(dirname $0)/_create_xslt.sh
   $(dirname $0)/_create_xslt.sh $installdir/xslt/template.xslt $installdir/xslt $webroot/cloud
+fi
+
+#create cloud-dir & webinterface 4 guests
+echo "--------------------------"
+echo "Create guests' access..."
+echo "--------------------------"
+read -p "Create guests' access in '$gstdstdir' ? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+  if [ ! -d $nasdir ]; then
+      echo "$(basename $0) : '$nasdir' does not exist... exiting."; exit 1
+  fi
+  sudo ln -sfn  $nasdir $webroot/cloud
+  sudo mkdir -p ${gstdstdir} && sudo chown $(whoami):www-data ${gstdstdir} && sudo chmod 777 ${gstdstdir}
+  sudo rsync -r $installdir/webroot/cloud/guest/ ${gstdstdir}/  
 fi
 
 echo "--------------------------"

@@ -135,7 +135,7 @@ server {
 	    #auth_basic "Restricted Content";
 	    #auth_basic_user_file CCCCCCCCCC-guest;
 	    #autoindex_format xml;
-	    #xslt_stylesheet PPPPPPPPPP/.custom01.xslt;
+	    #xslt_stylesheet PPPPPPPPPP/custom01-guest.xslt;
 	    #xslt_string_param title $1;
 	    #autoindex on;
 	    #autoindex_localtime on;

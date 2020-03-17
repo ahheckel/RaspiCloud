@@ -128,17 +128,17 @@ server {
 	    autoindex_exact_size off;
 	    }
 	
-	## GUESTS
-	#location /cloud/guest {
-        #gzip off; # because of ssl related vulnerability
+	# GUESTS
+	location /cloud/guest {
+        gzip off; # because of ssl related vulnerability
 	    
-	    #auth_basic "Restricted Content";
-	    #auth_basic_user_file CCCCCCCCCC-guest;
-	    #autoindex_format xml;
-	    #xslt_stylesheet PPPPPPPPPP/custom01-guest.xslt;
-	    #xslt_string_param title $1;
-	    #autoindex on;
-	    #autoindex_localtime on;
-	    #autoindex_exact_size off;
-	#}
+	    auth_basic "Restricted Content";
+	    auth_basic_user_file CCCCCCCCCC-guest;
+	    autoindex_format xml;
+	    xslt_stylesheet PPPPPPPPPP/custom01-guest.xslt;
+	    xslt_string_param title $1;
+	    autoindex on;
+	    autoindex_localtime on;
+	    autoindex_exact_size off;
+	}
 }

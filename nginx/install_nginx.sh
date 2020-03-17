@@ -74,7 +74,7 @@ if [ $(checkyn) != x"n" ]; then
   sudo apt-get install nginx openssl apache2-utils imagemagick libreoffice coreutils
 fi
 echo "--------------------------"
-read -p "Install webinterface? [Y/n]" yn
+read -p "Install web-interface? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
   if [ ! -d $nasdir ]; then
     echo "$(basename $0) : '$nasdir' does not exist... exiting."; exit 1
@@ -97,6 +97,7 @@ if [ $(checkyn) != x"n" ]; then
   if [ ! -d $nasdir ]; then
       echo "$(basename $0) : '$nasdir' does not exist... exiting."; exit 1
   fi
+  echo "$(basename $0) : installing web-interface to '$gstdstdir'"
   sudo ln -sfn  $nasdir $webroot/cloud
   sudo mkdir -p ${gstdstdir} && sudo chown $(whoami):www-data ${gstdstdir} && sudo chmod 777 ${gstdstdir}
   sudo rsync -r $installdir/webroot/cloud/guest/ ${gstdstdir}/  

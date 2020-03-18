@@ -1,5 +1,5 @@
 # RaspiCloud
-Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted Web Interface.
+Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encrypted Web Interface.
 
 ## Features
   Syncs client directories automatically to private cloud storage with
@@ -7,22 +7,24 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with ssl-encrypted
   and thumbnail generation. Guest access possible.
   No 'rooting' of android devices is required.
 - *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
-- *secure:* ssh-based file transfer (key-based encryption)
-- *convenient:* tls/ssl-encrypted web interface with instant search and image gallery functions for file browsing on your mobile (see screenshots)
+- *secure:* using key-based encryption
+- *generic:* wide variety of file browsers available for sftp-based cloud access (incl. Windows10 explorer)
+- *convenient:* tls/ssl-encrypted web interface with instant search and image gallery functions for mobile browsing (see screenshots)
 - *cross-platform:* client-side linux environment available on many platforms
+- *quick-install:* using command line script (~10 min)
 - *low cost:* using Raspberry-Pi as server with standard USB drive as network access storage
 
 ## Requirements
 - linux server (tested with Raspian Stretch/Buster on a Raspberry Pi 3b+) 
 - nginx web server (v1.10.3) and OpenSSH server (v7.4)
 - NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the Raspberry Pi)
-- imagemagick v6 and libreoffice v5 for thumbnail generation (server-side)
-- client requires termux (android) or cygwin (windows) environment
+- imagemagick (v6) and libreoffice (v5) for server-side thumbnail generation
+- client requires termux (tested on android 7/8) or cygwin (windows) environment
 
   https://play.google.com/store/apps/details?id=com.termux&hl=en  
   https://cygwin.com/
-- a file manager with ssh support (e.g. mxeplorer, solidexplorer and others under android support key based authentication and are available on google playstore)
-- a standard webbrowser on the client, e.g. firefox
+- a file manager with ssh support on the client (e.g. mxeplorer, solidexplorer and others under android support key based authentication and are available on google playstore)
+- a standard webbrowser on the client (e.g. firefox, opera, chrome)
 
 ## Dependencies
 ### Web Interface:

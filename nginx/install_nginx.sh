@@ -52,7 +52,7 @@ echo "Define inputs..."
 echo "--------------------------"
 read -e -p "install source:          "  -i "$(parentpath)/nginx" installdir
 read -e -p "web-root directory:      "  -i "/var/www/html" webroot
-read -e -p "xslt storage:            "  -i "$installdir/xslt" xsltpath
+read -e -p "xslt-files location:     "  -i "$installdir/xslt" xsltpath
 read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
 #read -e -p "NAS guest's directory:   "  -i "/media/cloud-NAS/guest" gstdstdir
 gstdstdir="/media/cloud-NAS/guest"
@@ -97,7 +97,7 @@ if [ $(checkyn) != x"n" ]; then
   if [ ! -d $nasdir ]; then
       echo "$(basename $0) : '$nasdir' does not exist... exiting."; exit 1
   fi
-  echo "$(basename $0) : installing web-interface to '$gstdstdir'"
+  echo "$(basename $0) : installing web-interface to '$gstdstdir'..."
   sudo ln -sfn  $nasdir $webroot/cloud
   sudo mkdir -p ${gstdstdir} && sudo chown $(whoami):www-data ${gstdstdir} && sudo chmod 777 ${gstdstdir}
   sudo rsync -r $installdir/webroot/cloud/guest/ ${gstdstdir}/  

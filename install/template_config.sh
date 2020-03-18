@@ -26,10 +26,10 @@ else
       cp "$input0" $tmpdir/
       input="$tmpdir/$(basename $input0)"
 fi
-read -e -p "syncfolders: " -i "storage/downloads/ storage/dcim/Screenshots/ storage/dcim/Camera/ storage/dcim/Facebook" syncfolders
-read -e -p "rsync-opts:  " -i "-v --size-only -p -o -g --progress --chown=$USER1:$GRP --chmod=750" opts
-read -e -p "syncscrpt:   " -i ".shortcuts/push-to-cloud-tmp.sh" syncscrpt
-read -e -p "post-scrpt:  " -i "/home/$USER1/$SRVDIR/updatedb.sh $DSTDIR/tmp" scrpt
+read -e -p "syncfolders (on client): " -i "storage/downloads/ storage/dcim/Screenshots/ storage/dcim/Camera/ storage/dcim/Facebook" syncfolders
+read -e -p "rsync-options:           " -i "-v --size-only -p -o -g --progress --chown=$USER1:$GRP --chmod=750" opts
+read -e -p "syncscrpt (on client):   " -i ".shortcuts/push-to-cloud-tmp.sh" syncscrpt
+read -e -p "post-scrpt (on server):  " -i "/home/$USER1/$SRVDIR/updatedb.sh $DSTDIR/tmp" scrpt
 
 # replace
 sed -i "s|xIPADDRESSx|$IP|g" $input

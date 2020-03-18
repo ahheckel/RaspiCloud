@@ -75,7 +75,7 @@ read -e -p "client script subdir (on server):   " -i "$(dirname ${path#/home/$ad
 export CLIDIR=$clidir
 read -e -p "server script subdir (on server):   " -i "$(dirname ${path#/home/$admin/})/server" srvdir
 export SRVDIR=$srvdir
-read -e -p "current user:                       " -i "john" user1
+read -e -p "install for user (enter username):  " -i "john" user1
 export USER1=$user1
 read -e -p "user's cloud-dir (on server):       " -i "/media/cloud-NAS/${user1}" dstdir
 export DSTDIR=$dstdir

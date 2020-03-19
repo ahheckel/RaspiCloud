@@ -6,13 +6,13 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
   on-the-fly categorization of synced files (audio, video, documents and pictures)
   and thumbnail generation. Guest access possible.
   No 'rooting' of android devices is required.
-- *lightweight:* based on *OpenSSH*, linux tools 'rsync', 'cron' and bash scripts
+- *lightweight:* based on *OpenSSH*, linux tools *rsync*, *cron* & bash scripts
 - *secure:* using key-based encryption
-- *generic:* wide variety of file browsers available for sftp-based cloud access (incl. Windows10 explorer)
+- *generic:* sftp access supported by many file browsers (incl. Windows10 Explorer)
 - *convenient:* tls/ssl-encrypted web interface with instant search and image gallery functions for mobile browsing (see screenshots)
 - *cross-platform:* client-side linux environment available on many platforms
 - *quick-install:* using command line script (~10 min)
-- *low cost:* using Raspberry-Pi as server with standard USB drive as network access storage
+- *low cost:* using Raspberry-Pi as server with standard USB drive as network access storage (NAS)
 
 ## Requirements
 - linux server (tested with Raspian Stretch/Buster on a Raspberry Pi 3b+) 
@@ -23,7 +23,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
 
   https://play.google.com/store/apps/details?id=com.termux&hl=en  
   https://cygwin.com/
-- a file manager with ssh support on the client (e.g. mxeplorer, solidexplorer and others under android support key based authentication and are available on google playstore)
+- a file manager with ssh support on the client (e.g. mxeplorer, solidexplorer and others under android support key-based authentication, see google playstore)
 - a standard webbrowser on the client (e.g. firefox, opera, chrome)
 
 ## Dependencies

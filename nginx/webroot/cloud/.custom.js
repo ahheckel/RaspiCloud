@@ -146,7 +146,7 @@ if ( path_array[3] == "tmp" ) {
         }
 }
 // switch list mode vs image mode
-// ENTRY01
+// <!-- ENTRY01 -->
 var x = 0;
 if (x == 1) {
         document.getElementById("mode").src="/cloud/.icons/view-list-icons.png";

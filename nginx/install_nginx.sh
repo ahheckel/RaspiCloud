@@ -83,9 +83,9 @@ if [ $(checkyn) != x"n" ]; then
   sudo ln -sfn  $webroot/cloud $webroot/.cloud01
   sudo ln -sfn  $webroot/cloud $webroot/.cloud02
   sudo ln -sfn  $webroot/cloud $webroot/.cloud03
+  chmod +x $(dirname $0)/_create_webfiles.sh
+  $(dirname $0)/_create_webfiles.sh $installdir $webroot
   sudo rsync -r --exclude='guest/' $installdir/webroot/cloud/ $webroot/cloud/
-  chmod +x $(dirname $0)/_create_xslt.sh
-  $(dirname $0)/_create_xslt.sh $installdir/xslt/template.xslt $installdir/xslt $webroot/cloud
 fi
 
 #create cloud-dir & webinterface 4 guests
@@ -106,7 +106,7 @@ fi
 echo "--------------------------"
 echo "Adapt available sites..."
 echo "--------------------------"
-read -p "Adapt 'default' file ? [Y/n]" yn
+read -p "Adapt configuration in 'default' file ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
   sudo cat $installdir/sites-available/default_template | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$xsltpath|g" | sed -e "s|CCCCCCCCCC|$htpasswd_pref|g" | sed -e "s|SSSSSSSSSS|$ssl_pref|g" | sed -e "s|RRRRRRRRRR|$webroot|g" > $tmpdir/default
   savfile /etc/nginx/sites-available/default
@@ -115,6 +115,16 @@ if [ $(checkyn) != x"n" ]; then
   fi
   sudo mv $tmpdir/default /etc/nginx/sites-available/default && sudo chmod 644 /etc/nginx/sites-available/default
   sudo ln -sfn /etc/nginx/sites-available/default $installdir/sites-available/default
+fi
+
+echo "--------------------------"
+echo "Create ssl-certificate..."
+echo "--------------------------"
+read -p "Create certificate ? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+  savfile ${ssl_pref}.key
+  savfile ${ssl_pref}.crt
+  sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${ssl_pref}.key -out ${ssl_pref}.crt
 fi
 
 echo "--------------------------"
@@ -132,16 +142,6 @@ if [ $(checkyn) != x"n" ]; then
   savfile ${htpasswd_pref}-guest
   read -e -p "user: "  -i "guest" guest
   sudo htpasswd -c ${htpasswd_pref}-guest $guest
-fi
-
-echo "--------------------------"
-echo "Create ssl-certificate..."
-echo "--------------------------"
-read -p "Create certificate ? [Y/n]" yn
-if [ $(checkyn) != x"n" ]; then
-  savfile ${ssl_pref}.key
-  savfile ${ssl_pref}.crt
-  sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${ssl_pref}.key -out ${ssl_pref}.crt
 fi
 
 echo "--------------------------"

@@ -10,35 +10,39 @@ trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 SAVEIFS=$IFS
 IFS=$(echo -en "\n\b")
 
-orig="$1"
-destdir="$2"
-webroot="$3"
-if [ "$#" -ne 3 ]; then
+xsltdir="$1"
+webroot="$2"
+orig_xsl="$xsltdir/xslt/template.xslt"
+orig_js="$xsltdir/webroot/cloud/.custom.js"
+if [ "$#" -ne 2 ]; then
   echo "$(basename $0) : ilegal number of parameters - exiting..." ; exit 1
 fi
-if [ ! -f $orig ] ; then
-  echo "$(basename $0) : $orig does not exist - exiting..." ; exit 1
+if [ ! -d $xsltdir ] ; then
+  echo "$(basename $0) : $xsltdir does not exist - exiting..." ; exit 1
 fi
-if [ ! -d $destdir ] ; then
-  echo "$(basename $0) : $destdir does not exist - exiting..." ; exit 1
+if [ ! -f $orig_xsl ] ; then
+  echo "$(basename $0) : $orig_xsl does not exist - exiting..." ; exit 1
 fi
 if [ ! -d $webroot ] ; then
   echo "$(basename $0) : $webroot does not exist - exiting..." ; exit 1
 fi
+if [ ! -f $orig_js ] ; then
+  echo "$(basename $0) : $orig_js does not exist - exiting..." ; exit 1
+fi
 users=$(ls -1p $webroot | grep /$ | rev | cut -c 2- | rev | grep -v guest)
 
-#custom
+#custom.xslt
 dest=$tmpdir/custom
-cp $orig $dest
+cp $orig_xsl $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s|.*| <link href=\"/cloud/.custom.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\"/>|g" $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY04 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s|.*| <script src=\"/cloud/.custom.js\"></script>|g" $dest
-#custom-guest
+#custom-guest.xslt
 dest=$tmpdir/custom-guest
-cp $orig $dest
+cp $orig_xsl $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s|.*| <link href=\"/cloud/guest/.custom.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\"/>|g" $dest
@@ -51,20 +55,32 @@ sed -i "${n}s|.*| <script src=\"/cloud/guest/.yall.min.js\"></script>|g" $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY07 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s|.*| <script src=\"/cloud/guest/.jquery.min.js\"></script>|g" $dest
-#gal
+#gal.xslt
 dest=$tmpdir/gal
-cp $orig $dest
+cp $orig_xsl $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s|.*| <link href=\"/cloud/.gal.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\"/>|g" $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY04 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s|.*| <script src=\"/cloud/.gal.js\"></script>|g" $dest
-      
-      
-      orig=$tmpdir/custom-guest
+#custom.js
+dest=$tmpdir/custom.js
+cp $orig_js $dest
+n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*|var x = 0;|g" $dest
+#gal.js
+dest=$tmpdir/gal.js
+cp $orig_js $dest
+n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*|var x = 1;|g" $dest
+
+#xslt
       #01-guest
-      dest=$destdir/custom01-guest.xslt
+      orig=$tmpdir/custom-guest
+      dest=$xsltdir/custom01-guest.xslt
       echo "$(basename $0) : creating $dest..."
       cp $orig $dest
       n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
@@ -78,12 +94,13 @@ sed -i "${n}s|.*| <script src=\"/cloud/.gal.js\"></script>|g" $dest
       n=$[$n+1]
       sed -i "${n}s|.*|        <xsl:sort order=\"ascending\" select=\"translate\(., 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')\"/>|g" $dest
       sed -i "s|/cloud/.icons|/cloud/guest/.icons|g" $dest
-
+      
+      echo ""
 
 for file in custom gal ; do
       orig=$tmpdir/$file
       #01
-      dest=$destdir/${file}01.xslt
+      dest=$xsltdir/${file}01.xslt
       echo "$(basename $0) : creating $dest..."
       cp $orig $dest
       n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
@@ -111,7 +128,7 @@ for file in custom gal ; do
       n=$[$n+1]
       sed -i "${n}i <a href=\"/cloud/guest\">Guest</a>" $dest
       #02
-      dest=$destdir/${file}02.xslt
+      dest=$xsltdir/${file}02.xslt
       echo "$(basename $0) : creating $dest..."
       cp $orig $dest
       n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
@@ -139,7 +156,7 @@ for file in custom gal ; do
       n=$[$n+1]
       sed -i "${n}i <a href=\"/cloud/guest\">Guest</a>" $dest
       #03
-      dest=$destdir/${file}03.xslt
+      dest=$xsltdir/${file}03.xslt
       echo "$(basename $0) : creating $dest..."
       cp $orig $dest
       n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
@@ -167,8 +184,23 @@ for file in custom gal ; do
       n=$[$n+1]
       sed -i "${n}i <a href=\"/cloud/guest\">Guest</a>" $dest
       
-      cp $destdir/${file}02.xslt $destdir/${file}.xslt
+      cp $xsltdir/${file}02.xslt $xsltdir/${file}.xslt
 done
+      
+      echo ""
+      
+#js
+      #gal.js
+      orig=$tmpdir/custom.js
+      dest=$(dirname $orig_js)/.custom.js
+      echo "$(basename $0) : creating $dest..."
+      cp $orig $dest
+      
+      orig=$tmpdir/gal.js
+      dest=$(dirname $orig_js)/.gal.js
+      echo "$(basename $0) : creating $dest..."
+      cp $orig $dest
+
 
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)
 echo "$(basename $0) : finished. - $(date) ($elapsed sec elapsed)"

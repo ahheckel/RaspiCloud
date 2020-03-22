@@ -36,8 +36,9 @@ if [ ! -d $dirn/.thumbs ] ; then
 fi
 
 # convert
-for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt ; do # because of libreoffice convert bug
-#for j in jpeg jpg png gif webp tif tiff psd bmp pdf jfif ; do
+# <!-- ENTRY01 -->
+for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt ; do 
+#for j in jpeg jpg png gif webp tif tiff psd bmp pdf jfif ; do # because of libreoffice convert bug
 	if [ x"$ext" == "x${j}" ] ; then
 		echo "$(basename $0) : creating thumbnail for ${dirn}/${file}..."
 		if [ ${j} == "pdf" ] ; then
@@ -52,6 +53,7 @@ for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx t
 				#convert -thumbnail x${res_pdf} -background white -alpha remove :${dirn}/${file}[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
 				convert -thumbnail x${res_pdf} -background white -alpha remove ${dirn}/${file}[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # under raspbian buster, the colon leads to error
 			fi
+		# <!-- ENTRY02 -->
 		elif [ ${j} == "doc" ] || [ ${j} == "ppt" ] || [ ${j} == "xls" ] || [ ${j} == "docx" ] || [ ${j} == "pptx" ] || [ ${j} == "xlsx" ] || [ ${j} == "txt" ] || [ ${j} == "pps" ] || [ ${j} == "ppsx" ] || [ ${j} == "odt" ] ; then
 				if [ -f ${dirn}/.thumbs/${file} ] ; then
 					if [ $ow -eq 1 ] ; then

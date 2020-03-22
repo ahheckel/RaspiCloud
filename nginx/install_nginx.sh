@@ -84,7 +84,7 @@ if [ $(checkyn) != x"n" ]; then
   sudo ln -sfn  $webroot/cloud $webroot/.cloud02
   sudo ln -sfn  $webroot/cloud $webroot/.cloud03
   chmod +x $(dirname $0)/_create_webfiles.sh
-  $(dirname $0)/_create_webfiles.sh $installdir $webroot
+  $(dirname $0)/_create_webfiles.sh $webroot/cloud
   sudo rsync -r --exclude='guest/' $installdir/webroot/cloud/ $webroot/cloud/
 fi
 

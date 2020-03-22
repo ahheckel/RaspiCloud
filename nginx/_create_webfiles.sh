@@ -10,11 +10,16 @@ trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 SAVEIFS=$IFS
 IFS=$(echo -en "\n\b")
 
-xsltdir="$1"
-webroot="$2"
-orig_xsl="$xsltdir/xslt/template.xslt"
-orig_js="$xsltdir/webroot/cloud/.custom.js"
-if [ "$#" -ne 2 ]; then
+#get folder of this script
+cd $(dirname $0)/
+wdir0=$(pwd)
+cd - 1>/dev/null
+
+webroot="$1"
+xsltdir="$wdir0/xslt"
+orig_xsl="$xsltdir/template.xslt"
+orig_js="$wdir0/webroot/cloud/.custom.js"
+if [ "$#" -ne 1 ]; then
   echo "$(basename $0) : ilegal number of parameters - exiting..." ; exit 1
 fi
 if [ ! -d $xsltdir ] ; then
@@ -30,6 +35,8 @@ if [ ! -f $orig_js ] ; then
   echo "$(basename $0) : $orig_js does not exist - exiting..." ; exit 1
 fi
 users=$(ls -1p $webroot | grep /$ | rev | cut -c 2- | rev | grep -v guest)
+echo "$(basename $0) : detected users for dropdown-list:"
+for i in $users ; do echo "    $i" ; done
 
 #custom.xslt
 dest=$tmpdir/custom
@@ -120,8 +127,8 @@ for file in custom gal ; do
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
       for user in $users ; do       
-	n=$[$n+1]
-	sed -i "${n}i <a href=\"/cloud/$user/tmp\">Cloud $user</a>" $dest
+	  n=$[$n+1]
+	  sed -i "${n}i <a href=\"/cloud/$user/tmp\">Cloud $user</a>" $dest
       done
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
@@ -148,8 +155,8 @@ for file in custom gal ; do
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
       for user in $users ; do       
-	n=$[$n+1]
-	sed -i "${n}i <a href=\"/cloud/$user/tmp\">Cloud $user</a>" $dest
+	  n=$[$n+1]
+	  sed -i "${n}i <a href=\"/cloud/$user/tmp\">Cloud $user</a>" $dest
       done
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
@@ -176,8 +183,8 @@ for file in custom gal ; do
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
       for user in $users ; do       
-	n=$[$n+1]
-	sed -i "${n}i <a href=\"/cloud/$user/tmp\">Cloud $user</a>" $dest
+	  n=$[$n+1]
+	  sed -i "${n}i <a href=\"/cloud/$user/tmp\">Cloud $user</a>" $dest
       done
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest

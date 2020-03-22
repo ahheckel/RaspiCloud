@@ -162,8 +162,9 @@ var href_thumb;
 var imgiter_prev = imgiter - 1;
 var imgiter_next = imgiter + 1;
 var isimg = 0;
-var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif", "odt"]; //because of libreoffice convert bug under raspbian buster
-//var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "jfif"];
+// <!-- ENTRY02 -->
+var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif", "odt"];
+//var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "jfif"]; //because of libreoffice convert bug under raspbian buster 
 var fileExt;
 var imgiter = 0;
 var lastobj;
@@ -270,7 +271,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                 imgiter_prev = "#image" + imgiter_prev;
                         }                        
                         
-                        a.children[1].style.backgroundColor = "#202020";                        
+                        a.children[1].style.backgroundColor = "#202020";
+                        // <!-- ENTRY03 -->                        
                         if (fileExt == "pdf" || fileExt == "doc" || fileExt == "ppt" || fileExt == "xls" || fileExt == "txt" || fileExt == "docx" || fileExt == "pptx" || fileExt == "xlsx" || fileExt == "ppsx" || fileExt == "pps" || fileExt == "odt" ) {
                                 img_href = href_thumb;
                         } else {
@@ -372,6 +374,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                                 } else {
                                                         obj.children("img.cssbox_thumb").attr("data-src", href_thumb);
                                                 }
+                                                // <!-- ENTRY04 -->
                                                 if (fileExt == "pdf" || fileExt == "doc" || fileExt == "ppt" || fileExt == "xls" || fileExt == "txt" || fileExt == "docx" || fileExt == "pptx" || fileExt == "xlsx" || fileExt == "ppsx" || fileExt == "pps" || fileExt == "odt" ) {
                                                         obj.children("span.cssbox_full").children("img.img_full").attr("data-src", href_thumb);
                                                 } else { 

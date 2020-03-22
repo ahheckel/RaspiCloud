@@ -67,6 +67,7 @@ for i in $(cat $tmpdir/list) ; do
       categ="auds"
       _dir="$dir/$categ"
       find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
+      # <!-- ENTRY01 -->
       for j in mp3 ogg oga mogg wma pcm flac m4a m4b m4p ; do
 	    if [ x"$ext" = "x${j}" ] ; then		  
 		  echo "$i" >> $tmpdir/${categ}
@@ -84,6 +85,7 @@ for i in $(cat $tmpdir/list) ; do
       categ="docs"
       _dir="$dir/$categ"
       find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
+      # <!-- ENTRY02 -->
       for j in pdf doc docx htm html odt xls xlsx ods ppt pptx txt pps ppsx odt ; do
 	    if [ x"$ext" = "x${j}" ] ; then		  
 		  echo "$i" >> $tmpdir/${categ}
@@ -102,6 +104,7 @@ for i in $(cat $tmpdir/list) ; do
       categ="pics"
       _dir="$dir/$categ"
       find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
+      # <!-- ENTRY03 -->
       for j in  jpeg jpg png gif webp tif tiff psd bmp jfif ; do
 	    if [ x"$ext" = "x${j}" ] ; then		  
 		  echo "$i" >> $tmpdir/${categ}
@@ -120,6 +123,7 @@ for i in $(cat $tmpdir/list) ; do
       categ="vids"
       _dir="$dir/$categ"
       find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
+      # <!-- ENTRY04 -->
       for j in  mp4 mov m4v f4v f4a m4r f4b 3gp ogx ogv wmv asf webm flv avi vob TS ts swf ; do
 	    if [ x"$ext" = "x${j}" ] ; then		  
 		  echo "$i" >> $tmpdir/${categ}

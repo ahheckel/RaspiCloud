@@ -27,9 +27,57 @@ cd - 1>/dev/null
 #def vars
 srv=$pfld/server
 clnt=$pfld/client
+ngnx=$pfld/nginx
 admin="$(whoami)" # this script should be run by the admin user
 files="$srv/updatedb.sh $srv/_updatedb.sh $srv/parsefiles2link.sh $srv/create_thumbs.sh $srv/_create_thumbs.sh $clnt/runscrpt.sh"
 
+#update file extension handling
+orig=$HOME/$srv/parsefiles2link.sh
+dest=$tmpdir/tmp
+echo "$(basename $0) : updating ${orig}..."
+cp $orig $dest
+n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*|      for j in mp3 ogg oga mogg wma pcm flac m4a m4b m4p ; do|g" $dest # auds
+n=$(cat $dest | grep -n  \<\!--\ ENTRY02 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*|      for j in pdf doc docx htm html odt xls xlsx ods ppt pptx txt pps ppsx odt ; do|g" $dest # docs
+n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*|      for j in  jpeg jpg png gif webp tif tiff psd bmp jfif ; do|g" $dest # pics
+n=$(cat $dest | grep -n  \<\!--\ ENTRY04 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*|      for j in  mp4 mov m4v f4v f4a m4r f4b 3gp ogx ogv wmv asf webm flv avi vob TS ts swf ; do|g" $dest # vids
+cp $dest $orig
+
+orig=$HOME/$srv/create_thumbs.sh
+dest=$tmpdir/tmp
+echo "$(basename $0) : updating ${orig}..."
+cp $orig $dest
+n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*|for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt ; do|g" $dest # all 2 thumbnail
+n=$(cat $dest | grep -n  \<\!--\ ENTRY02 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s/.*/        elif [ \${j} == \"doc\" ] || [ \${j} == \"ppt\" ] || [ \${j} == \"xls\" ] || [ \${j} == \"docx\" ] || [ \${j} == \"pptx\" ] || [ \${j} == \"xlsx\" ] || [ \${j} == \"txt\" ] || [ \${j} == \"pps\" ] || [ \${j} == \"ppsx\" ] || [ \${j} == \"odt\" ] ; then/g" $dest # done by libreoffice
+cp $dest $orig
+
+orig=$HOME/$ngnx/webroot/cloud/.custom.js
+dest=$tmpdir/tmp
+echo "$(basename $0) : updating ${orig}..."
+cp $orig $dest
+n=$(cat $dest | grep -n  \<\!--\ ENTRY02 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s|.*|var imgformats = [\"jpg\", \"jpeg\", \"png\", \"bmp\", \"tif\", \"gif\", \"fpx\", \"pcd\", \"svg\", \"pdf\", \"doc\", \"ppt\", \"xls\", \"docx\", \"pptx\", \"xlsx\", \"txt\", \"ppsx\", \"pps\", \"jfif\", \"odt\"];|g" $dest # all
+n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s/.*/if (fileExt == \"pdf\" || fileExt == \"doc\" || fileExt == \"ppt\" || fileExt == \"xls\" || fileExt == \"txt\" || fileExt == \"docx\" || fileExt == \"pptx\" || fileExt == \"xlsx\" || fileExt == \"ppsx\" || fileExt == \"pps\" || fileExt == \"odt\" ) {/g" $dest # docs
+n=$(cat $dest | grep -n  \<\!--\ ENTRY04 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s/.*/if (fileExt == \"pdf\" || fileExt == \"doc\" || fileExt == \"ppt\" || fileExt == \"xls\" || fileExt == \"txt\" || fileExt == \"docx\" || fileExt == \"pptx\" || fileExt == \"xlsx\" || fileExt == \"ppsx\" || fileExt == \"pps\" || fileExt == \"odt\" ) {/g" $dest # docs
+cp $dest $orig
+
+# update server scripts for all users
 mkdir -p $tmpdir/$srv ; mkdir -p $tmpdir/$clnt
 for user in $users ; do
     echo "$(basename $0) : updating user ${user}..."

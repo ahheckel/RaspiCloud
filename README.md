@@ -8,7 +8,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
   No 'rooting' of android devices is required.
 - *lightweight:* based on *OpenSSH*, linux tools *rsync*, *cron* & bash scripts
 - *secure:* using key-based encryption
-- *generic:* sftp access supported by many file browsers (incl. Windows10 Explorer)
+- *generic:* sftp-access supported by many file browsers (incl. Windows10 Explorer)
 - *convenient:* tls/ssl-encrypted web interface with instant search and image gallery functions for mobile browsing (see screenshots)
 - *cross-platform:* client-side linux environment available on many platforms
 - *quick-install:* using command line script (~10 min)

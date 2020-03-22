@@ -95,7 +95,7 @@ sed -i "${n}s|.*|var x = 1;|g" $dest
       sed -i "${n}s|.*|        <xsl:sort order=\"ascending\" select=\"translate\(., 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')\"/>|g" $dest
       sed -i "s|/cloud/.icons|/cloud/guest/.icons|g" $dest
       
-      echo ""
+      echo "--------------------------"
 
 for file in custom gal ; do
       orig=$tmpdir/$file
@@ -187,7 +187,7 @@ for file in custom gal ; do
       cp $xsltdir/${file}02.xslt $xsltdir/${file}.xslt
 done
       
-      echo ""
+      echo "--------------------------"
       
 #js
       #gal.js

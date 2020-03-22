@@ -1,3 +1,0 @@
-Space in sync folders
-Javascript gal und custom.js
-automatize extension handling

@@ -22,7 +22,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
 - imagemagick (v6) and libreoffice (v5) for server-side thumbnail generation
 - client requires termux (tested on android 7/8) or cygwin (windows) environment
 
-  https://play.google.com/store/apps/details?id=com.termux&hl=en  
+  https://play.google.com/store/apps/details?id=com.termux  
   https://cygwin.com/
 - a file manager with ssh support on the client (e.g. mxeplorer, solidexplorer and others under android support key-based authentication, see google playstore)
 - a standard webbrowser on the client (e.g. firefox, opera, chrome)
@@ -54,7 +54,7 @@ geany v1.29 under Raspian Stretch
 Download and extract zipped repository in pi's home directory *(/home/pi)*, and mount USB harddisk 
 to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
 
-### Install Client:
+### Install RaspiCloud Client:
   **On Android Client:**
   - install Termux app (see google playstore).
   - open Termux console and install openssh:

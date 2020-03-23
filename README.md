@@ -4,7 +4,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
 ## Features
   Syncs client directories automatically to private cloud storage with
   on-the-fly categorization of synced files (audio, video, documents and pictures)
-  and thumbnail generation. Guest access possible.
+  and thumbnail generation. Prints documents remotely via CUPS. Guest access possible.
   No 'rooting' of android devices is required.
 - *lightweight:* based on *OpenSSH*, linux tools *rsync*, *cron* & bash scripts
 - *secure:* using key-based encryption
@@ -17,6 +17,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
 ## Requirements
 - linux server (tested with Raspian Stretch/Buster on a Raspberry Pi 3b+) 
 - nginx web server (v1.10.3) and OpenSSH server (v7.4)
+- CUPS server (v2.2.10) 
 - NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the Raspberry Pi)
 - imagemagick (v6) and libreoffice (v5) for server-side thumbnail generation
 - client requires termux (tested on android 7/8) or cygwin (windows) environment
@@ -83,7 +84,20 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
   
   **On Client:**  
   - go to *https://IP-ADDRESS/cloud/USER*, enter *USER*'s credentials and browse your cloud.
+
+### Install CUPS:
+  **On Raspbian Server:**
+  - open a terminal and make install-script executable:
+  
+    ```chmod +x ./RaspiCloud-master/nginx/install_cups.sh```
+  
+  - execute it: 
     
+    ```./RaspiCloud-master/nginx/install_cups.sh``` 
+  
+  **On Client:**  
+  - install a cups printing service (e.g., CUPS Printing for android clients: https://play.google.com/store/apps/details?id=io.github.benoitduffez.cupsprint)
+
   
 ## Screenshots
 <table>

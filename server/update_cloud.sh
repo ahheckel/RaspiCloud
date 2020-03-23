@@ -31,7 +31,7 @@ ngnx=$pfld/nginx/webroot/cloud
 admin="$(whoami)" # this script should be run by the admin user
 files="$srv/updatedb.sh $srv/_updatedb.sh $srv/parsefiles2link.sh $srv/create_thumbs.sh $srv/_create_thumbs.sh $clnt/runscrpt.sh"
 
-#update file extension handling
+#update file extension handling (to apply web-related changes execute nginx_install.sh afterwards)
 orig=$HOME/$srv/parsefiles2link.sh
 if [ ! -f $orig ] ; then echo "$(basename $0) : $orig not found - exiting..." ; exit 1 ; fi
 dest=$tmpdir/tmp

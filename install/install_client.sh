@@ -167,7 +167,11 @@ if [ x"$grp" != x"www-data" ]; then
   echo "adding user 'www-data' to group '$grp' on server..."
   ssh -i $key ${admin}@${ip} "sudo adduser www-data $grp"
 fi
+echo "--------------------------"  
+echo "reloading webserver if applicable..."
+ssh -i $key ${admin}@${ip} "sudo service nginx reload 2>/dev/null"
 
+  
 #create user's keys
 echo "--------------------------"
 echo "Create user's ssh-keypair..."

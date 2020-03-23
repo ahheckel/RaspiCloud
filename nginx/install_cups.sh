@@ -16,6 +16,11 @@ function checkyn {
     echo "x"
   fi
 }
+function currentpath {
+  cd $(dirname $0)
+  echo $(pwd)
+  cd - 1>/dev/null # go back
+}
 function savfile {
   local file="$1"
   if [ -f "$file" ]; then
@@ -46,16 +51,16 @@ read -e -p "CUPS admin user:  "  -i "$(whoami)" admin
 read -e -p "allowed ip-range: "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
 
 echo "--------------------------"
-echo "Install packages..."
+echo "CUPS: Install packages..."
 echo "--------------------------"
 sudo apt-get install cups usbutils
 echo "--------------------------"
-echo "Create CUPS admin user..."
+echo "CUPS: Create admin user..."
 echo "--------------------------"
 sudo adduser $admin
 sudo adduser $admin lpadmin
 echo "--------------------------"
-echo "Adapt config..."
+echo "CUPS: Adapt config..."
 echo "--------------------------"
 conf=/etc/cups/cupsd.conf
 if [ ! -f $conf ] ; then
@@ -66,7 +71,7 @@ savfile $conf
 orig=$conf
 dest=$tmpdir/t
 echo "$(basename $0) : adapting $orig..."
-cp $orig $dest
+sudo cp $orig $dest && sudo chmod 777 $dest
 
 sed -i '/#inserted by RaspiCloud/d' $dest
 
@@ -88,7 +93,9 @@ sed -i '/Port 631/d' $dest
 sed -i "$ a #inserted by RaspiCloud" $dest
 sed -i "$ a Port 631" $dest
 
-sudo cp -v $dest $orig
+sudo cp -v $dest $orig && sudo chmod 644 $orig
+sudo ln -sfn $orig $(currentpath)/cupsd.conf
+
 echo "--------------------------"
 echo "restarting CUPS..."
 sudo service cups restart

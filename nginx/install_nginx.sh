@@ -149,6 +149,15 @@ echo "Restarting nginx..."
 echo "--------------------------"
 sudo service nginx restart
 
+#echo "--------------------------"
+echo "Install common unix printing system (CUPS)..."
+echo "--------------------------"
+read -p "Install ? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+  chmod +x $(dirname $0)/install_cups.sh
+  $(dirname $0)/install_cups.sh
+fi
+
 echo "--------------------------"
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)
 echo "$(basename $0) : finished. - $(date) ($elapsed sec elapsed)"

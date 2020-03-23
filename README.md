@@ -2,7 +2,7 @@
 Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encrypted Web Interface.
 
 ## Features
-  Syncs client directories automatically to private cloud storage with
+  Syncs client directories automatically to private network access storage (NAS) with
   on-the-fly categorization of synced files (audio, video, documents and pictures)
   and thumbnail generation. Prints documents remotely via CUPS. Guest access possible.
   No 'rooting' of android devices is required.
@@ -17,7 +17,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
 ## Requirements
 - linux server (tested with Raspian Stretch/Buster on a Raspberry Pi 3b+) 
 - nginx web server (v1.10.3) and OpenSSH server (v7.4)
-- CUPS server (v2.2.10) 
+- CUPS server (v2.2.10) for remote printing
 - NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the Raspberry Pi)
 - imagemagick (v6) and libreoffice (v5) for server-side thumbnail generation
 - client requires termux (tested on android 7/8) or cygwin (windows) environment

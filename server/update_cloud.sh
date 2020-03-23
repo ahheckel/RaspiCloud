@@ -27,12 +27,13 @@ cd - 1>/dev/null
 #def vars
 srv=$pfld/server
 clnt=$pfld/client
-ngnx=$pfld/nginx
+ngnx=$pfld/nginx/webroot/cloud
 admin="$(whoami)" # this script should be run by the admin user
 files="$srv/updatedb.sh $srv/_updatedb.sh $srv/parsefiles2link.sh $srv/create_thumbs.sh $srv/_create_thumbs.sh $clnt/runscrpt.sh"
 
 #update file extension handling
 orig=$HOME/$srv/parsefiles2link.sh
+if [ ! -f $orig ] ; then echo "$(basename $0) : $orig not found - exiting..." ; exit 1 ; fi
 dest=$tmpdir/tmp
 echo "$(basename $0) : updating ${orig}..."
 cp $orig $dest
@@ -51,6 +52,7 @@ sed -i "${n}s|.*|      for j in  mp4 mov m4v f4v f4a m4r f4b 3gp ogx ogv wmv asf
 cp $dest $orig
 
 orig=$HOME/$srv/create_thumbs.sh
+if [ ! -f $orig ] ; then echo "$(basename $0) : $orig not found - exiting..." ; exit 1 ; fi
 dest=$tmpdir/tmp
 echo "$(basename $0) : updating ${orig}..."
 cp $orig $dest
@@ -62,7 +64,8 @@ n=$[$n+1]
 sed -i "${n}s/.*/        elif [ \${j} == \"doc\" ] || [ \${j} == \"ppt\" ] || [ \${j} == \"xls\" ] || [ \${j} == \"docx\" ] || [ \${j} == \"pptx\" ] || [ \${j} == \"xlsx\" ] || [ \${j} == \"txt\" ] || [ \${j} == \"pps\" ] || [ \${j} == \"ppsx\" ] || [ \${j} == \"odt\" ] ; then/g" $dest # done by libreoffice
 cp $dest $orig
 
-orig=$HOME/$ngnx/webroot/cloud/.custom.js
+orig=$HOME/$ngnx/.custom.js
+if [ ! -f $orig ] ; then echo "$(basename $0) : $orig not found - exiting..." ; exit 1 ; fi
 dest=$tmpdir/tmp
 echo "$(basename $0) : updating ${orig}..."
 cp $orig $dest
@@ -80,7 +83,7 @@ cp $dest $orig
 # update server scripts for all users
 mkdir -p $tmpdir/$srv ; mkdir -p $tmpdir/$clnt
 for user in $users ; do
-    echo "$(basename $0) : updating user ${user}..."
+    echo "$(basename $0) : updating cloud-user ${user}..."
     if [ ! -d /home/$user ] ; then echo "$(basename $0) : /home/$user not found - continuing..." ; continue ; fi
     sudo mkdir -p /home/$user/$srv ; sudo mkdir -p /home/$user/$clnt
     sudo chown ${user}:${user} /home/$user/$srv /home/$user/$clnt

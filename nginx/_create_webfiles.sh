@@ -7,6 +7,11 @@ function finish {
 	    cd "$wdir"
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM 
+
+function getownip {
+  ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
+}
+
 SAVEIFS=$IFS
 IFS=$(echo -en "\n\b")
 
@@ -15,7 +20,7 @@ cd $(dirname $0)/
 wdir0=$(pwd)
 cd - 1>/dev/null
 
-webroot="$1"
+cloudroot="$1"
 xsltdir="$wdir0/xslt"
 orig_xsl="$xsltdir/template.xslt"
 orig_js="$wdir0/webroot/cloud/.custom.js"
@@ -28,15 +33,16 @@ fi
 if [ ! -f $orig_xsl ] ; then
   echo "$(basename $0) : $orig_xsl does not exist - exiting..." ; exit 1
 fi
-if [ ! -d $webroot ] ; then
-  echo "$(basename $0) : $webroot does not exist - exiting..." ; exit 1
+if [ ! -d $cloudroot ] ; then
+  echo "$(basename $0) : $cloudroot does not exist - exiting..." ; exit 1
 fi
 if [ ! -f $orig_js ] ; then
   echo "$(basename $0) : $orig_js does not exist - exiting..." ; exit 1
 fi
-users=$(ls -1p $webroot | grep /$ | rev | cut -c 2- | rev | grep -v guest)
+users=$(ls -1p $cloudroot | grep /$ | rev | cut -c 2- | rev | grep -v guest)
 echo "$(basename $0) : detected users for dropdown-list:"
 for i in $users ; do echo "    $i" ; done
+echo "--------------------------"
 
 #custom.xslt
 dest=$tmpdir/custom
@@ -123,7 +129,7 @@ for file in custom gal ; do
       #01 dropdown
       n=$(cat $dest | grep -n  \<\!--\ ENTRY05 | cut -d : -f 1)
       n=$[$n+1]
-      sed -i "${n}i <a href=\"http://www.google.com\">Google</a>" $dest
+      sed -i "${n}i <a href=\"http://$(getownip):631\">CUPS</a>" $dest
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
       for user in $users ; do       
@@ -151,7 +157,7 @@ for file in custom gal ; do
       #02 dropdown
       n=$(cat $dest | grep -n  \<\!--\ ENTRY05 | cut -d : -f 1)
       n=$[$n+1]
-      sed -i "${n}i <a href=\"http://www.google.com\">Google</a>" $dest
+      sed -i "${n}i <a href=\"http://$(getownip):631\">CUPS</a>" $dest
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
       for user in $users ; do       
@@ -179,7 +185,7 @@ for file in custom gal ; do
       #03 dropdown
       n=$(cat $dest | grep -n  \<\!--\ ENTRY05 | cut -d : -f 1)
       n=$[$n+1]
-      sed -i "${n}i <a href=\"http://www.google.com\">Google</a>" $dest
+      sed -i "${n}i <a href=\"http://$(getownip):631\">CUPS</a>" $dest
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
       for user in $users ; do       
@@ -208,6 +214,6 @@ done
       echo "$(basename $0) : creating $dest..."
       cp $orig $dest
 
-
+echo "--------------------------"
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)
 echo "$(basename $0) : finished. - $(date) ($elapsed sec elapsed)"

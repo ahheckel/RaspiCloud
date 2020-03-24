@@ -37,7 +37,7 @@ fi
 
 # convert
 # <!-- ENTRY01 -->
-for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt ; do 
+for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt avi wmv mp4 ; do 
 #for j in jpeg jpg png gif webp tif tiff psd bmp pdf jfif ; do # because of libreoffice convert bug
 	if [ x"$ext" == "x${j}" ] ; then
 		echo "$(basename $0) : creating thumbnail for ${dirn}/${file}..."
@@ -65,6 +65,19 @@ for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx t
 				else
 						soffice  --headless --invisible --convert-to png "${dirn}/${file}" --outdir $tmpdir/
 						convert -thumbnail x${res_pdf} -background white -alpha remove $tmpdir/"${file%.*}.png"[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
+				fi
+		# <!-- ENTRY03 -->		
+		elif [ ${j} == "mp4" ] || [ ${j} == "avi" ] || [ ${j} == "wmv" ] ; then
+				if [ -f ${dirn}/.thumbs/${file} ] ; then
+					if [ $ow -eq 1 ] ; then
+						ffmpeg -an -ss 10 -i "${dirn}/${file}" -vframes 1 -vf "scale=-1:${res_img}" -f image2 -y $tmpdir/t.jpg
+						mv $tmpdir/t.jpg ${dirn}/.thumbs/${file}
+					else
+						echo "$(basename $0) : thumbnail for ${dirn}/${file} already exists - is not overwritten..."
+					fi
+				else
+				    ffmpeg -an -ss 10 -i "${dirn}/${file}" -vframes 1 -vf "scale=-1:${res_img}" -f image2 -y $tmpdir/t.jpg
+					mv $tmpdir/t.jpg ${dirn}/.thumbs/${file}
 				fi	
 		else
 			if [ -f ${dirn}/.thumbs/${file} ] ; then

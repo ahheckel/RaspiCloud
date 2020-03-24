@@ -58,10 +58,13 @@ echo "$(basename $0) : updating ${orig}..."
 cp $orig $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s|.*|for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt ; do|g" $dest # all 2 thumbnail
+sed -i "${n}s|.*|for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt avi wmv mp4 ; do|g" $dest # all 2 thumbnail
 n=$(cat $dest | grep -n  \<\!--\ ENTRY02 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s/.*/        elif [ \${j} == \"doc\" ] || [ \${j} == \"ppt\" ] || [ \${j} == \"xls\" ] || [ \${j} == \"docx\" ] || [ \${j} == \"pptx\" ] || [ \${j} == \"xlsx\" ] || [ \${j} == \"txt\" ] || [ \${j} == \"pps\" ] || [ \${j} == \"ppsx\" ] || [ \${j} == \"odt\" ] ; then/g" $dest # done by libreoffice
+n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
+n=$[$n+1]
+sed -i "${n}s/.*/        elif [ \${j} == \"avi\" ] || [ \${j} == \"wmv\" ] || [ \${j} == \"mp4\" ] ; then/g" $dest # done by ffmpeg
 cp $dest $orig
 
 orig=$HOME/$ngnx/.custom.js
@@ -71,13 +74,13 @@ echo "$(basename $0) : updating ${orig}..."
 cp $orig $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY02 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s|.*|var imgformats = [\"jpg\", \"jpeg\", \"png\", \"bmp\", \"tif\", \"gif\", \"fpx\", \"pcd\", \"svg\", \"pdf\", \"doc\", \"ppt\", \"xls\", \"docx\", \"pptx\", \"xlsx\", \"txt\", \"ppsx\", \"pps\", \"jfif\", \"odt\"];|g" $dest # all
+sed -i "${n}s|.*|var imgformats = [\"jpg\", \"jpeg\", \"png\", \"bmp\", \"tif\", \"gif\", \"fpx\", \"pcd\", \"svg\", \"pdf\", \"doc\", \"ppt\", \"xls\", \"docx\", \"pptx\", \"xlsx\", \"txt\", \"ppsx\", \"pps\", \"jfif\", \"odt\", \"wmv\", \"mp4\", \"avi\"];|g" $dest # all
 n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s/.*/if (fileExt == \"pdf\" || fileExt == \"doc\" || fileExt == \"ppt\" || fileExt == \"xls\" || fileExt == \"txt\" || fileExt == \"docx\" || fileExt == \"pptx\" || fileExt == \"xlsx\" || fileExt == \"ppsx\" || fileExt == \"pps\" || fileExt == \"odt\" ) {/g" $dest # docs
+sed -i "${n}s/.*/if (fileExt == \"pdf\" || fileExt == \"doc\" || fileExt == \"ppt\" || fileExt == \"xls\" || fileExt == \"txt\" || fileExt == \"docx\" || fileExt == \"pptx\" || fileExt == \"xlsx\" || fileExt == \"ppsx\" || fileExt == \"pps\" || fileExt == \"odt\" || fileExt == \"wmv\" || fileExt == \"mp4\" || fileExt == \"avi\" ) {/g" $dest # docs & vids
 n=$(cat $dest | grep -n  \<\!--\ ENTRY04 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s/.*/if (fileExt == \"pdf\" || fileExt == \"doc\" || fileExt == \"ppt\" || fileExt == \"xls\" || fileExt == \"txt\" || fileExt == \"docx\" || fileExt == \"pptx\" || fileExt == \"xlsx\" || fileExt == \"ppsx\" || fileExt == \"pps\" || fileExt == \"odt\" ) {/g" $dest # docs
+sed -i "${n}s/.*/if (fileExt == \"pdf\" || fileExt == \"doc\" || fileExt == \"ppt\" || fileExt == \"xls\" || fileExt == \"txt\" || fileExt == \"docx\" || fileExt == \"pptx\" || fileExt == \"xlsx\" || fileExt == \"ppsx\" || fileExt == \"pps\" || fileExt == \"odt\" || fileExt == \"wmv\" || fileExt == \"mp4\" || fileExt == \"avi\" ) {/g" $dest # docs & vids
 cp $dest $orig
 
 # update server scripts for all users

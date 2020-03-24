@@ -125,7 +125,7 @@ if [ $(checkyn) != x"n" ]; then
   mkdir -p $HOME/.termux
   ln -snf $HOME/.shortcuts $HOME/.termux/tasker
   cp ${localinstall}/bashrc $HOME/.bashrc
-  cp ${localinstall}/bash_profile $HOME/.bash_profile
+  #cp ${localinstall}/bash_profile $HOME/.bash_profile
   echo "--------------------------"
   echo "executing termux-setup-storage..."
   echo "--------------------------"

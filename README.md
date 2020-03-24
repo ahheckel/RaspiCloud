@@ -8,8 +8,8 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
   No 'rooting' of android devices is required.
 - *lightweight:* based on *OpenSSH*, linux tools *rsync*, *cron* & bash scripts
 - *secure:* using key-based encryption
-- *generic:* sftp-access supported by many file browsers (incl. Windows10 Explorer)
 - *convenient:* tls/ssl-encrypted web interface with instant search and image gallery functions for mobile browsing (see screenshots)
+- *generic:* sftp-access supported by many file browsers (incl. Windows10 Explorer)
 - *cross-platform:* client-side linux environment available on many platforms
 - *quick-install:* using command line script (~10 min)
 - *low cost:* using Raspberry-Pi as server with standard USB drive as network access storage (NAS)
@@ -19,7 +19,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
 - nginx web server (v1.10.3) and OpenSSH server (v7.4)
 - CUPS server (v2.2.10) for remote printing
 - NAS storage (tested with low cost 2.5 inch portbale, ext4-formatted USB-Harddisk attached to the Raspberry Pi)
-- imagemagick (v6) and libreoffice (v5) for server-side thumbnail generation
+- imagemagick (v6), libreoffice (v5) & ffmpeg (v3.2.14) for server-side thumbnail generation
 - client requires termux (tested on android 7/8) or cygwin (windows) environment
 
   https://play.google.com/store/apps/details?id=com.termux  
@@ -82,7 +82,7 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
     
     ```./RaspiCloud-master/nginx/install_nginx.sh```
   
-  **On Client:**  
+  **On the Client:**  
   - go to *https://IP-ADDRESS/cloud/USER*, enter *USER*'s credentials and browse your cloud.
 
 ### Install CUPS:
@@ -94,8 +94,10 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
   - execute it: 
     
     ```./RaspiCloud-master/nginx/install_cups.sh``` 
+    
+  - install printers using the CUPS-webinterface
   
-  **On Client:**  
+  **On the Client:**  
   - install a cups printing service (e.g., CUPS Printing for android clients: https://play.google.com/store/apps/details?id=io.github.benoitduffez.cupsprint)
 
   

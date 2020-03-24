@@ -229,7 +229,6 @@ read -p "Press enter to continue..."
 remauth;
 remkeys;
 
-echo " "
 echo "--------------------------"
 echo "...type 'exit' & restart Termux"
 echo "(consider enabling 'WakeLock')."

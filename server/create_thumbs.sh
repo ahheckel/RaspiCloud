@@ -70,13 +70,17 @@ for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx t
 		elif [ ${j} == "mp4" ] || [ ${j} == "avi" ] || [ ${j} == "wmv" ] ; then
 				if [ -f ${dirn}/.thumbs/${file} ] ; then
 					if [ $ow -eq 1 ] ; then
-						ffmpeg -an -ss 10 -i "${dirn}/${file}" -vframes 1 -vf "scale=-1:${res_img}" -f image2 -y $tmpdir/t.jpg
+						ss=10 ; vdur=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${dirn}/${file}" | cut -d . -f 1)
+						if [ $vdur -lt 15 ] ; then ss=1 ; else ss=10 ; fi
+						ffmpeg -an -ss $ss -i "${dirn}/${file}" -vframes 1 -vf "scale=-1:${res_img}" -f image2 $tmpdir/t.jpg
 						mv $tmpdir/t.jpg ${dirn}/.thumbs/${file}
 					else
 						echo "$(basename $0) : thumbnail for ${dirn}/${file} already exists - is not overwritten..."
 					fi
 				else
-				    ffmpeg -an -ss 10 -i "${dirn}/${file}" -vframes 1 -vf "scale=-1:${res_img}" -f image2 -y $tmpdir/t.jpg
+				    ss=10 ; vdur=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${dirn}/${file}" | cut -d . -f 1)
+					if [ $vdur -lt 15 ] ; then ss=1 ; else ss=10 ; fi
+					ffmpeg -an -ss $ss -i "${dirn}/${file}" -vframes 1 -vf "scale=-1:${res_img}" -f image2 $tmpdir/t.jpg
 					mv $tmpdir/t.jpg ${dirn}/.thumbs/${file}
 				fi	
 		else

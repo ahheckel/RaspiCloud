@@ -77,7 +77,7 @@ for i in $(cat $tmpdir/list) ; do
 		  elif [ ! -f "$_dir/$i" ] && [ $(cat $tmpdir/${categ}.inode | grep $inode | wc -l) -ne 0 ] ; then
 			continue
 		  else
-			ln -vf "$i" "$_dir" ;	
+			ln -vf "$i" "$_dir" ;
 		  fi
 	    fi
       done
@@ -133,7 +133,8 @@ for i in $(cat $tmpdir/list) ; do
 		  elif [ ! -f "$_dir/$i" ] && [ $(cat $tmpdir/${categ}.inode | grep $inode | wc -l) -ne 0 ] ; then
 			continue
 		  else
-			ln -vf "$i" "$_dir" ;	
+			ln -vf "$i" "$_dir" ;
+			$(dirname $0)/create_thumbs.sh "$i"
 		  fi
 	    fi
       done

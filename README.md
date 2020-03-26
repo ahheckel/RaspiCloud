@@ -51,7 +51,8 @@ geany v1.29 under Raspian Stretch
 - bourne-shell
 
 ## Installation
-Download and extract zipped repository in pi's home directory *(/home/pi)*, and mount USB harddisk 
+- Download and install Raspian for Raspberry Pi (see https://www.raspberrypi.org/downloads/raspbian)
+- Download and extract zipped repository in pi's home directory *(/home/pi)*, and mount USB harddisk 
 to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
 
 ### Install RaspiCloud Client:

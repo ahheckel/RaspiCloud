@@ -74,13 +74,13 @@ echo "$(basename $0) : updating ${orig}..."
 cp $orig $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY02 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s|.*|var imgformats = [\"jpg\", \"jpeg\", \"png\", \"bmp\", \"tif\", \"gif\", \"fpx\", \"pcd\", \"svg\", \"pdf\", \"doc\", \"ppt\", \"xls\", \"docx\", \"pptx\", \"xlsx\", \"txt\", \"ppsx\", \"pps\", \"jfif\", \"odt\", \"wmv\", \"mp4\", \"avi\"];|g" $dest # all
+sed -i "${n}s|.*|var imgformats = [\"jpg\", \"jpeg\", \"png\", \"bmp\", \"tif\", \"tiff\", \"gif\", \"fpx\", \"pcd\", \"svg\", \"pdf\", \"doc\", \"ppt\", \"xls\", \"docx\", \"pptx\", \"xlsx\", \"txt\", \"ppsx\", \"pps\", \"jfif\", \"odt\", \"wmv\", \"mp4\", \"avi\"];|g" $dest # all
 n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s/.*/if (fileExt == \"pdf\" || fileExt == \"doc\" || fileExt == \"ppt\" || fileExt == \"xls\" || fileExt == \"txt\" || fileExt == \"docx\" || fileExt == \"pptx\" || fileExt == \"xlsx\" || fileExt == \"ppsx\" || fileExt == \"pps\" || fileExt == \"odt\" || fileExt == \"wmv\" || fileExt == \"mp4\" || fileExt == \"avi\" ) {/g" $dest # docs & vids
+sed -i "${n}s/.*/if (fileExt == \"jpg\" || fileExt == \"jpeg\" || fileExt == \"jfif\" || fileExt == \"png\" || fileExt == \"bmp\" || fileExt == \"tif\" || fileExt == \"tiff\" || fileExt == \"gif\" || fileExt == \"fpx\" || fileExt == \"pcd\" || fileExt == \"svg\" ) {/g" $dest # pics
 n=$(cat $dest | grep -n  \<\!--\ ENTRY04 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s/.*/if (fileExt == \"pdf\" || fileExt == \"doc\" || fileExt == \"ppt\" || fileExt == \"xls\" || fileExt == \"txt\" || fileExt == \"docx\" || fileExt == \"pptx\" || fileExt == \"xlsx\" || fileExt == \"ppsx\" || fileExt == \"pps\" || fileExt == \"odt\" || fileExt == \"wmv\" || fileExt == \"mp4\" || fileExt == \"avi\" ) {/g" $dest # docs & vids
+sed -i "${n}s/.*/if (fileExt == \"jpg\" || fileExt == \"jpeg\" || fileExt == \"jfif\" || fileExt == \"png\" || fileExt == \"bmp\" || fileExt == \"tif\" || fileExt == \"tiff\" || fileExt == \"gif\" || fileExt == \"fpx\" || fileExt == \"pcd\" || fileExt == \"svg\" ) {/g" $dest # pics
 cp $dest $orig
 
 # update server scripts for all users

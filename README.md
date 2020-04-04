@@ -12,7 +12,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
 - *generic:* sftp-access supported by many file browsers (incl. Windows10 Explorer)
 - *cross-platform:* client-side linux environment available on many platforms
 - *quick-install:* using command line script (~10 min)
-- *low cost:* using Raspberry-Pi as server with standard USB drive as network access storage (NAS)
+- *low cost:* using Raspberry-Pi as server and standard USB drive as network access storage (NAS)
 
 ## Requirements
 - linux server (tested with Raspian Stretch/Buster on a Raspberry Pi 3b+) 
@@ -52,7 +52,7 @@ geany v1.29 under Raspian Stretch
 
 ## Installation
 - Download and install Raspian for Raspberry Pi (see https://www.raspberrypi.org/downloads/raspbian)
-- Download and extract zipped repository in pi's home directory *(/home/pi)*, and mount USB harddisk 
+- Download and extract zipped project-repository in pi's home directory *(/home/pi)*, and mount USB harddisk 
 to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
 
 ### Install RaspiCloud Client:

@@ -163,8 +163,7 @@ var imgiter_prev = imgiter - 1;
 var imgiter_next = imgiter + 1;
 var isimg = 0;
 // <!-- ENTRY02 -->
-var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif", "odt"];
-//var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "gif", "fpx", "pcd", "svg", "pdf", "jfif"]; //because of libreoffice convert bug under raspbian buster 
+var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "tiff", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif", "odt"];
 var fileExt;
 var imgiter = 0;
 var lastobj;
@@ -273,10 +272,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         a.children[1].style.backgroundColor = "#202020";
                         // <!-- ENTRY03 -->                        
-                        if (fileExt == "pdf" || fileExt == "doc" || fileExt == "ppt" || fileExt == "xls" || fileExt == "txt" || fileExt == "docx" || fileExt == "pptx" || fileExt == "xlsx" || fileExt == "ppsx" || fileExt == "pps" || fileExt == "odt" ) {
-                                img_href = href_thumb;
-                        } else {
+                        if (fileExt == "jpg" || fileExt == "jpeg" || fileExt == "jfif" || fileExt == "png" || fileExt == "bmp" || fileExt == "tif" || fileExt == "tiff" || fileExt == "gif" || fileExt == "fpx" || fileExt == "pcd" || fileExt == "svg" ) {
                                 img_href = href_full;
+                        } else {
+                                img_href = href_thumb;
                         }
                         if ( n_files < 6 ) {
                                 thumb_src = "src";
@@ -352,11 +351,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         $("a.high5").each(function(){
                                 href = $(this).attr('href');
                                 hrefsplit = href.split(".");
-								fileExt = hrefsplit[hrefsplit.length - 1].toLowerCase();
-								for (var i = 0; i < imgformats.length; i++) {
-									if (fileExt == imgformats[i].toLowerCase()) {
-																isimg = 1;
-																break;
+                                fileExt = hrefsplit[hrefsplit.length - 1].toLowerCase();
+				for (var i = 0; i < imgformats.length; i++) {
+                                if (fileExt == imgformats[i].toLowerCase()) {
+                                        isimg = 1;
+                                        break;
 									}
                                 }
                                 if (isimg == 1){
@@ -375,10 +374,10 @@ document.addEventListener("DOMContentLoaded", function() {
                                                         obj.children("img.cssbox_thumb").attr("data-src", href_thumb);
                                                 }
                                                 // <!-- ENTRY04 -->
-                                                if (fileExt == "pdf" || fileExt == "doc" || fileExt == "ppt" || fileExt == "xls" || fileExt == "txt" || fileExt == "docx" || fileExt == "pptx" || fileExt == "xlsx" || fileExt == "ppsx" || fileExt == "pps" || fileExt == "odt" ) {
-                                                        obj.children("span.cssbox_full").children("img.img_full").attr("data-src", href_thumb);
-                                                } else { 
+                                                if (fileExt == "jpg" || fileExt == "jpeg" || fileExt == "jfif" || fileExt == "png" || fileExt == "bmp" || fileExt == "tif" || fileExt == "tiff" || fileExt == "gif" || fileExt == "fpx" || fileExt == "pcd" || fileExt == "svg" ) {
                                                         obj.children("span.cssbox_full").children("img.img_full").attr("data-src", href_full);
+                                                } else { 
+                                                        obj.children("span.cssbox_full").children("img.img_full").attr("data-src", href_thumb);
                                                 }
                                                 obj.attr("id", "image" + imgiter).attr("href", "#image" + imgiter);
                                                 if (imgiter_prev == -1) {

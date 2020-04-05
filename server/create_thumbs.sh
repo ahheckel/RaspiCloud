@@ -8,6 +8,25 @@ function finish {
 	    cd "$wdir"
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM 
+function pic_thumb {
+        convert ${dirn}/${file} -thumbnail ${res_img} ${dirn}/.thumbs/${file}
+}
+function vid_thumb {
+		ss=10 ; vdur=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${dirn}/${file}" | cut -d . -f 1)
+		if [ $vdur -lt 12 ] ; then ss=1 ; else ss=10 ; fi
+		ffmpeg -an -ss $ss -i "${dirn}/${file}" -vframes 1 -vf "scale=-1:${res_img}" -f image2 $tmpdir/t.jpg
+		mv $tmpdir/t.jpg ${dirn}/.thumbs/${file} &>/dev/null
+}
+function doc_thumb {
+		soffice  --headless --invisible --convert-to png "${dirn}/${file}" --outdir $tmpdir/
+		#convert -thumbnail x${res_pdf} -background white -alpha remove :$tmpdir/"${file%.*}.png"[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
+		convert -thumbnail x${res_pdf} -background white -alpha remove $tmpdir/"${file%.*}.png"[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # under raspbian buster, the colon leads to error
+}
+function pdf_thumb {
+		#convert -thumbnail x${res_pdf} -background white -alpha remove :${dirn}/${file}[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
+		convert -thumbnail x${res_pdf} -background white -alpha remove ${dirn}/${file}[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # under raspbian buster, the colon leads to error
+}
+
 SAVEIFS=$IFS
 IFS=$(echo -en "\n\b")
 
@@ -37,61 +56,51 @@ fi
 
 # convert
 # <!-- ENTRY01 -->
-for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt avi wmv mp4 ; do 
+for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt avi wmv mp4 3gp ; do 
 #for j in jpeg jpg png gif webp tif tiff psd bmp pdf jfif ; do # because of libreoffice convert bug
 	if [ x"$ext" == "x${j}" ] ; then
 		echo "$(basename $0) : creating thumbnail for ${dirn}/${file}..."
 		if [ ${j} == "pdf" ] ; then
 			if [ -f ${dirn}/.thumbs/${file} ] ; then
 				if [ $ow -eq 1 ] ; then
-					#convert -thumbnail x${res_pdf} -background white -alpha remove :${dirn}/${file}[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
-					convert -thumbnail x${res_pdf} -background white -alpha remove ${dirn}/${file}[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # under raspbian buster, the colon leads to error
+					pdf_thumb
 				else
 					echo "$(basename $0) : thumbnail for ${dirn}/${file} already exists - is not overwritten..."
 				fi
 			else
-				#convert -thumbnail x${res_pdf} -background white -alpha remove :${dirn}/${file}[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
-				convert -thumbnail x${res_pdf} -background white -alpha remove ${dirn}/${file}[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # under raspbian buster, the colon leads to error
+				pdf_thumb
 			fi
 		# <!-- ENTRY02 -->
-		elif [ ${j} == "doc" ] || [ ${j} == "ppt" ] || [ ${j} == "xls" ] || [ ${j} == "docx" ] || [ ${j} == "pptx" ] || [ ${j} == "xlsx" ] || [ ${j} == "txt" ] || [ ${j} == "pps" ] || [ ${j} == "ppsx" ] || [ ${j} == "odt" ] ; then
+		elif [[ ${j} == +(doc|ppt|xls|docx|pptx|xlsx|txt|pps|ppsx|odt) ]] ; then
 				if [ -f ${dirn}/.thumbs/${file} ] ; then
 					if [ $ow -eq 1 ] ; then
-						soffice  --headless --invisible --convert-to png "${dirn}/${file}" --outdir $tmpdir/
-						convert -thumbnail x${res_pdf} -background white -alpha remove $tmpdir/"${file%.*}.png"[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
+						doc_thumb
 					else
 						echo "$(basename $0) : thumbnail for ${dirn}/${file} already exists - is not overwritten..."
 					fi
 				else
-						soffice  --headless --invisible --convert-to png "${dirn}/${file}" --outdir $tmpdir/
-						convert -thumbnail x${res_pdf} -background white -alpha remove $tmpdir/"${file%.*}.png"[0] ${dirn}/.thumbs/${file}.jpg && mv ${dirn}/.thumbs/${file}.jpg ${dirn}/.thumbs/${file}; # the colon before the filename is necessary, otw. command fails if filename contains a colon...
+					doc_thumb
 				fi
 		# <!-- ENTRY03 -->		
-		elif [ ${j} == "mp4" ] || [ ${j} == "avi" ] || [ ${j} == "wmv" ] ; then
+		elif [[ ${j} == +(mp4|avi|wmv|3gp) ]] ; then
 				if [ -f ${dirn}/.thumbs/${file} ] ; then
 					if [ $ow -eq 1 ] ; then
-						ss=10 ; vdur=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${dirn}/${file}" | cut -d . -f 1)
-						if [ $vdur -lt 15 ] ; then ss=1 ; else ss=10 ; fi
-						ffmpeg -an -ss $ss -i "${dirn}/${file}" -vframes 1 -vf "scale=-1:${res_img}" -f image2 $tmpdir/t.jpg
-						mv $tmpdir/t.jpg ${dirn}/.thumbs/${file}
+						vid_thumb
 					else
 						echo "$(basename $0) : thumbnail for ${dirn}/${file} already exists - is not overwritten..."
 					fi
 				else
-				    ss=10 ; vdur=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${dirn}/${file}" | cut -d . -f 1)
-					if [ $vdur -lt 15 ] ; then ss=1 ; else ss=10 ; fi
-					ffmpeg -an -ss $ss -i "${dirn}/${file}" -vframes 1 -vf "scale=-1:${res_img}" -f image2 $tmpdir/t.jpg
-					mv $tmpdir/t.jpg ${dirn}/.thumbs/${file}
+				    vid_thumb
 				fi	
 		else
 			if [ -f ${dirn}/.thumbs/${file} ] ; then
 				if [ $ow -eq 1 ] ; then
-					convert ${dirn}/${file} -thumbnail ${res_img} ${dirn}/.thumbs/${file}
+					pic_thumb
 				else
 					echo "$(basename $0) : thumbnail already exists - is not overwritten..."
 				fi
 			else
-				convert ${dirn}/${file} -thumbnail ${res_img} ${dirn}/.thumbs/${file}
+				pic_thumb
 			fi
 		fi
 		img=1;
@@ -101,7 +110,7 @@ done
 
 ## done
 #if [ $img -eq 0 ] ; then
-	#echo "$(basename $0) : ...is no image file."
+	#echo "$(basename $0) : ...is not to be processed."
 #fi
 
 

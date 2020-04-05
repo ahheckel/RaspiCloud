@@ -58,13 +58,13 @@ echo "$(basename $0) : updating ${orig}..."
 cp $orig $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY01 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s|.*|for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt avi wmv mp4 ; do|g" $dest # all 2 thumbnail
+sed -i "${n}s|.*|for j in jpeg jpg png gif webp tif tiff psd bmp pdf doc ppt xls docx pptx xlsx txt pps ppsx jfif odt avi wmv mp4 3gp ; do|g" $dest # all 2 thumbnail
 n=$(cat $dest | grep -n  \<\!--\ ENTRY02 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s/.*/        elif [ \${j} == \"doc\" ] || [ \${j} == \"ppt\" ] || [ \${j} == \"xls\" ] || [ \${j} == \"docx\" ] || [ \${j} == \"pptx\" ] || [ \${j} == \"xlsx\" ] || [ \${j} == \"txt\" ] || [ \${j} == \"pps\" ] || [ \${j} == \"ppsx\" ] || [ \${j} == \"odt\" ] ; then/g" $dest # done by libreoffice
+sed -i "${n}s/.*/        elif [[ \${j} == +(doc|ppt|xls|docx|pptx|xlsx|txt|pps|ppsx|odt) ]] ; then/g" $dest # done by libreoffice
 n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s/.*/        elif [ \${j} == \"avi\" ] || [ \${j} == \"wmv\" ] || [ \${j} == \"mp4\" ] ; then/g" $dest # done by ffmpeg
+sed -i "${n}s/.*/        elif [[ \${j} == +(mp4|avi|wmv|3gp) ]] ; then/g" $dest # done by ffmpeg
 cp $dest $orig
 
 orig=$HOME/$ngnx/.custom.js
@@ -74,7 +74,7 @@ echo "$(basename $0) : updating ${orig}..."
 cp $orig $dest
 n=$(cat $dest | grep -n  \<\!--\ ENTRY02 | cut -d : -f 1)
 n=$[$n+1]
-sed -i "${n}s|.*|var imgformats = [\"jpg\", \"jpeg\", \"png\", \"bmp\", \"tif\", \"tiff\", \"gif\", \"fpx\", \"pcd\", \"svg\", \"pdf\", \"doc\", \"ppt\", \"xls\", \"docx\", \"pptx\", \"xlsx\", \"txt\", \"ppsx\", \"pps\", \"jfif\", \"odt\", \"wmv\", \"mp4\", \"avi\"];|g" $dest # all
+sed -i "${n}s|.*|var imgformats = [\"jpg\", \"jpeg\", \"png\", \"bmp\", \"tif\", \"tiff\", \"gif\", \"fpx\", \"pcd\", \"svg\", \"pdf\", \"doc\", \"ppt\", \"xls\", \"docx\", \"pptx\", \"xlsx\", \"txt\", \"ppsx\", \"pps\", \"jfif\", \"odt\", \"wmv\", \"mp4\", \"avi\", \"3gp\"];|g" $dest # all
 n=$(cat $dest | grep -n  \<\!--\ ENTRY03 | cut -d : -f 1)
 n=$[$n+1]
 sed -i "${n}s/.*/if (fileExt == \"jpg\" || fileExt == \"jpeg\" || fileExt == \"jfif\" || fileExt == \"png\" || fileExt == \"bmp\" || fileExt == \"tif\" || fileExt == \"tiff\" || fileExt == \"gif\" || fileExt == \"fpx\" || fileExt == \"pcd\" || fileExt == \"svg\" ) {/g" $dest # pics

@@ -13,7 +13,7 @@ trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 touch $HOME/.$(basename $0).lock
 
 if [ x"$1" == "x" ] ; then 
-    users="user1 user2 user3" 
+    users="" # define user-set here 
 else
     users="$1"
 fi

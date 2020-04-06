@@ -9,7 +9,7 @@ function finish {
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM 
 function pic_thumb {
-        convert ${dirn}/${file} -thumbnail ${res_img} ${dirn}/.thumbs/${file}
+		convert ${dirn}/${file} -thumbnail ${res_img} ${dirn}/.thumbs/${file}
 }
 function vid_thumb {
 		ss=10 ; vdur=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${dirn}/${file}" | cut -d . -f 1)

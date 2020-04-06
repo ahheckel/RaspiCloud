@@ -15,6 +15,8 @@ IFSbak="$IFS"
 IFS="
 "
 
+SCRPTPATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"; SCRPTPATH="$(dirname $SCRPTPATH)" #  absolute path of current script
+
 function issameinode () {
       if [ ! -f "$1" ] ; then
 	    echo "0";
@@ -40,6 +42,7 @@ shift
 if [ x"$1" == "x" ] ; then
       doall=1;
       cd $dir
+      dir="$(pwd)"
       find ./ -maxdepth 1 -type f | cut -d / -f 2- > $tmpdir/list
 else
       doall=0;
@@ -96,7 +99,7 @@ for i in $(cat $tmpdir/list) ; do
 			continue
 		  else
 			ln -vf "$i" "$_dir" ;
-			$(dirname $0)/create_thumbs.sh "$i"
+			$SCRPTPATH/create_thumbs.sh "$i"
 		  fi
 	    fi
       done
@@ -115,7 +118,7 @@ for i in $(cat $tmpdir/list) ; do
 			continue
 		  else
 			ln -vf "$i" "$_dir" ;	
-			$(dirname $0)/create_thumbs.sh "$i"
+			$SCRPTPATH/create_thumbs.sh "$i"
 		  fi
 	    fi
       done
@@ -134,7 +137,7 @@ for i in $(cat $tmpdir/list) ; do
 			continue
 		  else
 			ln -vf "$i" "$_dir" ;
-			$(dirname $0)/create_thumbs.sh "$i"
+			$SCRPTPATH/create_thumbs.sh "$i"
 		  fi
 	    fi
       done
@@ -180,7 +183,7 @@ if [ $doall -eq 1 ] ; then
 		  if [ -f $i/.thumbs/$fname ] ; then 
 			continue
 		  else
-			$(dirname $0)/create_thumbs.sh "${i}/${fname}"
+			$SCRPTPATH/create_thumbs.sh "${i}/${fname}"
 		  fi
 	    done
       done

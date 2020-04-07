@@ -47,58 +47,45 @@ echo "Please be careful!"
 read -p "Press enter to continue or abort with CTRL-C."
 
 echo ""
-read -e -p "CUPS admin user:  "  -i "$(whoami)" admin
-read -e -p "allowed ip-range: "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
+read -e -p "SQUID install directory:  "  -i "$(currentpath)/squid" srcdir
+read -e -p "SQUID localnet ip-range:  "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
+read -e -p "SQUID listening port:     "  -i "3128" port
+read -e -p "SQUID cache memory:       "  -i "cache_mem 140 MB" cache_mem
+read -e -p "SQUID ramdisk:            "  -i "cache_dir ufs /mnt/ramdisk 140 16 256" ramdisk
 
 echo "--------------------------"
-echo "CUPS: Install packages..."
+echo "SQUID: Install packages..."
 echo "--------------------------"
-sudo apt-get install cups usbutils
+sudo apt-get install squid
 echo "--------------------------"
-echo "CUPS: Create admin user..."
+echo "SQUID: Adapt config..."
 echo "--------------------------"
-sudo adduser $admin
-sudo adduser $admin lpadmin
-echo "--------------------------"
-echo "CUPS: Adapt config..."
-echo "--------------------------"
-conf=/etc/cups/cupsd.conf
-if [ ! -f $conf ] ; then
-   echo "$conf does not exist - exiting..." ; exit 1
+orig=/etc/squid/squid.conf
+tmpl=$srcdir/squid_template.conf
+read -p "Adapt configuration in 'squid.conf' file ? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+    if [ ! -f $tmpl ] ; then
+        echo "$tmpl does not exist - exiting..." ; exit 1
+    fi
+    sudo cat $tmpl | sed -e "s|XXX.XXX.XXX.XXX/XX|$iprange|g" | sed -e "s|PPPPPPPPPP|$port|g" | sed -e "s|CCCCCCCCCC|$cache_mem|g" | sed -e "s|RRRRRRRRRR|$ramdisk|g"  > $tmpdir/conf
+    savfile $orig
+    if [ -f ${orig}.raspicloud$$.sav ]; then
+        sudo ln -sfn ${orig}.raspicloud$$.sav $srcdir/
+    fi
+    sudo mv $tmpdir/conf $orig && sudo chmod 644 $orig
+    sudo ln -sfn $orig $srcdir/
 fi
-savfile $conf
-
-orig=$conf
-dest=$tmpdir/t
-echo "$(basename $0) : adapting $orig..."
-sudo cp $orig $dest && sudo chmod 777 $dest
-
-sed -i '/#inserted by RaspiCloud/d' $dest
-
-sed -i '/<Location\ \/>/,/<\/Location>/d' $dest
-sed -i "$ a #inserted by RaspiCloud" $dest
-sed -i "$ a \<Location\ /\>" $dest
-sed -i "$ a \ \ Order allow,deny" $dest
-sed -i "$ a \ \ Allow from $iprange" $dest
-sed -i "$ a \</Location\>" $dest
-
-sed -i '/<Location\ \/admin>/,/<\/Location>/d' $dest
-sed -i "$ a #inserted by RaspiCloud" $dest
-sed -i "$ a \<Location\ /admin>" $dest
-sed -i "$ a \ \ Order allow,deny" $dest
-sed -i "$ a \ \ Allow from $iprange" $dest
-sed -i "$ a \</Location\>" $dest
-
-sed -i '/Port 631/d' $dest
-sed -i "$ a #inserted by RaspiCloud" $dest
-sed -i "$ a Port 631" $dest
-
-sudo cp -v $dest $orig && sudo chmod 644 $orig
-sudo ln -sfn $orig $(currentpath)/cupsd.conf
+# link log-files
+sudo ln -sfn $orig $srcdir/squid.conf
+mkdir -p $srcdir/log
+sudo ln -sfn /var/log/squid/access.log $srcdir/log/
+sudo ln -sfn /var/log/squid/cache.log $srcdir/log/
 
 echo "--------------------------"
-echo "restarting CUPS..."
-sudo service cups restart
+echo "reloading SQUID..."
+echo "--------------------------"
+sudo service squid start
+sudo service squid reload
 
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)
 echo "$(basename $0) : finished. - $(date) ($elapsed sec elapsed)"

@@ -21,9 +21,9 @@ wdir0=$(pwd)
 cd - 1>/dev/null
 
 cloudroot="$1"
-xsltdir="$wdir0/xslt"
+xsltdir="$wdir0/nginx/xslt"
 orig_xsl="$xsltdir/template.xslt"
-orig_js="$wdir0/webroot/cloud/.custom.js"
+orig_js="$wdir0/nginx/webroot/cloud/.custom.js"
 if [ "$#" -ne 1 ]; then
   echo "$(basename $0) : ilegal number of parameters - exiting..." ; exit 1
 fi

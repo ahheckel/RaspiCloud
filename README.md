@@ -77,11 +77,11 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
   **On Raspbian Server:**
   - open a terminal and make install-script executable:
   
-    ```chmod +x ./RaspiCloud-master/nginx/install_nginx.sh```
+    ```chmod +x ./RaspiCloud-master/websrv/install_nginx.sh```
   
   - execute it: 
     
-    ```./RaspiCloud-master/nginx/install_nginx.sh```
+    ```./RaspiCloud-master/websrv/install_nginx.sh```
   
   **On the Client:**  
   - go to *https://IP-ADDRESS/cloud/USER*, enter *USER*'s credentials and browse your cloud.
@@ -90,11 +90,11 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
   **On Raspbian Server:**
   - open a terminal and make install-script executable:
   
-    ```chmod +x ./RaspiCloud-master/nginx/install_cups.sh```
+    ```chmod +x ./RaspiCloud-master/websrv/install_cups.sh```
   
   - execute it: 
     
-    ```./RaspiCloud-master/nginx/install_cups.sh``` 
+    ```./RaspiCloud-master/websrv/install_cups.sh``` 
     
   - install printers using the CUPS-webinterface
   

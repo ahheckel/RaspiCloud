@@ -50,9 +50,10 @@ echo ""
 echo "--------------------------"
 echo "Define inputs..."
 echo "--------------------------"
-read -e -p "install source:          "  -i "$(currentpath)" installdir
-read -e -p "web-root directory:      "  -i "/var/www/html" webroot
+read -e -p "nginx install source:    "  -i "$(currentpath)/nginx" installdir
 read -e -p "xslt-files location:     "  -i "$installdir/xslt" xsltpath
+read -e -p "RaspiCloud root dir:     "  -i "$(dirname $(currentpath))" raspiroot
+read -e -p "web-root dir:            "  -i "/var/www/html" webroot
 read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
 #read -e -p "NAS guest's directory:   "  -i "/media/cloud-NAS/guest" gstdstdir
 gstdstdir="/media/cloud-NAS/guest"
@@ -83,8 +84,8 @@ if [ $(checkyn) != x"n" ]; then
   sudo ln -sfn  $webroot/cloud $webroot/.cloud01
   sudo ln -sfn  $webroot/cloud $webroot/.cloud02
   sudo ln -sfn  $webroot/cloud $webroot/.cloud03
-  chmod +x $(dirname $0)/../server/update_cloud.sh
-  $(dirname $0)/../server/update_cloud.sh
+  chmod +x $raspiroot/server/update_cloud.sh
+  $raspiroot/server/update_cloud.sh
   echo "--------------------------"
   chmod +x $(dirname $0)/_create_webfiles.sh
   $(dirname $0)/_create_webfiles.sh $webroot/cloud
@@ -159,6 +160,15 @@ read -p "Install ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
   chmod +x $(dirname $0)/install_cups.sh
   $(dirname $0)/install_cups.sh
+fi
+
+echo "--------------------------"
+echo "Install SQUID server..."
+echo "--------------------------"
+read -p "Install ? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+  chmod +x $(dirname $0)/install_squid.sh
+  $(dirname $0)/install_squid.sh
 fi
 
 echo "--------------------------"

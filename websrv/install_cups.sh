@@ -110,6 +110,7 @@ sudo ln -sfn /var/log/cups/error_log $srcdir/log/
 
 echo "--------------------------"
 echo "restarting CUPS..."
+echo "--------------------------"
 sudo service cups restart
 
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)

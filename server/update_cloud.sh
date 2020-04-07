@@ -27,7 +27,7 @@ cd - 1>/dev/null
 #def vars
 srv=$pfld/server
 clnt=$pfld/client
-ngnx=$pfld/nginx/webroot/cloud
+ngnx=$pfld/websrv/nginx/webroot/cloud
 admin="$(whoami)" # this script should be run by the admin user
 files="$srv/updatedb.sh $srv/_updatedb.sh $srv/parsefiles2link.sh $srv/create_thumbs.sh $srv/_create_thumbs.sh $clnt/runscrpt.sh"
 

@@ -131,6 +131,8 @@ for file in custom gal ; do
       n=$[$n+1]
       sed -i "${n}i <a href=\"http://$(getownip):631\">CUPS</a>" $dest
       n=$[$n+1]
+      sed -i "${n}i <a href=\"http://$(getownip)/admin\">PiHole</a>" $dest
+      n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
       for user in $users ; do       
 	  n=$[$n+1]
@@ -159,6 +161,8 @@ for file in custom gal ; do
       n=$[$n+1]
       sed -i "${n}i <a href=\"http://$(getownip):631\">CUPS</a>" $dest
       n=$[$n+1]
+      sed -i "${n}i <a href=\"http://$(getownip)/admin\">PiHole</a>" $dest
+      n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
       for user in $users ; do       
 	  n=$[$n+1]
@@ -186,6 +190,8 @@ for file in custom gal ; do
       n=$(cat $dest | grep -n  \<\!--\ ENTRY05 | cut -d : -f 1)
       n=$[$n+1]
       sed -i "${n}i <a href=\"http://$(getownip):631\">CUPS</a>" $dest
+      n=$[$n+1]
+      sed -i "${n}i <a href=\"http://$(getownip)/admin\">PiHole</a>" $dest
       n=$[$n+1]
       sed -i "${n}i <p style=\"border-bottom: 4px solid #aa0\"></p>" $dest
       for user in $users ; do       

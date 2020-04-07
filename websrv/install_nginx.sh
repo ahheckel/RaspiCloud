@@ -152,8 +152,9 @@ echo "--------------------------"
 echo "Restarting nginx..."
 echo "--------------------------"
 sudo service nginx restart
+echo ""
 
-#echo "--------------------------"
+echo "--------------------------"
 echo "Install common unix printing system (CUPS)..."
 echo "--------------------------"
 read -p "Install ? [Y/n]" yn

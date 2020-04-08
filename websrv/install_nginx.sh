@@ -152,8 +152,8 @@ echo "--------------------------"
 echo "Restarting nginx..."
 echo "--------------------------"
 sudo service nginx restart
-echo ""
 
+echo ""
 echo "--------------------------"
 echo "Install common unix printing system (CUPS)..."
 echo "--------------------------"
@@ -163,6 +163,7 @@ if [ $(checkyn) != x"n" ]; then
   $(dirname $0)/install_cups.sh
 fi
 
+echo ""
 echo "--------------------------"
 echo "Install SQUID server..."
 echo "--------------------------"

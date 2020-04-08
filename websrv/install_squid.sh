@@ -51,6 +51,7 @@ read -e -p "SQUID install directory:  "  -i "$(currentpath)/squid" srcdir
 read -e -p "SQUID localnet ip-range:  "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
 read -e -p "SQUID listening port:     "  -i "3128" port
 read -e -p "SQUID cache memory:       "  -i "cache_mem 140 MB" cache_mem
+echo "...if you have a ramdisk (otw. leave blank):"
 read -e -p "SQUID ramdisk:            "  -i "cache_dir ufs /mnt/ramdisk 140 16 256" ramdisk
 
 echo "--------------------------"

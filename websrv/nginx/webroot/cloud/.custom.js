@@ -128,21 +128,22 @@ if ( typeof path_array[2] !== 'undefined' && path_array[2] !== "guest" ) {
 }
 if ( user == "guest" ) { $("#dropdown").css("display","none")}
 // shortcut panel highlighting
+var pcol = $('#panel01').find("a.all").css("color")
 if ( path_array[3] == "tmp" ) {
         if ( typeof path_array[4] === 'undefined' ) {
-                $('#panel01').find("a.all").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
+                $('#panel01').find("a.all").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         } 
         else if ( path_array[4] == "auds" ) {
-                $('#panel01').find("a.auds").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
+                $('#panel01').find("a.auds").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         }
         else if ( path_array[4] == "docs" ) {
-                $('#panel01').find("a.docs").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
+                $('#panel01').find("a.docs").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         }
         else if ( path_array[4] == "pics" ) {
-                $('#panel01').find("a.pics").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
+                $('#panel01').find("a.pics").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         }
         else if ( path_array[4] == "vids" ) {                
-                $('#panel01').find("a.vids").css("background-color", "#0d0").css("color","#000").css("border","6px solid #0d0");
+                $('#panel01').find("a.vids").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         }
 }
 // switch list mode vs image mode

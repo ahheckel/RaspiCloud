@@ -31,7 +31,7 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 		fdupes -dNA "$dir"
 		echo ""
 		echo "---syncing..."
-		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir
+		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir
 		echo ""
 		echo "---updating cloud-scripts..."
 		rsync -av -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/*

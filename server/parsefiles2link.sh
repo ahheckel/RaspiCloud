@@ -60,6 +60,7 @@ mkdir -p $dir/auds && ln -sf ../.thumbs $dir/auds
 mkdir -p $dir/docs && ln -sf ../.thumbs $dir/docs
 mkdir -p $dir/pics && ln -sf ../.thumbs $dir/pics
 mkdir -p $dir/vids && ln -sf ../.thumbs $dir/vids
+mkdir -p $dir/.recent && ln -sf ../.thumbs $dir/.recent
 
 cd $dir
 for i in $(cat $tmpdir/list) ; do 
@@ -141,6 +142,17 @@ for i in $(cat $tmpdir/list) ; do
 		  fi
 	    fi
       done
+      
+      categ=".recent"
+      _dir="$dir/$categ"
+      ftime=$(stat -c %Y "$i")
+      ddays=$(( (start - ftime) / 86400 ))
+      if [ $ddays -le 15 ] ; then
+        ln -svf "../$i" "$_dir"
+      else
+        rm -f "$_dir/$i"
+      fi
+      
 done
 
 # sync subfolders with root
@@ -187,6 +199,11 @@ if [ $doall -eq 1 ] ; then
 		  fi
 	    done
       done
+fi
+
+#delete broken symlinks
+if [ $doall -eq 1 ] ; then
+    find -L $dir/.recent -maxdepth 1 -type l -delete
 fi
 
 #for sorting purposes

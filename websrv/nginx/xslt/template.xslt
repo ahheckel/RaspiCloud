@@ -132,8 +132,8 @@
         </xsl:if>
         </xsl:for-each>
         </table>
-        <hr style="align:center;margin-top:100px;margin-bottom:20px;width:10%;height:4px;border-width:6px;color:#aaa"/>
-        <p align="center" id="date" style="color:#aaa;font-size:30px">LOADING...</p>
+        <hr style="align:center;margin-top:100px;margin-bottom:20px;width:40%;color:#aaa"/>
+        <p align="center" id="date" style="color:#aaa;font-size:30px;font-weight:bold">LOADING...</p>
         <p>.</p>
         <p>.</p>
         <p>.</p>

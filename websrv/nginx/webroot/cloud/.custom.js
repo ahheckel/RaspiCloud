@@ -119,7 +119,8 @@ $("a.clickpath").eq(0).html('&nbsp;&lt&gt ')
 function createpanels(){
 	var libpath = "/" + ".cloud02" + "/" + user + "/tmp";
 	var parentdir2 = ".cloud01";
-	$('<div id=\"panel01\" style=\"display:none\"><a class="cloudlib all" href="' + libpath + '">&nbsp;<>&nbsp;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="cloudlib auds" href="' + libpath + '/auds">auds</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib docs" href="' + libpath + '/docs">docs</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib pics" href="' + libpath + '/pics">pics</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib vids" href="' + libpath + '/vids">vids</a></div>').insertAfter($("#dirinfo"))
+        $('<div id=\"panel01\" style=\"display:none\"><a class="cloudlib all" href="' + libpath + '">&nbsp;<>&nbsp;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="cloudlib recent" href="' + libpath + '/.recent">&nbsp;15d&nbsp;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="cloudlib auds" href="' + libpath + '/auds">auds</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib docs" href="' + libpath + '/docs">docs</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib pics" href="' + libpath + '/pics">pics</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib vids" href="' + libpath + '/vids">vids</a></div>').insertAfter($("#dirinfo"))
+	//$('<div id=\"panel01\" style=\"display:none\"><a class="cloudlib all" href="' + libpath + '">&nbsp;<>&nbsp;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="cloudlib auds" href="' + libpath + '/auds">auds</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib docs" href="' + libpath + '/docs">docs</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib pics" href="' + libpath + '/pics">pics</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib vids" href="' + libpath + '/vids">vids</a></div>').insertAfter($("#dirinfo"))
 }
 createpanels();
 // panel & menu display conditions
@@ -132,6 +133,9 @@ var pcol = $('#panel01').find("a.all").css("color")
 if ( path_array[3] == "tmp" ) {
         if ( typeof path_array[4] === 'undefined' ) {
                 $('#panel01').find("a.all").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
+        }
+        else if ( path_array[4] == ".recent" ) {
+                $('#panel01').find("a.recent").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         } 
         else if ( path_array[4] == "auds" ) {
                 $('#panel01').find("a.auds").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);

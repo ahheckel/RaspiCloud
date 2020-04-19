@@ -173,6 +173,16 @@ if [ $(checkyn) != x"n" ]; then
   $(dirname $0)/install_squid.sh
 fi
 
+echo ""
+echo "--------------------------"
+echo "Install PiHole..."
+echo "--------------------------"
+read -p "Install ? [Y/n]" yn
+if [ $(checkyn) != x"n" ]; then
+  chmod +x $(dirname $0)/install_pihole.sh
+  $(dirname $0)/install_pihole.sh
+fi
+
 echo "--------------------------"
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)
 echo "$(basename $0) : finished. - $(date) ($elapsed sec elapsed)"

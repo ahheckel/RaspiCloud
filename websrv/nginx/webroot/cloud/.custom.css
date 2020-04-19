@@ -165,12 +165,12 @@ a.high1:hover {
 }
 a.high2 {
   text-decoration:none;
-  color: #f80;
+  color: #f40;
   font-size: 60px;
 }
 a.high2:hover {  
   text-decoration:none;
-  background-color: #f80;
+  background-color: #f40;
   color: rgb(0,0,0);
 }
 a.high3 {
@@ -195,33 +195,33 @@ a.high4:hover {
 }
 a.high5 {
   text-decoration:none;
-  color: #f80;
+  color: #f40;
   font-size: 60px;
 }
 a.high5:hover {  
   text-decoration:none;
-  background-color: #f80;
+  background-color: #f40;
   color: rgb(0,0,0);
 }
 a.high6 {
   text-decoration:none;
-  color: #f80;
+  color: #f40;
   font-size: 50px;
   font-weight: bold;
 }
 a.high6:hover {  
   text-decoration:none;
-  background-color: #f80;
+  background-color: #f40;
   color: rgb(0,0,0);
 }
 a.high7 {
   text-decoration:none;
-  color: #f80;
+  color: #f40;
   font-size: 40px;
 }
 a.high7:hover {  
   text-decoration:none;
-  background-color: #f80;
+  background-color: #f40;
   color: rgb(0,0,0);
 }
 a.high8 {
@@ -286,7 +286,7 @@ img.cssbox_thumb {
 	vertical-align: bottom;
 }
 td.img {
-	border: solid 0 orange; 
+	border: solid 0 #f40; 
 	border-bottom-width:5px; 
 	padding-bottom:10px; 
 	text-decoration:none;

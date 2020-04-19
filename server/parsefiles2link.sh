@@ -147,7 +147,8 @@ for i in $(cat $tmpdir/list) ; do
       _dir="$dir/$categ"
       ftime=$(stat -c %Y "$i")
       ddays=$(( (start - ftime) / 86400 ))
-      if [ $ddays -le 15 ] ; then
+      # link only recent files, newer than e.g. 15 days
+      if [ $ddays -le 15 ] ; then 
         ln -svf "../$i" "$_dir"
       else
         rm -f "$_dir/$i"

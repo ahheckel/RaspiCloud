@@ -50,9 +50,9 @@ echo ""
 echo "--------------------------"
 echo "Define inputs..."
 echo "--------------------------"
+read -e -p "RaspiCloud root dir:     "  -i "$(dirname $(currentpath))" raspiroot
 read -e -p "nginx install source:    "  -i "$(currentpath)/nginx" installdir
 read -e -p "xslt-files location:     "  -i "$installdir/xslt" xsltpath
-read -e -p "RaspiCloud root dir:     "  -i "$(dirname $(currentpath))" raspiroot
 read -e -p "web-root dir:            "  -i "/var/www/html" webroot
 read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
 #read -e -p "NAS guest's directory:   "  -i "/media/cloud-NAS/guest" gstdstdir

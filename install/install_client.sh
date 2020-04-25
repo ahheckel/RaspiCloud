@@ -106,8 +106,8 @@ echo "Install termux packages on client..."
 echo "--------------------------"
 read -p "Install packages ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
-  pkg install openssh rsync bc util-linux iconv
-  termux-setup-storage
+  pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes
+  #termux-setup-storage
 fi
 echo "--------------------------"
 echo "downloading installation files from $ip (to temporary folder)..."
@@ -125,15 +125,10 @@ if [ $(checkyn) != x"n" ]; then
   mkdir -p $HOME/.termux
   ln -snf $HOME/.shortcuts $HOME/.termux/tasker
   cp ${localinstall}/bashrc $HOME/.bashrc
-  #cp ${localinstall}/bash_profile $HOME/.bash_profile
   echo "--------------------------"
   echo "executing termux-setup-storage..."
   echo "--------------------------"
   termux-setup-storage
-  echo "--------------------------"
-  echo "installing termux-packages..."
-  echo "--------------------------"
-  pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes
 fi
 
 #create user account on server

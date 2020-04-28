@@ -29,8 +29,10 @@ fi
 read -e -p "source folders (on client):      " -i '"storage/downloads/" "storage/dcim/Screenshots/" "storage/dcim/Camera/" "storage/dcim/Facebook/"' syncfolders
 read -e -p "destination folders (on server): " -i '"'$DSTDIR/tmp'"' destdirs
 read -e -p "rsync-options:                   " -i "-v --size-only -p -o -g --progress --chown=$USER1:$GRP --chmod=750" opts
-read -e -p "sync-scrpt (on client):          " -i ".shortcuts/push-to-cloud-tmp.sh" syncscrpt
-read -e -p "post-scrpt (on server):          " -i "/home/$USER1/$SRVDIR/updatedb.sh $DSTDIR/tmp" scrpt
+#read -e -p "sync-scrpt (on client):          " -i ".shortcuts/push-to-cloud-tmp.sh" syncscrpt
+#read -e -p "post-scrpt (on server):          " -i "/home/$USER1/$SRVDIR/updatedb.sh $DSTDIR/tmp" scrpt
+syncscrpt=".shortcuts/push-to-cloud-tmp.sh" 
+scrpt="/home/$USER1/$SRVDIR/updatedb.sh $DSTDIR/tmp"
 
 # replace
 sed -i "s|xIPADDRESSx|$IP|g" $input

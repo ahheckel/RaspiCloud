@@ -225,11 +225,11 @@ if [ $clean -eq 1 ] ; then
       find ./ -maxdepth 1 -type f | cut -d / -f 2- > $tmpdir/$(basename "$i")
       for j in $(cat $tmpdir/$(basename $i)) ; do
         inode=$(stat -c %i "$j") 
-        echo "$j"
+        #echo "$j"
         #echo $inode
         if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
           echo "deleting deprecated link ./${i}/${j}"
-          rm "$j"
+          rm -f "$j"
         fi
       done
       cd "$dir"

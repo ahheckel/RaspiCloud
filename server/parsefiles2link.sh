@@ -75,7 +75,7 @@ if [ $mode -eq 0 ] ; then
     dname=$(basename "$i")
     if [ $(checkmd5dir "$dname") -eq 1 ] ; then
       cd "$i"
-      find ./ -maxdepth 1 -type f | cut -d / -f 2- > $tmpdir/$dname
+      find ./ -maxdepth 1 -type f | cut -d / -f 2- | grep -v ^'\.' > $tmpdir/$dname
       for j in $(cat $tmpdir/$dname) ; do
         inode=$(stat -c %i "$j") 
         if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then

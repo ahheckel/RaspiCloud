@@ -7,6 +7,7 @@ function finish {
 	    rm -rf $tmpdir
 	    rm -f $HOME/.$(basename $0).lock
 	    cd "$wdir"
+	    exit 1
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 touch $HOME/.$(basename $0).lock
@@ -49,7 +50,7 @@ fi
 shift
 if [ x"$1" == "x" ] ; then
       clean=1; mode=1
-      cd $dir ; dir="$(pwd)" ; find ./ -maxdepth 1 -type f | cut -d / -f 2- > $tmpdir/list
+      cd $dir ; dir="$(pwd)" ; find ./ -maxdepth 1 -type f | cut -d / -f 2- | grep -v ^'\.' > $tmpdir/list
 else
       if [ x"$1" == "x0" ] ; then
         mode=0; clean=1;
@@ -59,16 +60,16 @@ else
         echo "$(basename $0) : file '$1' does not exist... exiting."
         exit 1
       elif [ $(checkmd5dir $(basename "$dir")) -eq 1 ] ; then
-        mode=2; clean=0; cat "$1" > $tmpdir/list
+        mode=2; clean=0; cat "$1" | grep -v ^'\.' > $tmpdir/list
       else
-        mode=1; clean=0; cat "$1" > $tmpdir/list
+        mode=1; clean=0; cat "$1" | grep -v ^'\.' > $tmpdir/list
       fi
 fi
 shift
 
 # begin script
 if [ $mode -eq 0 ] ; then
-  find $dir/ -maxdepth 1 -type f -printf '%i\n' > $tmpdir/root.inode
+  find $dir/ -maxdepth 1 -type f -not -path '*/\.*' -printf '%i\n' > $tmpdir/root.inode
   touch $tmpdir/_list
   for i in $(find $dir -maxdepth 1 -type d) ; do
     dname=$(basename "$i")
@@ -91,7 +92,7 @@ if [ $mode -eq 0 ] ; then
 fi
 
 if [ $mode -eq 2 ] ; then
-  find "$(dirname $dir)" -maxdepth 1 -type f -printf '%i\n' > $tmpdir/root.inode
+  find "$(dirname $dir)" -maxdepth 1 -type f -not -path '*/\.*' -printf '%i\n' > $tmpdir/root.inode
   touch $tmpdir/_list
   dname=$(basename "$dir")
   cd $dir
@@ -216,7 +217,7 @@ if [ $clean -eq 1 ] ; then
   find $dir/ -maxdepth 1 -type f -printf '%i\n' > $tmpdir/root.inode
 fi
 
-# sync md5 subfolders with root
+# sync md5-subfolders with root
 if [ $clean -eq 1 ] ; then
   for i in $(find $dir -maxdepth 1 -type d) ; do
     if [ $(checkmd5dir $(basename "$i")) -eq 1 ] ; then
@@ -237,7 +238,7 @@ if [ $clean -eq 1 ] ; then
   done
 fi
  
-# sync subfolders with root
+# sync category-subfolders with root
 if [ $clean -eq 1 ] ; then
   #find $dir/ -maxdepth 1 -type f -printf '%i\n' > $tmpdir/root.inode
   #for i in auds docs pics vids ; do # auds is left out because it contains files not present in root
@@ -259,7 +260,7 @@ if [ $clean -eq 1 ] ; then
   done
 fi
 
-# sync .thumbs folder with parentdir (and vice versa)
+# sync .thumbs subfolder with parentdir (and vice versa)
 if [ $clean -eq 1 ] ; then
   for i in $dir ; do
     if [ ! -d $i/.thumbs ] ; then continue ; fi

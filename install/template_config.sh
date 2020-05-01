@@ -32,7 +32,7 @@ read -e -p "rsync-options:                   " -i "-v --size-only -p -o -g --pro
 #read -e -p "sync-scrpt (on client):          " -i ".shortcuts/push-to-cloud-tmp.sh" syncscrpt
 #read -e -p "post-scrpt (on server):          " -i "/home/$USER1/$SRVDIR/updatedb.sh $DSTDIR/tmp" scrpt
 syncscrpt=".shortcuts/push-to-cloud-tmp.sh" 
-scrpt="/home/$USER1/$SRVDIR/updatedb.sh $DSTDIR/tmp"
+scrpt="/home/$USER1/$SRVDIR/updatedb.sh"
 
 # replace
 sed -i "s|xIPADDRESSx|$IP|g" $input

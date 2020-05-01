@@ -207,7 +207,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         if [ $ddays -le 15 ] ; then 
           ln -svf "../$i" "$_dir"
         else
-          rm -f "$_dir/$i"
+          rm -fv "$_dir/$i"
         fi
         
   done

@@ -70,7 +70,7 @@ shift
 # begin script
 if [ $mode -eq 0 ] ; then
   find $dir/ -maxdepth 1 -type f -not -path '*/\.*' -printf '%i\n' > $tmpdir/root.inode
-  touch $tmpdir/_list
+  #touch $tmpdir/_list
   for i in $(find $dir -maxdepth 1 -type d) ; do
     dname=$(basename "$i")
     if [ $(checkmd5dir "$dname") -eq 1 ] ; then
@@ -81,14 +81,13 @@ if [ $mode -eq 0 ] ; then
         if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
           fn="${j%.*}" ; ext="${j##*.}"
           f="${fn}_$(echo $dname | cut -d . -f 2- | cut -c -5).${ext}"
-          ln -vf "$j" "../${f}" && echo "$f" >> $tmpdir/_list
+          ln -vf "$j" "../${f}" # && echo "$f" >> $tmpdir/_list
         fi
       done
       cd "$dir"
     fi
   done
-  mv $tmpdir/_list $tmpdir/list
-  cat $tmpdir/list
+  #mv $tmpdir/_list $tmpdir/list
 fi
 
 if [ $mode -eq 2 ] ; then
@@ -110,7 +109,11 @@ fi
 if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
   if [ $mode -eq 2 ] ; then
     dir="$(dirname $dir)"
+  elif [ $mode -eq 0 ] ; then
+    cd $dir ; dir="$(pwd)"
+    find ./ -maxdepth 1 -type f | cut -d / -f 2- | grep -v ^'\.' > $tmpdir/list
   fi
+  
   mkdir -p $dir/.thumbs
   mkdir -p $dir/auds && ln -sf ../.thumbs $dir/auds
   mkdir -p $dir/docs && ln -sf ../.thumbs $dir/docs
@@ -223,7 +226,7 @@ if [ $clean -eq 1 ] ; then
     if [ $(checkmd5dir $(basename "$i")) -eq 1 ] ; then
       echo cd to $dir/$(basename "$i")
       cd "$i"
-      find ./ -maxdepth 1 -type f | cut -d / -f 2- > $tmpdir/$(basename "$i")
+      find ./ -maxdepth 1 -type f | cut -d / -f 2- | grep -v ^'\.' > $tmpdir/$(basename "$i")
       for j in $(cat $tmpdir/$(basename $i)) ; do
         inode=$(stat -c %i "$j") 
         #echo "$j"

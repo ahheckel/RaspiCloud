@@ -25,18 +25,22 @@ if [ ! -d "$dir" ] ; then
       exit 1
 fi
 
-cd $dir
-
-touch .$(basename $0).list
-cp .$(basename $0).list $tmpdir/listing
-find ./ -maxdepth 1 -type f -printf '%i %p\n' > .$(basename $0).list
-cat .$(basename $0).list >> $tmpdir/listing
-cat $tmpdir/listing | sort | uniq -u | cut -d / -f 2- > $tmpdir/list.unique
-if [ $(cat $tmpdir/list.unique | wc -l) -ne 0 ] ; then
+if [ x"$2" != "x" ] ; then
+  list="$2"
+  cat $list | sort | uniq -u > $tmpdir/list.unique && mv $tmpdir/list.unique $list && $(dirname $0)/parsefiles2link.sh "$dir" "$list"  
+else
+  cd $dir
+  touch .$(basename $0).list
+  cp .$(basename $0).list $tmpdir/listing
+  find ./ -maxdepth 1 -type f -printf '%i %p\n' > .$(basename $0).list
+  cat .$(basename $0).list >> $tmpdir/listing
+  cat $tmpdir/listing | sort | uniq -u | cut -d / -f 2- > $tmpdir/list.unique
+  if [ $(cat $tmpdir/list.unique | wc -l) -ne 0 ] ; then
       echo "content of $tmpdir/list.unique:" # for debugging
       cat $tmpdir/list.unique # for debugging
       echo "---------------"
       $(dirname $0)/parsefiles2link.sh "$dir" $tmpdir/list.unique
+  fi
 fi
 
 end=$(date +%s) ; elapsed=$(echo "($end - $start)" |bc)

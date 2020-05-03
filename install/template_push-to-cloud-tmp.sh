@@ -25,6 +25,16 @@ touch $HOME/.$(basename $0).lock
 mkdir -p $HOME/.dirlists
 
 opts="xOPTSx"
+
+# collect md5 suffixes
+md5excl=()
+for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
+    dir="${syncfolders[$i]}"
+    if [ ! -d "$dir" ] ; then continue ; fi
+    md5n=$(getmd5 "$dir")
+    md5excl+=("--exclude=*_$(echo $md5n | cut -c -5).*")
+done
+# sync...
 for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
     dir="${syncfolders[$i]}"
     dstdir="${dstdirs[$i]}"; if [ x"$dstdir" == "x" ] ; then dstdir="$_dstdir" ; else _dstdir="$dstdir" ; fi
@@ -40,13 +50,18 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 		echo "---deleting duplicates in $dir..."
 		fdupes -dNA "$dir"
 		echo "---syncing..."
-		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/.${md5n}
-		echo "---updating database..."
-		ssh -i $ckey ${user}@$ip -t $scrpt $dstdir/.${md5n}
+		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' "${md5excl[@]}" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/.${md5n} | grep ^\<f | cut -d " " -f 2- > $HOME/.dirlists/.update.list
+		cat $HOME/.dirlists/.update.list
+		if [ $(cat $HOME/.dirlists/.update.list | wc -l) -gt 0 ] ; then
+		  echo "---updating database..."
+		  #ssh ${user}@$ip -t $scrpt $dstdir/.${md5n}
+		  rsync -av $HOME/.dirlists/.update.list -e "ssh -i $ckey" ${user}@${ip}:$dstdir/.${md5n}/
+		  ssh -i $ckey ${user}@$ip -t $scrpt $dstdir/.${md5n} $dstdir/.${md5n}/.update.list
+		fi
 	fi
 	mv -f $_md5 $md5
 done
-
+# update...
 if [ $update -eq 1 ] ; then
     echo ""
     echo "updating cloud-scripts..."

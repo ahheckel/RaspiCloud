@@ -79,8 +79,8 @@ if [ $mode -eq 0 ] ; then
       for j in $(cat $tmpdir/$dname) ; do
         inode=$(stat -c %i "$j") 
         if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
-          fn="${j%.*}" ; ext="${j##*.}"
-          f="${fn}_$(echo $dname | cut -d . -f 2- | cut -c -5).${ext}"
+          fn="${j%.*}" ; ext=".${j##*.}" ; if [ ."$fn" == "$ext" ] ; then ext="" ; fi
+          f="${fn}_$(echo $dname | cut -d . -f 2- | cut -c -5)${ext}"
           ln -vf "$j" "../${f}" # && echo "$f" >> $tmpdir/_list
         fi
       done
@@ -98,8 +98,8 @@ if [ $mode -eq 2 ] ; then
   for j in $(cat $tmpdir/list) ; do
     inode=$(stat -c %i "$j") 
     if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
-      fn="${j%.*}" ; ext="${j##*.}"
-      f="${fn}_$(echo $dname | cut -d . -f 2- | cut -c -5).${ext}"
+      fn="${j%.*}" ; ext=".${j##*.}" ; if [ ."$fn" == "$ext" ] ; then ext="" ; fi
+      f="${fn}_$(echo $dname | cut -d . -f 2- | cut -c -5)${ext}"
       ln -vf "$j" "../${f}" && echo "$f" >> $tmpdir/_list
     fi
   done

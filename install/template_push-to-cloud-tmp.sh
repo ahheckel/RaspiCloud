@@ -56,7 +56,7 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 		  echo "---updating database..."
 		  #ssh ${user}@$ip -t $scrpt $dstdir/.${md5n}
 		  rsync -av $HOME/.dirlists/.update.list -e "ssh -i $ckey" ${user}@${ip}:$dstdir/.${md5n}/
-		  ssh -i $ckey ${user}@$ip -t $scrpt $dstdir/.${md5n} $dstdir/.${md5n}/.update.list
+		  ssh -i $ckey ${user}@$ip -t $scrpt "$dstdir/.${md5n}" "$dstdir/.${md5n}/.update.list"
 		fi
 	fi
 	mv -f $_md5 $md5

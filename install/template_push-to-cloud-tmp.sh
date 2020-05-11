@@ -7,7 +7,7 @@ dstdirs=(xDSTDIRSx)
 scrpt="xSCRPTx"
 clidir="xCLIDIRx"
 ckey="xCKEYx"
-update=0
+update=1
 
 if [ -f $HOME/.$(basename $0).lock ] ; then echo "An instance is already running - exiting." ; exit 1 ; fi
 
@@ -45,8 +45,17 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 	touch $md5
 	ls -lpi --time-style=+%F "$dir" | grep -v / > $_md5		
 	if [ "$(cat $md5)" != "$(cat $_md5)" ] ; then
-    nc -w 10 -z $ip 22 2>/dev/null ; if [ $? -eq 1 ] ; then echo "netcat failed. - exiting." ; rm -f $HOME/.$(basename $0).lock ; exit 1 ; fi # is more robust than ping
-		update=1
+        nc -w 10 -z $ip 22 2>/dev/null ; if [ $? -eq 1 ] ; then echo "netcat failed. - exiting." ; rm -f $HOME/.$(basename $0).lock ; exit 1 ; fi # is more robust than ping
+		if [ $update -eq 1 ] ; then
+		  echo "---updating cloud-scripts..."     
+		  rsync -v -c -i -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ | grep ^\>f | cut -d " " -f 2- > $HOME/.dirlists/.update.scrpts
+		  if [ $(cat $HOME/.dirlists/.update.scrpts | wc -l) -gt 0 ] ; then
+		    chmod +x $HOME/.shortcuts/*.sh
+		    echo "---cloud-scripts updated - exiting..."
+		    exit 2
+		  fi
+		fi  
+		update=0
 		echo "---deleting duplicates in $dir..."
 		fdupes -dNA "$dir"
 		echo "---syncing..."
@@ -62,11 +71,11 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 	mv -f $_md5 $md5
 done
 # update...
-if [ $update -eq 1 ] ; then
-    echo ""
-    echo "updating cloud-scripts..."
-    rsync -av -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/*
-fi
+#if [ $update -eq 1 ] ; then
+#    echo ""
+#    echo "updating cloud-scripts..."
+#    rsync -av -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/*
+#fi
 
 rm -f $HOME/.$(basename $0).lock
 sleep 2

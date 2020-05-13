@@ -26,13 +26,15 @@ function getmd5 () {
 touch $HOME/.$(basename $0).lock
 mkdir -p $HOME/.dirlists
 
+# is device ID set ?
+if [ x"$device" == x ] ; then dev="" ; else dev="${device}-" ; fi
 # collect md5 suffixes
 md5excl=()
 for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
     dir="${syncfolders[$i]}"
     if [ ! -d "$dir" ] ; then continue ; fi
     md5n=$(getmd5 "$dir")
-    md5excl+=("--exclude=*_$(echo $md5n | cut -c -5).*")
+    md5excl+=("--exclude=*_${dev}$(echo $md5n | cut -c -5).*")
 done
 # sync...
 for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
@@ -61,12 +63,12 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 		echo "---deleting duplicates in $dir..."
 		fdupes -dNA "$dir"
 		echo "---syncing..."
-		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' "${md5excl[@]}" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/.${md5n} | grep ^\<f | cut -d " " -f 2- | iconv -t ASCII//TRANSLIT//IGNORE -f UTF-8 > $HOME/.dirlists/.update.list
+		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' "${md5excl[@]}" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/.${dev}${md5n} | grep ^\<f | cut -d " " -f 2- | iconv -t ASCII//TRANSLIT//IGNORE -f UTF-8 > $HOME/.dirlists/.update.list
 		#cat $HOME/.dirlists/.update.list
 		if [ $(cat $HOME/.dirlists/.update.list | wc -l) -gt 0 ] ; then
 		  echo "---updating database..."
-		  rsync -av $HOME/.dirlists/.update.list -e "ssh -i $ckey" ${user}@${ip}:$dstdir/.${md5n}/
-		  ssh -i $ckey ${user}@$ip -t $scrpt "$dstdir/.${md5n}" "$dstdir/.${md5n}/.update.list"
+		  rsync -av $HOME/.dirlists/.update.list -e "ssh -i $ckey" ${user}@${ip}:$dstdir/.${dev}${md5n}/
+		  ssh -i $ckey ${user}@$ip -t $scrpt "$dstdir/.${dev}${md5n}" "$dstdir/.${dev}${md5n}/.update.list"
 		fi
 	fi
 	mv -f $_md5 $md5

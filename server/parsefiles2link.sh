@@ -29,7 +29,15 @@ function issameinode () {
       fi
 }
 function checkmd5dir () {
-      if [[ $1 =~ ^\.[a-f0-9]{32}$ ]] ; then echo 1 ; else echo 0 ; fi
+      #if [[ $1 =~ ^\.[a-f0-9]{32}$ ]] ; then echo 1 ; else echo 0 ; fi
+      if [[ $1 =~ [a-f0-9]{32}$ ]] ; then echo 1 ; else echo 0 ; fi
+}
+function getID () {
+	  local devid=$(echo "$1" | rev | cut -d . -f 1 | rev | cut -d - -f 1)
+	  local md5id=$(echo "$1" | rev | cut -d . -f 1 | rev | cut -d - -f 2)
+      if [ x$devid == x$md5id ] ; then devid="" ; else devid="${devid}-" ; fi
+      md5id=$(echo "$md5id" | cut -c -5)
+      echo ${devid}${md5id}
 }
 
 # parse input
@@ -80,7 +88,7 @@ if [ $mode -eq 0 ] ; then
         inode=$(stat -c %i "$j") 
         if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
           fn="${j%.*}" ; ext=".${j##*.}" ; if [ ."$fn" == "$ext" ] ; then ext="" ; fi
-          f="${fn}_$(echo $dname | cut -d . -f 2- | cut -c -5)${ext}"
+          f="${fn}_$(getID $dname)${ext}"
           ln -vf "$j" "../${f}" # && echo "$f" >> $tmpdir/_list
         fi
       done
@@ -99,7 +107,7 @@ if [ $mode -eq 2 ] ; then
     inode=$(stat -c %i "$j") 
     if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
       fn="${j%.*}" ; ext=".${j##*.}" ; if [ ."$fn" == "$ext" ] ; then ext="" ; fi
-      f="${fn}_$(echo $dname | cut -d . -f 2- | cut -c -5)${ext}"
+      f="${fn}_$(getID $dname)${ext}"
       ln -vf "$j" "../${f}" && echo "$f" >> $tmpdir/_list
     fi
   done

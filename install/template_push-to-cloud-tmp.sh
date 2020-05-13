@@ -34,6 +34,12 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
     dir="${syncfolders[$i]}"
     if [ ! -d "$dir" ] ; then continue ; fi
     md5n=$(getmd5 "$dir")
+    md5excl+=("--exclude=*_${dev}$(echo $md5n | cut -c -5)")
+done
+for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
+    dir="${syncfolders[$i]}"
+    if [ ! -d "$dir" ] ; then continue ; fi
+    md5n=$(getmd5 "$dir")
     md5excl+=("--exclude=*_${dev}$(echo $md5n | cut -c -5).*")
 done
 # sync...

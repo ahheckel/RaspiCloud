@@ -2,11 +2,13 @@
 
 ip="xIPADDRESSx"
 user="xUSERx"
+device="xDEVICEx"
 syncfolders=(xSYNCFOLDERSx)
 dstdirs=(xDSTDIRSx)
 scrpt="xSCRPTx"
 clidir="xCLIDIRx"
 ckey="xCKEYx"
+opts="xOPTSx"
 update=1
 
 if [ -f $HOME/.$(basename $0).lock ] ; then echo "An instance is already running - exiting." ; exit 1 ; fi
@@ -23,8 +25,6 @@ function getmd5 () {
 
 touch $HOME/.$(basename $0).lock
 mkdir -p $HOME/.dirlists
-
-opts="xOPTSx"
 
 # collect md5 suffixes
 md5excl=()
@@ -61,7 +61,7 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 		echo "---deleting duplicates in $dir..."
 		fdupes -dNA "$dir"
 		echo "---syncing..."
-		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' "${md5excl[@]}" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/.${md5n} | grep ^\<f | cut -d " " -f 2- > $HOME/.dirlists/.update.list
+		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' "${md5excl[@]}" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/.${md5n} | grep ^\<f | cut -d " " -f 2- | iconv -t ASCII//TRANSLIT//IGNORE -f UTF-8 > $HOME/.dirlists/.update.list
 		#cat $HOME/.dirlists/.update.list
 		if [ $(cat $HOME/.dirlists/.update.list | wc -l) -gt 0 ] ; then
 		  echo "---updating database..."

@@ -11,3 +11,6 @@ trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 
 sudo apt-get install wget
 wget -O basic-install.sh  https://install.pi-hole.net && mv basic-install.sh $tmpdir && sudo bash $tmpdir/basic-install.sh
+
+#echo "Enter PiHole admin password:"
+#sudo pihole -a -p

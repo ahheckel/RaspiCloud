@@ -37,6 +37,7 @@ scrpt="/home/$USER1/$SRVDIR/updatedb.sh"
 # replace
 sed -i "s|xIPADDRESSx|$IP|g" $input
 sed -i "s|xUSERx|$USER1|g" $input
+sed -i "s|xDEVICEx|$DEVICE|g" $input
 sed -i "s|xSYNCFOLDERSx|$syncfolders|g" $input
 sed -i "s|xDSTDIRSx|$destdirs|g" $input
 sed -i "s|xSCRPTx|$scrpt|g" $input

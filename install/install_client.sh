@@ -81,6 +81,8 @@ read -e -p "user's cloud-dir (on server):       " -i "/media/cloud-NAS/${user1}"
 export DSTDIR=$dstdir
 read -e -p "user's cloud-dir group owner:       " -i "$user1" grp
 export GRP=$grp
+read -e -p "enter device-ID:                    " -i "T01" device
+export DEVICE=$device
 
 #create keypair for installation
 echo "--------------------------"

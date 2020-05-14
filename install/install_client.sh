@@ -75,7 +75,7 @@ read -e -p "client script subdir (on server):   " -i "$(dirname ${path#/home/$ad
 export CLIDIR=$clidir
 read -e -p "server script subdir (on server):   " -i "$(dirname ${path#/home/$admin/})/server" srvdir
 export SRVDIR=$srvdir
-read -e -p "enter username:                     " -i "john" user1
+read -e -p "enter username:                     " -i "pi" user1
 export USER1=$user1
 read -e -p "user's cloud-dir (on server):       " -i "/media/cloud-NAS/${user1}" dstdir
 export DSTDIR=$dstdir
@@ -106,11 +106,8 @@ fi
 echo "--------------------------"
 echo "Install termux packages on client..."
 echo "--------------------------"
-read -p "Install packages ? [Y/n]" yn
-if [ $(checkyn) != x"n" ]; then
-  pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes
-  #termux-setup-storage
-fi
+read -p "Press enter to continue..."
+pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes
 echo "--------------------------"
 echo "downloading installation files from $ip (to temporary folder)..."
 localinstall=$tmpdir
@@ -189,7 +186,7 @@ echo "--------------------------"
 read -p "Press enter to continue..."
 $HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.sh
 echo "uploading to server ($ip)..."
-scp -i $ckey $HOME/.shortcuts/push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/" && echo "...done."
+scp -i $ckey $HOME/.shortcuts/${device}push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/" && echo "...done."
 
 #create cronjob
 echo "--------------------------"
@@ -198,7 +195,7 @@ echo "--------------------------"
 read -p "Create cronjob ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
     touch $HOME/../usr/var/spool/cron/crontabs/$(whoami) && cp $HOME/../usr/var/spool/cron/crontabs/$(whoami) $tmpdir/t
-    cmd='* * * * * $HOME/.shortcuts/runscrpt.sh $HOME/.shortcuts/push-to-cloud-tmp.sh'
+    cmd="* * * * * $HOME/.shortcuts/runscrpt.sh $HOME/.shortcuts/${device}push-to-cloud-tmp.sh"
     echo "$cmd"
     read -p "Add above line to crontab ? [Y/n]" yn
     if [ $(checkyn) != x"n" ]; then

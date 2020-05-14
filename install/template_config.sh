@@ -31,7 +31,7 @@ read -e -p "destination folders (on server): " -i '"'$DSTDIR/tmp'"' destdirs
 read -e -p "rsync-options:                   " -i "-v -i --size-only -p -o -g --chown=$USER1:$GRP --chmod=750" opts
 #read -e -p "sync-scrpt (on client):          " -i ".shortcuts/push-to-cloud-tmp.sh" syncscrpt
 #read -e -p "post-scrpt (on server):          " -i "/home/$USER1/$SRVDIR/updatedb.sh $DSTDIR/tmp" scrpt
-syncscrpt=".shortcuts/push-to-cloud-tmp.sh" 
+syncscrpt=".shortcuts/${DEVICE}push-to-cloud-tmp.sh" 
 scrpt="/home/$USER1/$SRVDIR/updatedb.sh"
 
 # replace

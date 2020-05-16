@@ -68,7 +68,7 @@ done
 for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
     dir="${syncfolders[$i]}"
     dstdir="${dstdirs[$i]}"; if [ x"$dstdir" == "x" ] ; then dstdir="$_dstdir" ; else _dstdir="$dstdir" ; fi
-    echo "selecting ${dir/}..."
+    echo "selecting ${dir}..."
     if [ ! -d "$dir" ] ; then continue ; fi
     md5n=$(getmd5 "$dir")
     md5=$HOME/.dirlists/${md5n}.dir ; _md5=$HOME/.dirlists/_${md5n}.dir

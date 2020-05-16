@@ -114,21 +114,19 @@ localinstall=$tmpdir
 mkdir -p $localinstall
 opts="-v --size-only --no-perms --no-owner --no-group --progress"
 rsync -r $opts -e "ssh -i $key" ${admin}@${ip}:$path --exclude=ssh/ --iconv=utf-8,ascii//TRANSLIT//IGNORE $localinstall
-if [ $(checkyn) != x"n" ]; then
-  echo "--------------------------"
-  echo "copying configs to termux..."
-  echo "--------------------------"
-  mkdir -p $HOME/.shortcuts
-  cp ${localinstall}/* $HOME/.shortcuts/
-  chmod +x $HOME/.shortcuts/*
-  mkdir -p $HOME/.termux
-  ln -snf $HOME/.shortcuts $HOME/.termux/tasker
-  cp ${localinstall}/bashrc $HOME/.bashrc
-  echo "--------------------------"
-  echo "executing termux-setup-storage..."
-  echo "--------------------------"
-  termux-setup-storage
-fi
+echo "--------------------------"
+echo "copying configs to termux..."
+echo "--------------------------"
+mkdir -p $HOME/.shortcuts
+cp ${localinstall}/* $HOME/.shortcuts/
+chmod +x $HOME/.shortcuts/*
+mkdir -p $HOME/.termux
+ln -snf $HOME/.shortcuts $HOME/.termux/tasker
+cp ${localinstall}/bashrc $HOME/.bashrc
+echo "--------------------------"
+echo "executing termux-setup-storage..."
+echo "--------------------------"
+termux-setup-storage
 
 #create user account on server
 echo "--------------------------"

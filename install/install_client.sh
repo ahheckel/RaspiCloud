@@ -39,7 +39,7 @@ function checkyn {
 function finish {
   rm -rf $tmpdir
   rm -f $HOME/.$(basename $0).lock
-  echo ""
+  #echo ""
   remauth;
   remkeys;
   cd "$wdir"

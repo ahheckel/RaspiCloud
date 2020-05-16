@@ -22,6 +22,14 @@ function getmd5 () {
 	echo "$1" > $HOME/.$(basename $0).md5 ; echo $(md5sum $HOME/.$(basename $0).md5 | cut -d " " -f1)
 	rm -f $HOME/.$(basename $0).md5
 }
+function getID () {
+    local devid=$(echo "$1" | rev | cut -d . -f 1 | rev | cut -d - -f 1)
+    local md5id=$(echo "$1" | rev | cut -d . -f 1 | rev | cut -d - -f 2)
+    if [ x$devid == x$md5id ] ; then devid="" ; else devid="${devid}-" ; fi
+    md5id=$(echo "$md5id" | cut -c -5)
+    #echo ${devid}${md5id}
+    echo ${md5id}
+}
 
 touch $HOME/.$(basename $0).lock
 mkdir -p $HOME/.dirlists
@@ -29,19 +37,33 @@ mkdir -p $HOME/.dirlists
 # is device ID set ?
 if [ x"$device" == x ] ; then dev="" ; else dev="${device}-" ; fi
 # collect md5 suffixes
+# ENTRY01
+md5extrn=()
+md5intrn=("${syncfolders[@]}")
+tagsexcl=()
+tagsuniq=()
 md5excl=()
-for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
-    dir="${syncfolders[$i]}"
+for ((i = 0; i < ${#md5intrn[@]}; i++)) ; do
+    dir="${md5intrn[$i]}"
     if [ ! -d "$dir" ] ; then continue ; fi
     md5n=$(getmd5 "$dir")
-    md5excl+=("--exclude=*_${dev}$(echo $md5n | cut -c -5)")
+    tagsexcl+=("$(echo $md5n | cut -c -5)")
 done
-for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
-    dir="${syncfolders[$i]}"
-    if [ ! -d "$dir" ] ; then continue ; fi
-    md5n=$(getmd5 "$dir")
-    md5excl+=("--exclude=*_${dev}$(echo $md5n | cut -c -5).*")
+for ((i = 0; i < ${#md5extrn[@]}; i++)) ; do
+    dir="${md5extrn[$i]}"
+    dir="$(basename $dir)"
+    tagsexcl+=("$(getID $dir)")
 done
+for i in $(printf "%s\n" ${tagsexcl[@]} | sort -u ) ; do tagsuniq+=("$i") ; done
+for ((i = 0; i < ${#tagsuniq[@]}; i++)) ; do
+    tag="${tagsuniq[$i]}"
+    md5excl+=("--exclude=*${tag}")
+done
+for ((i = 0; i < ${#tagsuniq[@]}; i++)) ; do
+    tag="${tagsuniq[$i]}"
+    md5excl+=("--exclude=*${tag}*")
+done
+
 # sync...
 for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
     dir="${syncfolders[$i]}"
@@ -56,11 +78,11 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
         nc -w 10 -z $ip 22 2>/dev/null ; if [ $? -eq 1 ] ; then echo "netcat failed. - exiting." ; rm -f $HOME/.$(basename $0).lock ; exit 1 ; fi # is more robust than ping
 		if [ $update -eq 1 ] ; then
 		  echo "---updating cloud-scripts first..."     
-		  rsync -v -c -i -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ | grep ^\>f | cut -d " " -f 2- > $HOME/.dirlists/.update.scrpts
+		  rsync -v -L -c -i -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ | grep ^\>f | cut -d " " -f 2- > $HOME/.dirlists/.update.scrpts
 		  if [ $(cat $HOME/.dirlists/.update.scrpts | wc -l) -gt 0 ] ; then
 		    chmod +x $HOME/.shortcuts/*.sh
 		    echo "---cloud-scripts updated, syncing in next cycle - exiting..."
-		    exit 2
+		    rm -f $HOME/.$(basename $0).lock ; exit 2
 		  else
 		    echo "   ...nothing to do."
 		  fi

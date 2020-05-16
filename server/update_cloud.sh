@@ -9,7 +9,10 @@ function finish {
 	    rm -f $HOME/.$(basename $0).lock
 	    cd "$wdir"
 }
-trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM 
+trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
+function checkmd5dir () {
+      if [[ $1 =~ [a-f0-9]{32}$ ]] ; then echo 1 ; else echo 0 ; fi
+}
 touch $HOME/.$(basename $0).lock
 
 if [ x"$1" == "x" ] ; then 
@@ -28,6 +31,7 @@ cd - 1>/dev/null
 srv=$pfld/server
 clnt=$pfld/client
 ngnx=$pfld/websrv/nginx/webroot/cloud
+clouddir=cloud-NAS/tmp
 admin="$(whoami)" # this script should be run by the admin user
 files="$srv/updatedb.sh $srv/_updatedb.sh $srv/parsefiles2link.sh $srv/create_thumbs.sh $srv/_create_thumbs.sh $clnt/runscrpt.sh"
 
@@ -96,6 +100,23 @@ for user in $users ; do
       sudo cp -v $tmpdir/$file /home/${user}/$(dirname $file)/
       sudo chown ${user}:${user} /home/${user}/$file
       sudo chmod 750 /home/${user}/$file
+    done
+    echo "$(basename $0) : updating ${user}'s push-script..."
+	  pushscrpts=$(ls -1 $clnt/*push-to*.sh)
+	  dir=/home/${user}/"${clouddir}"
+  	md5fldrs=""
+	  for i in $(find $dir -maxdepth 1 -type d) ; do
+        dname=$(basename "$i")
+        if [ $(checkmd5dir "$dname") -eq 1 ] ; then
+          md5fldrs="$md5fldrs \"$dname\""
+        fi
+    done
+    for pushscrpt in $pushscrpts ; do
+      n=$(cat $pushscrpt | grep -n \#\ ENTRY01 | cut -d : -f 1)
+      if [ x$n != "x" ] ; then
+        n=$[$n+1]
+        sed -i "${n}s|.*|md5extrn=($md5fldrs)|g" $pushscrpt
+      fi
     done
 done
 

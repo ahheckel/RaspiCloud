@@ -47,7 +47,7 @@ for ((i = 0; i < ${#md5intrn[@]}; i++)) ; do
     dir="${md5intrn[$i]}"
     if [ ! -d "$dir" ] ; then continue ; fi
     md5n=$(getmd5 "$dir")
-    tagsexcl+=("$(echo $md5n | cut -c -5)")
+    tagsexcl+=("$(getID $md5n)")
 done
 for ((i = 0; i < ${#md5extrn[@]}; i++)) ; do
     dir="${md5extrn[$i]}"

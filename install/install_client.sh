@@ -193,7 +193,7 @@ echo "--------------------------"
 read -p "Create cronjob ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
     touch $HOME/../usr/var/spool/cron/crontabs/$(whoami) && cp $HOME/../usr/var/spool/cron/crontabs/$(whoami) $tmpdir/t
-    cmd="* * * * * $HOME/.shortcuts/runscrpt.sh $HOME/.shortcuts/${device}push-to-cloud-tmp.sh"
+    cmd="* * * * * \$HOME/.shortcuts/runscrpt.sh \$HOME/.shortcuts/${device}push-to-cloud-tmp.sh"
     echo "$cmd"
     read -p "Add above line to crontab ? [Y/n]" yn
     if [ $(checkyn) != x"n" ]; then

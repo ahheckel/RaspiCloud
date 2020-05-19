@@ -19,8 +19,11 @@ function finish {
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 
 function getmd5 () {
-	echo "$1" > $HOME/.$(basename $0).md5 ; echo $(md5sum $HOME/.$(basename $0).md5 | cut -d " " -f1)
-	rm -f $HOME/.$(basename $0).md5
+	echo -n "$1" | md5sum | cut -d " " -f1
+}
+function checkmd5dir () {
+      #if [[ $1 =~ ^\.[a-f0-9]{32}$ ]] ; then echo 1 ; else echo 0 ; fi
+      if [[ $1 =~ [a-f0-9]{32}$ ]] ; then echo 1 ; else echo 0 ; fi
 }
 function getID () {
     local devid=$(echo "$1" | rev | cut -d . -f 1 | rev | cut -d - -f 1)
@@ -67,14 +70,17 @@ done
 # sync...
 for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
     dir="${syncfolders[$i]}"
-    dstdir="${dstdirs[$i]}"; if [ x"$dstdir" == "x" ] ; then dstdir="$_dstdir" ; else _dstdir="$dstdir" ; fi
+    dstdir="${dstdirs[$i]}" ; if [ x"$dstdir" == "x" ] ; then dstdir="$_dstdir" ; else _dstdir="$dstdir" ; fi
     echo "selecting ${dir}..."
+    if [ x"$dir" == "x" ] ; then continue ; fi 
     if [ ! -d "$dir" ] ; then continue ; fi
     md5n=$(getmd5 "$dir")
+    if [ x"$md5n" == "x" ] ; then continue ; fi
+    if [ $(checkmd5dir "$md5n") -eq 0 ] ; then continue ; fi
     md5=$HOME/.dirlists/${md5n}.dir ; _md5=$HOME/.dirlists/_${md5n}.dir
-	touch $md5
-	ls -lpi --time-style=+%F "$dir/" | grep -v / > $_md5		
-	if [ "$(cat $md5)" != "$(cat $_md5)" ] ; then
+    touch $md5
+    ls -lpi --time-style=+%F "$dir/" | grep -v / > $_md5		
+    if [ "$(cat $md5)" != "$(cat $_md5)" ] ; then 
         nc -w 10 -z $ip 22 2>/dev/null ; if [ $? -eq 1 ] ; then echo "netcat failed. - exiting." ; rm -f $HOME/.$(basename $0).lock ; exit 1 ; fi # is more robust than ping
 		if [ $update -eq 1 ] ; then
 		  echo "---updating cloud-scripts first..."     
@@ -90,7 +96,7 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 		fi
 		echo "---deleting duplicates in $dir..."
 		fdupes -dNA "$dir"
-		echo "---syncing..."
+		echo "---syncing to $dstdir/.${dev}${md5n}..."
 		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' "${md5excl[@]}" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/.${dev}${md5n} | grep ^\<f | cut -d " " -f 2- | iconv -t ASCII//TRANSLIT//IGNORE -f UTF-8 > $HOME/.dirlists/.update.list
 		#cat $HOME/.dirlists/.update.list
 		if [ $(cat $HOME/.dirlists/.update.list | wc -l) -gt 0 ] ; then
@@ -101,12 +107,6 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 	fi
 	mv -f $_md5 $md5
 done
-# update...
-#if [ $update -eq 1 ] ; then
-#    echo ""
-#    echo "updating cloud-scripts..."
-#    rsync -av -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ && chmod +x $HOME/.shortcuts/*
-#fi
 
-rm -f $HOME/.$(basename $0).lock
 sleep 2
+rm -f $HOME/.$(basename $0).lock

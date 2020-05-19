@@ -78,7 +78,7 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
     if [ x"$md5n" == "x" ] ; then continue ; fi
     if [ $(checkmd5dir "$md5n") -eq 0 ] ; then continue ; fi
     md5=$HOME/.dirlists/${md5n}.dir ; _md5=$HOME/.dirlists/_${md5n}.dir
-    touch $md5
+    touch $md5 $_md5
     ls -lpi --time-style=+%F "$dir/" | grep -v / > $_md5		
     if [ "$(cat $md5)" != "$(cat $_md5)" ] ; then 
         nc -w 10 -z $ip 22 2>/dev/null ; if [ $? -eq 1 ] ; then echo "netcat failed. - exiting." ; rm -f $HOME/.$(basename $0).lock ; exit 1 ; fi # is more robust than ping

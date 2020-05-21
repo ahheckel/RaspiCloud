@@ -215,7 +215,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         ftime=$(stat -c %Y "$i")
         ddays=$(( (start - ftime) / 86400 ))
         # link only recent files, newer than e.g. 15 days
-        if [ $ddays -le 15 ] ; then 
+        if [ $ddays -lt 15 ] ; then 
           ln -svf "../$i" "$_dir"
         else
           rm -fv "$_dir/$i"

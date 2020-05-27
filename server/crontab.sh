@@ -32,8 +32,7 @@ fldr=${wdir0#/home/$(whoami)/}
 cd - 1>/dev/null
 
 if [ ! -d $webroot ] ; then echo "$(basename $0) : $webroot does not exist - exiting" ; exit 1 ; fi  
-
-users=$(ls $webroot)
+users=$(ls -1p $webroot | grep /$ | rev | cut -c 2- | rev | grep -v guest)
 
 $SCRPTPATH/update_cloud.sh "$users"
 echo ""

@@ -17,7 +17,7 @@ function checkmd5dir () {
 touch $HOME/.$(basename $0).lock
 
 if [ x"$1" == "x" ] ; then 
-    users="" # define user-set here 
+    users="" # define default user-set here 
 else
     users="$1"
 fi
@@ -88,7 +88,11 @@ n=$[$n+1]
 sed -i "${n}s/.*/if (fileExt == \"jpg\" || fileExt == \"jpeg\" || fileExt == \"jfif\" || fileExt == \"png\" || fileExt == \"bmp\" || fileExt == \"tif\" || fileExt == \"tiff\" || fileExt == \"gif\" || fileExt == \"fpx\" || fileExt == \"pcd\" || fileExt == \"svg\" ) {/g" $dest # pics
 cp $dest $orig
 
-# update server scripts for all users
+# reload nginx
+echo "$(basename $0) : reloading nginx..."
+sudo service nginx reload
+
+# update server scripts for given users
 mkdir -p $tmpdir/$srv ; mkdir -p $tmpdir/$clnt
 for user in $users ; do
     echo "$(basename $0) : updating cloud-user ${user}..."
@@ -97,8 +101,9 @@ for user in $users ; do
     sudo chown ${user}:${user} /home/$user/$srv /home/$user/$clnt
     sudo chmod 750 /home/$user/$srv /home/$user/$clnt
     for file in $files ; do
+      echo "$(basename $0) :   updating ${file}..."
       sudo cp /home/$admin/$file $tmpdir/$(dirname $file)/
-      sudo cp -v $tmpdir/$file /home/${user}/$(dirname $file)/
+      sudo cp $tmpdir/$file /home/${user}/$(dirname $file)/
       sudo chown ${user}:${user} /home/${user}/$file
       sudo chmod 750 /home/${user}/$file
     done

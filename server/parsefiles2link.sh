@@ -253,7 +253,7 @@ fi
 if [ $clean -eq 1 ] ; then
   #find $dir/ -maxdepth 1 -type f -printf '%i\n' > $tmpdir/root.inode
   #for i in auds docs pics vids ; do # auds is left out because it contains files not present in root
-  for i in docs pics vids ; do
+  for i in auds docs pics vids ; do
     if [ ! -d $dir/${i} ] ; then continue ; fi
     cd $dir/${i}
     find ./ -maxdepth 1 -type f | cut -d / -f 2- >> $tmpdir/${i}

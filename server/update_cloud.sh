@@ -8,6 +8,7 @@ function finish {
 	    rm -rf $tmpdir
 	    rm -f $HOME/.$(basename $0).lock
 	    cd "$wdir"
+	    exit
 }
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 function checkmd5dir () {

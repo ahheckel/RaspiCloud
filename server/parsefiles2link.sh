@@ -85,13 +85,15 @@ if [ $mode -eq 0 ] ; then
   for i in $(find $dir -maxdepth 1 -type d) ; do
     dname=$(basename "$i")
     if [ $(checkmd5dir "$dname") -eq 1 ] ; then
+      echo "$(basename $0) : updating from ${dir}/$(basename $i)"
       cd "$i"
       find ./ -maxdepth 1 -type f | cut -d / -f 2- | grep -v ^'\.' > $tmpdir/$dname
       for j in $(cat $tmpdir/$dname) ; do
         inode=$(stat -c %i "$j") 
         if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
-          fn="${j%.*}" ; ext=".${j##*.}" ; if [ ."$fn" == "$ext" ] ; then ext="" ; fi
+          fn="${j%.*}" ; ext=".${j##*.}" ; if [ ."$fn" == "$ext" ] && [ $(echo "$j" | grep \\. | wc -l) -eq 0 ] ; then ext="" ; fi
           f="${fn}_$(getID $dname)${ext}"
+          echo -n "$(basename $0) : "
           ln -vf "$j" "../${f}" # && echo "$f" >> $tmpdir/_list
         fi
       done
@@ -108,8 +110,9 @@ if [ $mode -eq 2 ] ; then
   for j in $(cat $tmpdir/list) ; do
     inode=$(stat -c %i "$j") 
     if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
-      fn="${j%.*}" ; ext=".${j##*.}" ; if [ ."$fn" == "$ext" ] ; then ext="" ; fi
+      fn="${j%.*}" ; ext=".${j##*.}" ; if [ ."$fn" == "$ext" ] && [ $(echo "$j" | grep \\. | wc -l) -eq 0 ] ; then ext="" ; fi
       f="${fn}_$(getID $dname)${ext}"
+      echo -n "$(basename $0) : "
       ln -vf "$j" "../${f}" && echo "$f" >> $tmpdir/_list
     fi
   done
@@ -141,7 +144,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         _dir="$dir/$categ"
         find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
         # <!-- ENTRY01 -->
-      for j in mp3 ogg oga mogg wma pcm flac m4a m4b m4p ; do
+        for j in mp3 ogg oga mogg wma pcm flac m4a m4b m4p ; do
           if [ x"$ext" = "x${j}" ] ; then		  
             echo "$i" >> $tmpdir/${categ}
             inode=$(stat -c %i "$i")		  
@@ -160,7 +163,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         _dir="$dir/$categ"
         find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
         # <!-- ENTRY02 -->
-      for j in pdf doc docx htm html odt xls xlsx ods ppt pptx txt pps ppsx odt ; do
+        for j in pdf doc docx htm html odt xls xlsx ods ppt pptx txt pps ppsx odt ; do
           if [ x"$ext" = "x${j}" ] ; then		  
             echo "$i" >> $tmpdir/${categ}
             inode=$(stat -c %i "$i")		  
@@ -180,7 +183,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         _dir="$dir/$categ"
         find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
         # <!-- ENTRY03 -->
-      for j in  jpeg jpg png gif webp tif tiff psd bmp jfif ; do
+        for j in  jpeg jpg png gif webp tif tiff psd bmp jfif ; do
           if [ x"$ext" = "x${j}" ] ; then		  
             echo "$i" >> $tmpdir/${categ}
             inode=$(stat -c %i "$i")		  
@@ -200,7 +203,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         _dir="$dir/$categ"
         find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
         # <!-- ENTRY04 -->
-      for j in  mp4 mov m4v f4v f4a m4r f4b 3gp ogx ogv wmv asf webm flv avi vob TS ts swf ; do
+        for j in  mp4 mov m4v f4v f4a m4r f4b 3gp ogx ogv wmv asf webm flv avi vob TS ts swf ; do
           if [ x"$ext" = "x${j}" ] ; then		  
             echo "$i" >> $tmpdir/${categ}
             inode=$(stat -c %i "$i")		  

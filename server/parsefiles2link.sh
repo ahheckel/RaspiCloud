@@ -33,24 +33,28 @@ function checkmd5dir () {
       if [[ $1 =~ [a-f0-9]{32}$ ]] ; then echo 1 ; else echo 0 ; fi
 }
 function getID () {
-	  local devid=$(echo "$1" | rev | cut -d . -f 1 | rev | cut -d - -f 1)
-	  local md5id=$(echo "$1" | rev | cut -d . -f 1 | rev | cut -d - -f 2)
+      local devid=$(echo "$1" | rev | cut -d . -f 1 | rev | cut -d - -f 1)
+      local md5id=$(echo "$1" | rev | cut -d . -f 1 | rev | cut -d - -f 2)
       if [ x$devid == x$md5id ] ; then devid="" ; else devid="${devid}-" ; fi
       md5id=$(echo "$md5id" | cut -c -5)
       echo ${devid}${md5id}
 }
 
+Usage() {
+    echo ""
+    echo "Usage:   `basename $0` <cloud-dir> [0|-mkconsistent|listfile]"
+    echo "Example: `basename $0` /home/<USER>/cloud-NAS/tmp -mkconsistent"
+    echo ""
+    exit 1
+}
+[ "$1" = "" ] && Usage
+
 # parse input
-if [ x"$1" == "x" ] ; then
-      echo "$(basename $0) : no directory name given... exiting."
+if [ $(echo "$1" | grep ^/ | wc -l) -eq 0 ] ; then
+      echo "$(basename $0) : please enter absolute dir-path... exiting."
       exit 1
-else
-      if [ $(echo "$1" | grep ^/ | wc -l) -eq 0 ] ; then
-        echo "$(basename $0) : please enter absolute dir-path... exiting."
-        exit 1
-      fi
-      dir="$1"
 fi
+dir="$1"
 if [ ! -d "$dir" ] ; then
       echo "$(basename $0) : '$dir' does not exist... exiting."
       exit 1
@@ -78,7 +82,6 @@ shift
 # begin script
 if [ $mode -eq 0 ] ; then
   find $dir/ -maxdepth 1 -type f -not -path '*/\.*' -printf '%i\n' > $tmpdir/root.inode
-  #touch $tmpdir/_list
   for i in $(find $dir -maxdepth 1 -type d) ; do
     dname=$(basename "$i")
     if [ $(checkmd5dir "$dname") -eq 1 ] ; then
@@ -95,7 +98,6 @@ if [ $mode -eq 0 ] ; then
       cd "$dir"
     fi
   done
-  #mv $tmpdir/_list $tmpdir/list
 fi
 
 if [ $mode -eq 2 ] ; then
@@ -148,6 +150,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
             elif [ ! -f "$_dir/$i" ] && [ $(cat $tmpdir/${categ}.inode | grep $inode | wc -l) -ne 0 ] ; then
               continue
             else
+              echo -n "$(basename $0) : "
               ln -vf "$i" "$_dir" ;
             fi
           fi
@@ -166,6 +169,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
             elif [ ! -f "$_dir/$i" ] && [ $(cat $tmpdir/${categ}.inode | grep $inode | wc -l) -ne 0 ] ; then
               continue
             else
+              echo -n "$(basename $0) : "
               ln -vf "$i" "$_dir" ;
               $SCRPTPATH/create_thumbs.sh "$i"
             fi
@@ -185,6 +189,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
             elif [ ! -f "$_dir/$i" ] && [ $(cat $tmpdir/${categ}.inode | grep $inode | wc -l) -ne 0 ] ; then
               continue
             else
+              echo -n "$(basename $0) : "
               ln -vf "$i" "$_dir" ;	
               $SCRPTPATH/create_thumbs.sh "$i"
             fi
@@ -204,6 +209,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
             elif [ ! -f "$_dir/$i" ] && [ $(cat $tmpdir/${categ}.inode | grep $inode | wc -l) -ne 0 ] ; then
               continue
             else
+              echo -n "$(basename $0) : "
               ln -vf "$i" "$_dir" ;
               $SCRPTPATH/create_thumbs.sh "$i"
             fi
@@ -215,12 +221,15 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         ftime=$(stat -c %Y "$i")
         ddays=$(( (start - ftime) / 86400 ))
         # link only recent files, newer than e.g. 15 days
-        if [ $ddays -lt 15 ] ; then 
-          ln -svf "../$i" "$_dir"
-        else
+        if [ $ddays -lt 15 ] ; then
+	  if [ ! -L "$_dir/$i" ] ; then
+	          echo -n "$(basename $0) : "
+            ln -svf "../$i" "$_dir"
+          fi
+        elif [ -L "$_dir/$i" ] ; then
+	        echo -n "$(basename $0) : "
           rm -fv "$_dir/$i"
         fi
-        
   done
 fi
 
@@ -228,19 +237,24 @@ if [ $clean -eq 1 ] ; then
   find $dir/ -maxdepth 1 -type f -printf '%i\n' > $tmpdir/root.inode
 fi
 
+#delete broken symlinks
+if [ $clean -eq 1 ] ; then
+    if [ -d $dir/.recent ] ; then
+      find -L $dir/.recent* -maxdepth 1 -type l -delete
+    fi
+fi
+
 # sync md5-subfolders with root
 if [ $clean -eq 1 ] ; then
   for i in $(find $dir -maxdepth 1 -type d) ; do
     if [ $(checkmd5dir $(basename "$i")) -eq 1 ] ; then
-      echo cd to $dir/$(basename "$i")
+      echo "$(basename $0) : cleanup ${dir}/$(basename $i)"
       cd "$i"
       find ./ -maxdepth 1 -type f | cut -d / -f 2- | grep -v ^'\.' > $tmpdir/$(basename "$i")
       for j in $(cat $tmpdir/$(basename $i)) ; do
         inode=$(stat -c %i "$j") 
-        #echo "$j"
-        #echo $inode
         if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
-          echo "deleting deprecated link ./${i}/${j}"
+          echo "$(basename $0) : deleting deprecated link ./${i}/${j}"
           rm -f "$j"
         fi
       done
@@ -255,6 +269,7 @@ if [ $clean -eq 1 ] ; then
   #for i in auds docs pics vids ; do # auds is left out because it contains files not present in root
   for i in auds docs pics vids ; do
     if [ ! -d $dir/${i} ] ; then continue ; fi
+    echo "$(basename $0) : cleanup $dir/${i}"
     cd $dir/${i}
     find ./ -maxdepth 1 -type f | cut -d / -f 2- >> $tmpdir/${i}
     #cat $tmpdir/${i} | sort | uniq -u > $tmpdir/${i}.unique
@@ -264,7 +279,7 @@ if [ $clean -eq 1 ] ; then
       # check if same inode in root
       inode=$(stat -c %i "$dir/$i/$j") 
       if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
-        echo "deleting deprecated link ./${i}/${j}"
+        echo "$(basename $0) : deleting deprecated link ./${i}/${j}"
         cd $dir/${i} && rm -f $j
       fi
     done
@@ -275,13 +290,14 @@ fi
 if [ $clean -eq 1 ] ; then
   for i in $dir ; do
     if [ ! -d $i/.thumbs ] ; then continue ; fi
+    echo "$(basename $0) : cleanup ${i}/.thumbs"
     find $i/.thumbs -maxdepth 1 -type f > $tmpdir/list
     for j in  $(cat $tmpdir/list) ; do
       fname=$(basename $j)
       if [ -f $i/$fname ] ; then 
         continue
       else
-        echo "deleting deprecated thumbnail ${i}/.thumbs/${fname}"
+        echo "$(basename $0) : deleting deprecated thumbnail ${i}/.thumbs/${fname}"
         rm -f $i/.thumbs/$fname
       fi
     done
@@ -295,13 +311,6 @@ if [ $clean -eq 1 ] ; then
       fi
     done
   done
-fi
-
-#delete broken symlinks
-if [ $clean -eq 1 ] ; then
-    if [ -d $dir/.recent ] ; then
-      find -L $dir/.recent -maxdepth 1 -type l -delete
-    fi
 fi
 
 #for sorting purposes

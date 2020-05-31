@@ -141,7 +141,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         _dir="$dir/$categ"
         find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
         # <!-- ENTRY01 -->
-        for j in mp3 ogg oga mogg wma pcm flac m4a m4b m4p ; do
+      for j in mp3 ogg oga mogg wma pcm flac m4a m4b m4p ; do
           if [ x"$ext" = "x${j}" ] ; then		  
             echo "$i" >> $tmpdir/${categ}
             inode=$(stat -c %i "$i")		  
@@ -160,7 +160,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         _dir="$dir/$categ"
         find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
         # <!-- ENTRY02 -->
-        for j in pdf doc docx htm html odt xls xlsx ods ppt pptx txt pps ppsx odt ; do
+      for j in pdf doc docx htm html odt xls xlsx ods ppt pptx txt pps ppsx odt ; do
           if [ x"$ext" = "x${j}" ] ; then		  
             echo "$i" >> $tmpdir/${categ}
             inode=$(stat -c %i "$i")		  
@@ -180,7 +180,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         _dir="$dir/$categ"
         find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
         # <!-- ENTRY03 -->
-        for j in  jpeg jpg png gif webp tif tiff psd bmp jfif ; do
+      for j in  jpeg jpg png gif webp tif tiff psd bmp jfif ; do
           if [ x"$ext" = "x${j}" ] ; then		  
             echo "$i" >> $tmpdir/${categ}
             inode=$(stat -c %i "$i")		  
@@ -200,7 +200,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         _dir="$dir/$categ"
         find ${_dir} -maxdepth 1 -type f -printf '%i\n' > $tmpdir/${categ}.inode
         # <!-- ENTRY04 -->
-        for j in  mp4 mov m4v f4v f4a m4r f4b 3gp ogx ogv wmv asf webm flv avi vob TS ts swf ; do
+      for j in  mp4 mov m4v f4v f4a m4r f4b 3gp ogx ogv wmv asf webm flv avi vob TS ts swf ; do
           if [ x"$ext" = "x${j}" ] ; then		  
             echo "$i" >> $tmpdir/${categ}
             inode=$(stat -c %i "$i")		  
@@ -222,12 +222,12 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         ddays=$(( (start - ftime) / 86400 ))
         # link only recent files, newer than e.g. 15 days
         if [ $ddays -lt 15 ] ; then
-	  if [ ! -L "$_dir/$i" ] ; then
-	          echo -n "$(basename $0) : "
-            ln -svf "../$i" "$_dir"
-          fi
+	         if [ ! -L "$_dir/$i" ] ; then
+             echo -n "$(basename $0) : "
+             ln -svf "../$i" "$_dir"
+           fi
         elif [ -L "$_dir/$i" ] ; then
-	        echo -n "$(basename $0) : "
+          echo -n "$(basename $0) : "
           rm -fv "$_dir/$i"
         fi
   done
@@ -254,7 +254,7 @@ if [ $clean -eq 1 ] ; then
       for j in $(cat $tmpdir/$(basename $i)) ; do
         inode=$(stat -c %i "$j") 
         if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
-          echo "$(basename $0) : deleting deprecated link ./${i}/${j}"
+          echo "$(basename $0) :   deleting deprecated link ./${i}/${j}"
           rm -f "$j"
         fi
       done
@@ -279,7 +279,7 @@ if [ $clean -eq 1 ] ; then
       # check if same inode in root
       inode=$(stat -c %i "$dir/$i/$j") 
       if [ $(cat $tmpdir/root.inode | grep $inode | wc -l) -eq 0 ] ; then
-        echo "$(basename $0) : deleting deprecated link ./${i}/${j}"
+        echo "$(basename $0) :   deleting deprecated link ./${i}/${j}"
         cd $dir/${i} && rm -f $j
       fi
     done
@@ -297,7 +297,7 @@ if [ $clean -eq 1 ] ; then
       if [ -f $i/$fname ] ; then 
         continue
       else
-        echo "$(basename $0) : deleting deprecated thumbnail ${i}/.thumbs/${fname}"
+        echo "$(basename $0) :   deleting deprecated thumbnail ${i}/.thumbs/${fname}"
         rm -f $i/.thumbs/$fname
       fi
     done

@@ -70,7 +70,7 @@ echo "--------------------------------"
 LIMITSIZE=$[$limit*1024*1024]
 SOMELIMIT=$LIMITSIZE
 cleanupdir
-sudo -u ${user} $SCRPTPATH/parsefiles2link.sh $dir -mkconsistent &>/dev/null
+sudo -u ${user} $SCRPTPATH/parsefiles2link.sh $dir -mkconsistent # &>/dev/null
 IFS=$SAVEIFS
 
 #echo "--------------------------------"

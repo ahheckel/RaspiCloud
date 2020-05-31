@@ -40,7 +40,7 @@ echo ""
 for user in $users ; do 
   dir="$webroot/${user}/tmp"
   if [ ! -d $dir ] ; then echo "$(basename $0) : $dir does not exist - continuing..." ; continue ; fi
-  sudo -u ${user} /home/${user}/${fldr}/parsefiles2link.sh $dir 0 # &>/dev/null
+  sudo -u ${user} /home/${user}/${fldr}/parsefiles2link.sh $dir 0 &>/dev/null
   $SCRPTPATH/quota.sh $user cloud-NAS/tmp $limit
 done
 

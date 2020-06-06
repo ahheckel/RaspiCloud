@@ -21,10 +21,11 @@ wdir0=$(pwd)
 cd - 1>/dev/null
 
 cloudroot="$1"
+iprouter="$2"
 xsltdir="$wdir0/nginx/xslt"
 orig_xsl="$xsltdir/template.xslt"
 orig_js="$wdir0/nginx/webroot/cloud/.custom.js"
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 2 ]; then
   echo "$(basename $0) : ilegal number of parameters - exiting..." ; exit 1
 fi
 if [ ! -d $xsltdir ] ; then
@@ -129,6 +130,8 @@ for file in custom gal ; do
       #01 dropdown
       n=$(cat $dest | grep -n  \<\!--\ ENTRY05 | cut -d : -f 1)
       n=$[$n+1]
+      sed -i "${n}i <a href=\"http://$iprouter\">Router</a>" $dest
+      n=$[$n+1]
       sed -i "${n}i <a href=\"http://$(getownip):631\">CUPS</a>" $dest
       n=$[$n+1]
       sed -i "${n}i <a href=\"http://$(getownip)/admin\">PiHole</a>" $dest
@@ -159,6 +162,8 @@ for file in custom gal ; do
       #02 dropdown
       n=$(cat $dest | grep -n  \<\!--\ ENTRY05 | cut -d : -f 1)
       n=$[$n+1]
+      sed -i "${n}i <a href=\"http://$iprouter\">Router</a>" $dest
+      n=$[$n+1]
       sed -i "${n}i <a href=\"http://$(getownip):631\">CUPS</a>" $dest
       n=$[$n+1]
       sed -i "${n}i <a href=\"http://$(getownip)/admin\">PiHole</a>" $dest
@@ -188,6 +193,8 @@ for file in custom gal ; do
       sed -i "${n}s|.*|        <xsl:sort order=\"descending\" select=\"@size\" data-type=\"number\"/>|g" $dest    
       #03 dropdown
       n=$(cat $dest | grep -n  \<\!--\ ENTRY05 | cut -d : -f 1)
+      n=$[$n+1]
+      sed -i "${n}i <a href=\"http://$iprouter\">Router</a>" $dest
       n=$[$n+1]
       sed -i "${n}i <a href=\"http://$(getownip):631\">CUPS</a>" $dest
       n=$[$n+1]

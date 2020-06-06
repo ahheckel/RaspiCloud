@@ -58,6 +58,7 @@ read -e -p "NAS storage directory:   "  -i "/media/cloud-NAS" nasdir
 #read -e -p "NAS guest's directory:   "  -i "/media/cloud-NAS/guest" gstdstdir
 gstdstdir="/media/cloud-NAS/guest"
 read -e -p "allowed ip-range:        "  -i "$(getownip | cut -d . -f 1-3).0/24" iprange
+read -e -p "ip-address of router:    "  -i "$(getownip | cut -d . -f 1-3).1" iprouter
 htpasswd_pref="$installdir/htpasswd/.htpasswd" #prefix filename
 ssl_pref="$installdir/ssl/nginx" #prefix filename
 mkdir -p $installdir/htpasswd
@@ -88,7 +89,7 @@ if [ $(checkyn) != x"n" ]; then
   $raspiroot/server/update_cloud.sh
   echo "--------------------------"
   chmod +x $(dirname $0)/_create_webfiles.sh
-  $(dirname $0)/_create_webfiles.sh $webroot/cloud
+  $(dirname $0)/_create_webfiles.sh $webroot/cloud $iprouter
   sudo rsync -r --exclude='guest/' $installdir/webroot/cloud/ $webroot/cloud/
 fi
 

@@ -119,13 +119,14 @@ $("a.clickpath").eq(0).html('&nbsp;&lt&gt ')
 function createpanels(){
 	var libpath = "/" + ".cloud02" + "/" + user + "/tmp";
 	var parentdir2 = ".cloud01";
-        $('<div id=\"panel01\" style=\"display:none\"><a class="cloudlib all" href="' + libpath + '">&nbsp;<>&nbsp;</a>&nbsp;&nbsp;<a class="cloudlib recent" href="' + libpath + '/.recent">&nbsp;<15d&nbsp;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="cloudlib auds" href="' + libpath + '/auds">auds</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib docs" href="' + libpath + '/docs">docs</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib pics" href="' + libpath + '/pics">pics</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib vids" href="' + libpath + '/vids">vids</a></div>').insertAfter($("#dirinfo"))
-	//$('<div id=\"panel01\" style=\"display:none\"><a class="cloudlib all" href="' + libpath + '">&nbsp;<>&nbsp;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="cloudlib auds" href="' + libpath + '/auds">auds</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib docs" href="' + libpath + '/docs">docs</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib pics" href="' + libpath + '/pics">pics</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib vids" href="' + libpath + '/vids">vids</a></div>').insertAfter($("#dirinfo"))
+        $('<div id=\"panel01\" style=\"display:none\"><a class="cloudlib all" href="' + libpath + '">&nbsp;<>&nbsp;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="cloudlib recent" href="' + libpath + '/.recent">&nbsp;<3d&nbsp;</a>&nbsp;&nbsp;<a class="cloudlib recent15d" href="' + libpath + '/.recent15d">&nbsp;<15d&nbsp;</a></div>').insertAfter($("#dirinfo"))
+        $('<div id=\"panel02\" style=\"display:none; padding-top:60px\"><a class="cloudlib02 auds" href="' + libpath + '/auds">auds</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib02 docs" href="' + libpath + '/docs">docs</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib02 pics" href="' + libpath + '/pics">pics</a>&nbsp;&nbsp;&nbsp;<a class="cloudlib02 vids" href="' + libpath + '/vids">vids</a></div>').insertAfter($("#panel01")) //.insertAfter($(".cloudlib").eq(0).parent())
 }
 createpanels();
 // panel & menu display conditions
 if ( typeof path_array[2] !== 'undefined' && path_array[2] !== "guest" ) {
         $('#panel01').css("display","block");
+        $('#panel02').css("display","block");
 }
 if ( user == "guest" ) { $("#dropdown").css("display","none")}
 // shortcut panel highlighting
@@ -136,18 +137,21 @@ if ( path_array[3] == "tmp" ) {
         }
         else if ( path_array[4] == ".recent" ) {
                 $('#panel01').find("a.recent").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
+        }
+        else if ( path_array[4] == ".recent15d" ) {
+                $('#panel01').find("a.recent15d").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         } 
         else if ( path_array[4] == "auds" ) {
-                $('#panel01').find("a.auds").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
+                $('#panel02').find("a.auds").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         }
         else if ( path_array[4] == "docs" ) {
-                $('#panel01').find("a.docs").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
+                $('#panel02').find("a.docs").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         }
         else if ( path_array[4] == "pics" ) {
-                $('#panel01').find("a.pics").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
+                $('#panel02').find("a.pics").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         }
         else if ( path_array[4] == "vids" ) {                
-                $('#panel01').find("a.vids").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
+                $('#panel02').find("a.vids").css("background-color", pcol).css("color","#000").css("border","6px solid " + pcol);
         }
 }
 // switch list mode vs image mode
@@ -168,7 +172,7 @@ var imgiter_prev = imgiter - 1;
 var imgiter_next = imgiter + 1;
 var isimg = 0;
 // <!-- ENTRY02 -->
-var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "tiff", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif", "odt", "3gp"];
+var imgformats = ["jpg", "jpeg", "png", "bmp", "tif", "tiff", "gif", "fpx", "pcd", "svg", "pdf", "doc", "ppt", "xls", "docx", "pptx", "xlsx", "txt", "ppsx", "pps", "jfif", "odt", "wmv", "mp4", "avi", "3gp"];
 var fileExt;
 var imgiter = 0;
 var lastobj;

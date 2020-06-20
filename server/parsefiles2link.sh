@@ -133,6 +133,7 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
   mkdir -p $dir/pics && ln -sf ../.thumbs $dir/pics
   mkdir -p $dir/vids && ln -sf ../.thumbs $dir/vids
   mkdir -p $dir/.recent && ln -sf ../.thumbs $dir/.recent
+  mkdir -p $dir/.recent15d && ln -sf ../.thumbs $dir/.recent15d
 
   cd $dir
   for i in $(cat $tmpdir/list) ; do 
@@ -232,6 +233,23 @@ if [ $mode -eq 1 ] || [ $mode -eq 2 ] || [ $mode -eq 0 ] ; then
         elif [ -L "$_dir/$i" ] ; then
           echo -n "$(basename $0) : "
           rm -fv "$_dir/$i"
+        fi
+        
+        _dir="$dir/.recent"
+        _dir15d="$dir/.recent15d"
+        ftime=$(stat -c %Y "$i")
+        ddays=$(( (start - ftime) / 86400 ))
+        # link only recent files, newer than e.g. 15 days
+        if [ $ddays -lt 15 ] ; then
+          if [ $ddays -lt 3 ] ; then
+            if [ ! -L "$_dir/$i" ] ; then echo -n "$(basename $0) : " ; ln -svf "../$i" "$_dir" ; fi
+          elif [ -L "$_dir/$i" ] ; then 
+            echo -n "$(basename $0) : " ; rm -fv "$_dir/$i"
+          fi
+          if [ ! -L "$_dir15d/$i" ] ; then echo -n "$(basename $0) : " ; ln -svf "../$i" "$_dir15d" ; fi
+        else
+          if [ -L "$_dir/$i" ] ; then echo -n "$(basename $0) : " ; rm -fv "$_dir/$i" ; fi
+          if [ -L "$_dir15d/$i" ] ; then echo -n "$(basename $0) : " ; rm -fv "$_dir15d/$i" ; fi
         fi
   done
 fi

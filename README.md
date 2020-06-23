@@ -9,8 +9,7 @@ Simple script-based, Raspberry-Pi hosted cross-platform Cloud with tls/ssl-encry
 - *lightweight:* based on *OpenSSH*, linux tools *rsync*, *cron* & bash scripts
 - *secure:* using key-based encryption
 - *convenient:* tls/ssl-encrypted web interface with instant search and image gallery functions for mobile browsing (see screenshots)
-- *generic:* sftp-access supported by many file browsers (incl. Windows10 Explorer)
-- *cross-platform:* client-side linux environment available on many platforms
+- *generic:* client-side linux environment available on many platforms, sftp-access supported by many file browsers (incl. Windows10 Explorer)
 - *quick-install:* using command line script (~10 min)
 - *low cost:* using Raspberry-Pi as server and standard USB drive as network access storage (NAS)
 
@@ -51,9 +50,10 @@ geany v1.29 under Raspian Stretch
 - bourne-shell
 
 ## Installation
-- Download and install Raspian for Raspberry Pi (see https://www.raspberrypi.org/downloads/raspbian)
-- Download and extract zipped project-repository in pi's home directory *(/home/pi)*, and mount USB harddisk 
-to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
+### Install RaspiCloud Server:
+  - Download and install Raspian for Raspberry Pi (see https://www.raspberrypi.org/downloads/raspbian)
+  - Download and extract zipped project-repository in pi's home directory *(/home/pi)*, and mount USB harddisk 
+    to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configuration/external-storage.md).
 
 ### Install RaspiCloud Client:
   **On Android Client:**
@@ -115,9 +115,6 @@ to *'/media/cloud-NAS'* (see https://www.raspberrypi.org/documentation/configura
 <td><img src="screenshot03.jpg" width="90%" </img></td>
 </tr>
 </table>
-
-## Status
- alpha
 
 ## Disclaimer
 The material embodied in this software is provided to you "as-is" and without warranty of any kind, express, implied or otherwise, including 

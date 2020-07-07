@@ -28,7 +28,7 @@ else
 fi
 read -e -p "source folders (on client):      " -i '"storage/downloads" "storage/dcim/Screenshots" "storage/dcim/Camera" "storage/dcim/Facebook" "storage/shared/WhatsApp/Media/WhatsApp Video" "storage/shared/WhatsApp/Media/WhatsApp Images" "storage/shared/WhatsApp/Media/WhatsApp Documents"' syncfolders
 read -e -p "destination folders (on server): " -i '"'$DSTDIR/tmp'"' destdirs
-read -e -p "rsync-options:                   " -i "-v -i --size-only -p -o -g --chown=$USER1:$GRP --chmod=750" opts
+read -e -p "rsync-options:                   " -i "-v -i --size-only -p -o -g --chown=$USER1:$GRP --chmod=640" opts
 #read -e -p "sync-scrpt (on client):          " -i ".shortcuts/push-to-cloud-tmp.sh" syncscrpt
 #read -e -p "post-scrpt (on server):          " -i "/home/$USER1/$SRVDIR/updatedb.sh $DSTDIR/tmp" scrpt
 syncscrpt=".shortcuts/${DEVICE}push-to-cloud-tmp.sh" 

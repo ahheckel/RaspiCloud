@@ -27,7 +27,7 @@ fi
 
 if [ x"$2" != "x" ] ; then
   list="$2"
-  cat $list | sort | uniq -u > $tmpdir/list.unique && mv $tmpdir/list.unique $list && $(dirname $0)/parsefiles2link.sh "$dir" "$list"  
+  cat $list | sort | uniq -u | iconv -t ASCII//TRANSLIT//IGNORE -f UTF-8 > $tmpdir/list.unique && mv $tmpdir/list.unique $list && $(dirname $0)/parsefiles2link.sh "$dir" "$list"  
 else
   cd $dir
   touch .$(basename $0).list

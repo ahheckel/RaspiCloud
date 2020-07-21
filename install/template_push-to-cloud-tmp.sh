@@ -97,7 +97,7 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 		echo "---deleting duplicates in $dir..."
 		fdupes -dNA "$dir"
 		echo "---syncing to $dstdir/.${dev}${md5n}..."
-		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' "${md5excl[@]}" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/.${dev}${md5n} | grep ^\<f | cut -d " " -f 2- | iconv -t ASCII//TRANSLIT//IGNORE -f UTF-8 > $HOME/.dirlists/.update.list
+		rsync $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' "${md5excl[@]}" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/.${dev}${md5n}/ | grep ^\<f | cut -d " " -f 2- | iconv -t ASCII//TRANSLIT//IGNORE -f UTF-8 > $HOME/.dirlists/.update.list
 		#cat $HOME/.dirlists/.update.list
 		if [ $(cat $HOME/.dirlists/.update.list | wc -l) -gt 0 ] ; then
 		  echo "---updating database..."

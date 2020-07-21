@@ -20,9 +20,11 @@ function remauth {
   fi
 }
 function createuserkey {
-  ssh-keygen -t rsa -b 2048 -f $ckey
+  if [ $1 -eq 1 ] ; then
+    ssh-keygen -t rsa -b 2048 -f $ckey
+  fi
   echo "$(basename $0) : uploading user ${user1}'s public key to server ($ip)..."
-  cat ${ckey}.pub| ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys && chmod 700 /home/$user1/.ssh" && echo "...done."
+  cat ${ckey}.pub| ssh ${user1}@${ip} "mkdir -p /home/$user1/.ssh && cat >> /home/$user1/.ssh/authorized_keys && sort /home/$user1/.ssh/authorized_keys | uniq > /home/$user1/.ssh/authorized_keys.uniq && mv /home/$user1/.ssh/authorized_keys.uniq /home/$user1/.ssh/authorized_keys && chmod 600 /home/$user1/.ssh/authorized_keys && chmod 700 /home/$user1/.ssh" && echo "...done."
 }
 function getownip {
   ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
@@ -107,7 +109,7 @@ echo "--------------------------"
 echo "Install termux packages on client..."
 echo "--------------------------"
 read -p "Press enter to continue..."
-pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes
+pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes busybox
 echo "--------------------------"
 echo "downloading installation files from $ip (to temporary folder)..."
 localinstall=$tmpdir
@@ -170,11 +172,13 @@ echo "--------------------------"
 if [ -f $ckey ]; then
   read -p "Create new keys ? [y/N]" yn
   if [ $(checkyn) == x"y" ]; then
-    createuserkey
+    createuserkey 1
+  else
+    createuserkey 0
   fi
 else
   echo "creating keys..."
-  createuserkey
+  createuserkey 1
 fi
 
 #adapt templates

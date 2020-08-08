@@ -109,7 +109,7 @@ echo "--------------------------"
 echo "Install termux packages on client..."
 echo "--------------------------"
 read -p "Press enter to continue..."
-pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes busybox
+pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes busybox cronie
 echo "--------------------------"
 echo "downloading installation files from $ip (to temporary folder)..."
 localinstall=$tmpdir
@@ -196,14 +196,15 @@ echo "Create cronjob on client..."
 echo "--------------------------"
 read -p "Create cronjob ? [Y/n]" yn
 if [ $(checkyn) != x"n" ]; then
-    touch $HOME/../usr/var/spool/cron/crontabs/$(whoami) && cp $HOME/../usr/var/spool/cron/crontabs/$(whoami) $tmpdir/t
+    touch $HOME/../usr/var/spool/cron/$(whoami) && cp $HOME/../usr/var/spool/cron/$(whoami) $tmpdir/t
     cmd="* * * * * \$HOME/.shortcuts/runscrpt.sh \$HOME/.shortcuts/${device}push-to-cloud-tmp.sh"
     echo "$cmd"
     read -p "Add above line to crontab ? [Y/n]" yn
     if [ $(checkyn) != x"n" ]; then
         echo "$cmd" >> $tmpdir/t
     fi
-    cat $tmpdir/t | sort -u > $HOME/../usr/var/spool/cron/crontabs/$(whoami)
+    cat $tmpdir/t | sort -u > $HOME/../usr/var/spool/cron/$(whoami)
+    mkdir -p $HOME/../usr/var/spool/cron/crontabs && cp $HOME/../usr/var/spool/cron/$(whoami) $HOME/../usr/var/spool/cron/crontabs/ # for busybox compatibility
     echo "--------------------------"
     echo "current crontab:"
     crontab -l

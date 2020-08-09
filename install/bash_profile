@@ -1,5 +1,5 @@
 
-echo "[Starting crond...]" && crond && echo "[OK]"
+echo "[Starting crond...]" && crond 2>/dev/null && echo "[OK]"
 
 echo "[$(crontab -l 2>/dev/null | sed '/^\s*$/d' | grep -v '^[[:blank:]]*#' | wc -l) cronjobs]"
 crontab -l 2>/dev/null

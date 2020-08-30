@@ -19,7 +19,7 @@ function finish {
 trap finish EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 
 function getmd5 () {
-	echo -n "$1" | md5sum | cut -d " " -f1
+	echo -n "${1}/" | sed "s|//*|/|g" | md5sum | cut -d " " -f1
 }
 function checkmd5dir () {
       #if [[ $1 =~ ^\.[a-f0-9]{32}$ ]] ; then echo 1 ; else echo 0 ; fi

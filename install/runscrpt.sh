@@ -1,15 +1,17 @@
+#!/bin/bash
 scrpt="$1"
 scrptname=$(basename "$scrpt")
-if ! pgrep -f "${scrpt}" > /dev/null ; then 
+if ! pgrep -f "^bash ${scrpt}" > /dev/null ; then 
 	echo "[${scrptname} : no instance is running (0)]"
 	rm -f $HOME/.${scrptname}.lock
-	${scrpt}
+	"${scrpt}"
 elif [ ! -f $HOME/.${scrptname}.lock ] ; then
 	echo "[${scrptname} : no instance is running (1)]"
-	for i in $(pgrep -f "${scrpt}") ; do 
-		kill -9 $i
+	for i in $(pgrep -f "^bash ${scrpt}") ; do 
+	      echo "killing pid $i ..."	
+          kill -9 $i
 	done
-	${scrpt}
+	"${scrpt}"
 else
 	echo "[${scrptname} : an instance is running]"
 	if [ ${scrptname} = "getgps.sh" ] ; then
@@ -22,7 +24,7 @@ else
 				echo "[${scrptname} : $HOME/.${scrptname}.lock file is old... deleting it.]"
 				killall -9 termux-location
 				killall -9 ${scrptname}
-				for i in $(pgrep -f "${scrpt}") ; do 
+				for i in $(pgrep -f "^bash ${scrpt}") ; do 
 					kill -9 $i
 				done
 				rm -f $HOME/.${scrptname}.lock

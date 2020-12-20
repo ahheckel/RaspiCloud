@@ -74,6 +74,7 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
     echo "selecting ${dir}..."
     if [ x"$dir" == "x" ] ; then continue ; fi 
     if [ ! -d "$dir" ] ; then continue ; fi
+    if [ $(ls "$dir" | wc -l) -eq 0 ] ; then continue; fi
     md5n=$(getmd5 "$dir")
     if [ x"$md5n" == "x" ] ; then continue ; fi
     if [ $(checkmd5dir "$md5n") -eq 0 ] ; then continue ; fi

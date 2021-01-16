@@ -34,7 +34,7 @@ function getID () {
     echo ${md5id}
 }
 function update_client () {
-	if [ $update -eq 1 ] ; then
+    if [ $update -eq 1 ] ; then
       echo "---updating cloud-scripts first..."     
       rsync -v -L -c -i -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ | grep ^\>f | cut -d " " -f 2- > $HOME/.dirlists/.update.scrpts
       if [ $(cat $HOME/.dirlists/.update.scrpts | wc -l) -gt 0 ] ; then

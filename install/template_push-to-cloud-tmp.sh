@@ -33,6 +33,20 @@ function getID () {
     #echo ${devid}${md5id}
     echo ${md5id}
 }
+function update_client () {
+	if [ $update -eq 1 ] ; then
+      echo "---updating cloud-scripts first..."     
+      rsync -v -L -c -i -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ | grep ^\>f | cut -d " " -f 2- > $HOME/.dirlists/.update.scrpts
+      if [ $(cat $HOME/.dirlists/.update.scrpts | wc -l) -gt 0 ] ; then
+        chmod +x $HOME/.shortcuts/*.sh
+        echo "---cloud-scripts updated, syncing in next cycle - exiting..."
+        rm -f $HOME/.$(basename $0).lock ; exit 2
+      else
+        echo "   ...nothing to do."
+      fi
+      update=0
+    fi
+}
 
 touch $HOME/.$(basename $0).lock
 mkdir -p $HOME/.dirlists
@@ -81,20 +95,17 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
     md5=$HOME/.dirlists/${md5n}.dir ; _md5=$HOME/.dirlists/_${md5n}.dir
     touch $md5 $_md5
     ls -lpi --time-style=+%F "$dir/" | grep -v / > $_md5		
+    
     if [ "$(cat $md5)" != "$(cat $_md5)" ] ; then 
         nc -w 10 -z $ip 22 2>/dev/null ; if [ $? -eq 1 ] ; then echo "netcat failed. - exiting." ; rm -f $HOME/.$(basename $0).lock ; exit 1 ; fi # is more robust than ping
-		if [ $update -eq 1 ] ; then
-		  echo "---updating cloud-scripts first..."     
-		  rsync -v -L -c -i -e "ssh -i $ckey" ${user}@${ip}:$clidir/* $HOME/.shortcuts/ | grep ^\>f | cut -d " " -f 2- > $HOME/.dirlists/.update.scrpts
-		  if [ $(cat $HOME/.dirlists/.update.scrpts | wc -l) -gt 0 ] ; then
-		    chmod +x $HOME/.shortcuts/*.sh
-		    echo "---cloud-scripts updated, syncing in next cycle - exiting..."
-		    rm -f $HOME/.$(basename $0).lock ; exit 2
-		  else
-		    echo "   ...nothing to do."
-		  fi
-		  update=0
-		fi
+		# ---updating client---
+		update_client
+		# ---insert per-directory directives (optional)
+		#if [ "$dstdir" == "/home/$user/XXX" ] ; then 
+		#  rsync --remove-source-files $opts "$dir"/* --exclude='*.*.part' --exclude='*.*.crdownload' --exclude=".*" --exclude='~*' "${md5excl[@]}" --iconv=utf-8,ascii//TRANSLIT//IGNORE -e "ssh -i $ckey" ${user}@$ip:$dstdir/
+		#  mv -f $_md5 $md5
+		#  continue
+	    #fi
 		echo "---deleting duplicates in $dir..."
 		fdupes -dNA "$dir"
 		echo "---syncing to $dstdir/.${dev}${md5n}..."
@@ -108,6 +119,7 @@ for ((i = 0; i < ${#syncfolders[@]}; i++)) ; do
 		fi
 	fi
 	mv -f $_md5 $md5
+	
 done
 
 sleep 2

@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#Dependencies: rsync openssh md5sum fdupes netcat bc
 ip="xIPADDRESSx"
 user="xUSERx"
 device="xDEVICEx"

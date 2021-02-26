@@ -12,6 +12,7 @@ opts="xOPTSx"
 update=1
 
 if [ -f $HOME/.$(basename $0).lock ] ; then echo "An instance is already running - exiting." ; exit 1 ; fi
+if [ $(echo $(basename $0) | cut -c 1-3) != "$device" ] ; then echo "Prefix mismatch - exiting." ; exit 1 ; fi
 
 function finish {
 	rm -f $HOME/.$(basename $0).lock

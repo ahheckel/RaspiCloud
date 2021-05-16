@@ -77,6 +77,11 @@ read -e -p "client script subdir (on server):   " -i "$(dirname ${path#/home/$ad
 export CLIDIR=$clidir
 read -e -p "server script subdir (on server):   " -i "$(dirname ${path#/home/$admin/})/server" srvdir
 export SRVDIR=$srvdir
+##check dirs
+#cdirs=("$path" "/home/$admin/$clidir" "/home/$admin/$srvdir"); 
+#ssh $admin@$ip echo "checking directories..." ; for ((i=0; i < ${#cdirs[@]}; i++)) ; do if [ -d "${cdirs[$i]}" ] ; then echo "${cdirs[$i]} : exists." ; else echo "${cdirs[$i]} : does not exist!" ; fi ; done
+#echo ""
+#parse inputs
 read -e -p "enter username:                     " -i "pi" user1
 export USER1=$user1
 read -e -p "user's cloud-dir (on server):       " -i "/media/cloud-NAS/${user1}" dstdir

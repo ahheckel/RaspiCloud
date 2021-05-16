@@ -108,14 +108,15 @@ for user in $users ; do
       sudo chmod 750 /home/${user}/$file
     done
     echo "$(basename $0) : updating ${user}'s push-script..."
-	  pushscrpts=$(ls -1 $clnt/*push-to*.sh)
-	  dir=/home/${user}/"${clouddir}"
-  	md5fldrs=""
-	  for i in $(find $dir -maxdepth 1 -type d) ; do
-        dname=$(basename "$i")
-        if [ $(checkmd5dir "$dname") -eq 1 ] ; then
-          md5fldrs="$md5fldrs \"$dname\""
-        fi
+    pushscrpts=$(ls -1 $clnt/*push-to*.sh 2>/dev/null)
+    if [ x"$pushscrpts" == "x" ] ; then echo "$(basename $0) : no push-script found..." ; continue ; fi
+    dir=/home/${user}/"${clouddir}"
+    md5fldrs=""
+    for i in $(find $dir -maxdepth 1 -type d) ; do
+      dname=$(basename "$i")
+      if [ $(checkmd5dir "$dname") -eq 1 ] ; then
+        md5fldrs="$md5fldrs \"$dname\""
+      fi
     done
     for pushscrpt in $pushscrpts ; do
       n=$(cat $pushscrpt | grep -n \#\ ENTRY01 | cut -d : -f 1)

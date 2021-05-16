@@ -109,6 +109,7 @@ echo "--------------------------"
 echo "Install termux packages on client..."
 echo "--------------------------"
 read -p "Press enter to continue..."
+pkg update
 pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes busybox cronie
 echo "--------------------------"
 echo "downloading installation files from $ip (to temporary folder)..."

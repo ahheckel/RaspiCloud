@@ -11,6 +11,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=0.1" />
             <!-- ENTRY06 -->
             <script src="/cloud/.yall.min.js"></script>
+            <link rel="shortcut icon" href="/cloud/.icons/favicon.ico"></link>
         </head>
         
         <!-- TOP HEADER -->

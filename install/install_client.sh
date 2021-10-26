@@ -126,10 +126,12 @@ echo "--------------------------"
 echo "copying configs to termux..."
 echo "--------------------------"
 mkdir -p $HOME/.shortcuts
+mkdir -p $HOME/.termux/tasker
 cp ${localinstall}/* $HOME/.shortcuts/
+cp ${localinstall}/* $HOME/.termux/tasker
 chmod +x $HOME/.shortcuts/*
-mkdir -p $HOME/.termux
-ln -snf $HOME/.shortcuts $HOME/.termux/tasker
+chmod +x $HOME/.termux/tasker/*
+#ln -snf $HOME/.shortcuts $HOME/.termux/tasker #tasker-pulgin: link no longer accepted
 cp ${localinstall}/bashrc $HOME/.bashrc
 echo "--------------------------"
 echo "executing termux-setup-storage..."

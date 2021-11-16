@@ -65,14 +65,15 @@ ckey="$HOME/.ssh/raspicloud" # user's key
 export CKEY=$ckey
 
 #parse inputs
-read -e -p "server (Raspberry) ip-address:   " -i "$(getownip|cut -d . -f 1-3).1" ip
+read -e -p "server (Raspberry) ip-address:   " -i "$(getownip|cut -d . -f 1-3).53" ip
 ping -c3 $ip
 if [ $? -ne 0 ] ; then echo "PING failed." ; finish ; fi
 export IP=$ip
 echo ""
+read -e -p "update existing installation ? (no|yes)        " -i "yes" isupdate
 read -e -p "server admin user (for installation purposes): " -i "pi" admin
 export ADMIN=$admin
-read -e -p "installation source (on server):    " -i "/home/$admin/RaspiCloud-master/install/" path
+read -e -p "installation source (on server):    " -i "/home/$admin/RaspiCloud/install/" path
 read -e -p "client script subdir (on server):   " -i "$(dirname ${path#/home/$admin/})/client" clidir
 export CLIDIR=$clidir
 read -e -p "server script subdir (on server):   " -i "$(dirname ${path#/home/$admin/})/server" srvdir
@@ -84,11 +85,11 @@ export SRVDIR=$srvdir
 #parse inputs
 read -e -p "enter username:                     " -i "pi" user1
 export USER1=$user1
-read -e -p "user's cloud-dir (on server):       " -i "/media/cloud-NAS/${user1}" dstdir
+read -e -p "user's cloud-dir (on server):       " -i "/home/${user1}/media/seagate5T" dstdir
 export DSTDIR=$dstdir
-read -e -p "user's cloud-dir group owner:       " -i "$user1" grp
+read -e -p "user's cloud-dir group owner:       " -i "www-data" grp
 export GRP=$grp
-read -e -p "enter device-ID:                    " -i "T01" device
+read -e -p "enter device-ID:                    " -i "T00" device
 export DEVICE=$device
 
 #create keypair for installation
@@ -115,13 +116,20 @@ echo "Install termux packages on client..."
 echo "--------------------------"
 read -p "Press enter to continue..."
 pkg update
-pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes busybox cronie
+pkg install openssh rsync bc util-linux iconv termux-api nano nmap fdupes busybox cronie python
+pip install --upgrade pip 
+pip install --upgrade ffmpeg 
+pip install --upgrade yt-dlp
 echo "--------------------------"
 echo "downloading installation files from $ip (to temporary folder)..."
 localinstall=$tmpdir
 mkdir -p $localinstall
 opts="-v --size-only --no-perms --no-owner --no-group --progress"
-rsync -r $opts -e "ssh -i $key" ${admin}@${ip}:$path --exclude=ssh/ --iconv=utf-8,ascii//TRANSLIT//IGNORE $localinstall
+rsync -r $opts -e "ssh -i $key" ${admin}@${ip}:$path/ --exclude=ssh/ --iconv=utf-8,ascii//TRANSLIT//IGNORE $localinstall
+if [ x"${isupdate}" = x"yes" ] ; then 
+  echo "downloading client files from $ip (to temporary folder)..."
+  rsync -r -v --progress -L -e "ssh -i $key" ${admin}@${ip}:$clidir/ --exclude=ssh/ --iconv=utf-8,ascii//TRANSLIT//IGNORE $localinstall
+fi
 echo "--------------------------"
 echo "copying configs to termux..."
 echo "--------------------------"
@@ -138,65 +146,67 @@ echo "executing termux-setup-storage..."
 echo "--------------------------"
 termux-setup-storage
 
-#create user account on server
-echo "--------------------------"
-echo "Create user's account on server ($ip)..."
-echo "--------------------------"
-read -p "Press enter to continue..."
-echo "creating account '$user1' on ${ip}..."
-ssh -i $key ${admin}@${ip} "sudo adduser $user1 && sudo adduser $admin $user1 && sudo adduser $user1 www-data" # add admin to private group, and add user to www-data
-echo "--------------------------"
-echo "installing user's scripts on server ($ip)..."
-ssh -i $key ${admin}@${ip} "chmod +x \$HOME/$srvdir/*.sh && \$HOME/$srvdir/update_cloud.sh $user1"
-
-#create user's cloud-dir
-echo "--------------------------"
-echo "Create user's cloud-dir '${dstdir}/tmp' on server ($ip)..."
-echo "--------------------------"
-read -p "Press enter to continue..."
-echo "creating cloud-dir ('${dstdir}/tmp') on NAS..."
-ssh -i $key ${admin}@${ip} "sudo mkdir -p ${dstdir}/tmp && sudo chown -R ${user1}:${grp} ${dstdir} && sudo chmod -R 750 ${dstdir}"
-echo "--------------------------"  
-echo "creating symlink to NAS in ${user1}'s home folder..."
-cmd="ln -sfnv $dstdir /home/${user1}/cloud-NAS"
-#echo "executing $cmd on server..."
-ssh -i $key ${admin}@${ip} "sudo $cmd"
-echo "--------------------------"  
-echo "adding admin user '$admin' to group 'www-data' on server..."
-ssh -i $key ${admin}@${ip} "sudo adduser $admin www-data"
-if [ x"$grp" != x"www-data" ]; then
+if [ x"${isupdate}" = x"no" ] ; then
+  #create user account on server
+  echo "--------------------------"
+  echo "Create user's account on server ($ip)..."
+  echo "--------------------------"
+  read -p "Press enter to continue..."
+  echo "creating account '$user1' on ${ip}..."
+  ssh -i $key ${admin}@${ip} "sudo adduser $user1 && sudo adduser $admin $user1 && sudo adduser $user1 www-data" # add admin to private group, and add user to www-data
+  echo "--------------------------"
+  echo "installing user's scripts on server ($ip)..."
+  ssh -i $key ${admin}@${ip} "chmod +x \$HOME/$srvdir/*.sh && \$HOME/$srvdir/update_cloud.sh $user1"
+  
+  #create user's cloud-dir
+  echo "--------------------------"
+  echo "Create user's cloud-dir '${dstdir}/tmp' on server ($ip)..."
+  echo "--------------------------"
+  read -p "Press enter to continue..."
+  echo "creating cloud-dir ('${dstdir}/tmp') on NAS..."
+  ssh -i $key ${admin}@${ip} "sudo mkdir -p ${dstdir}/tmp && sudo chown -R ${user1}:${grp} ${dstdir} && sudo chmod -R 750 ${dstdir}"
   echo "--------------------------"  
-  echo "adding user 'www-data' to group '$grp' on server..."
-  ssh -i $key ${admin}@${ip} "sudo adduser www-data $grp"
-fi
-echo "--------------------------"  
-echo "reloading webserver (if applicable)..."
-ssh -i $key ${admin}@${ip} "sudo service nginx reload 2>/dev/null"
-
-#create user's keys
-echo "--------------------------"
-echo "Create user's ssh-keypair..."
-echo "--------------------------"
-if [ -f $ckey ]; then
-  read -p "Create new keys ? [y/N]" yn
-  if [ $(checkyn) == x"y" ]; then
-    createuserkey 1
-  else
-    createuserkey 0
+  echo "creating symlink to NAS in ${user1}'s home folder..."
+  cmd="ln -sfnv $dstdir /home/${user1}/cloud-NAS"
+  #echo "executing $cmd on server..."
+  ssh -i $key ${admin}@${ip} "sudo $cmd"
+  echo "--------------------------"  
+  echo "adding admin user '$admin' to group 'www-data' on server..."
+  ssh -i $key ${admin}@${ip} "sudo adduser $admin www-data"
+  if [ x"$grp" != x"www-data" ]; then
+    echo "--------------------------"  
+    echo "adding user 'www-data' to group '$grp' on server..."
+    ssh -i $key ${admin}@${ip} "sudo adduser www-data $grp"
   fi
-else
-  echo "creating keys..."
-  createuserkey 1
-fi
-
-#adapt templates
-echo "--------------------------"
-echo "Configure templates for user..."
-echo "--------------------------"
-read -p "Press enter to continue..."
-$HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.sh
-echo "uploading to server ($ip)..."
-scp -i $ckey $HOME/.shortcuts/${device}push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/" && echo "...done."
+  echo "--------------------------"  
+  echo "reloading webserver (if applicable)..."
+  ssh -i $key ${admin}@${ip} "sudo service nginx reload 2>/dev/null"
+  
+  #create user's keys
+  echo "--------------------------"
+  echo "Create user's ssh-keypair..."
+  echo "--------------------------"
+  if [ -f $ckey ]; then
+    read -p "Create new keys ? [y/N]" yn
+    if [ $(checkyn) == x"y" ]; then
+      createuserkey 1
+    else
+      createuserkey 0
+    fi
+  else
+    echo "creating keys..."
+    createuserkey 1
+  fi
+  
+  #adapt templates
+  echo "--------------------------"
+  echo "Configure templates for user..."
+  echo "--------------------------"
+  read -p "Press enter to continue..."
+  $HOME/.shortcuts/template_config.sh $HOME/.shortcuts/template_push-to-cloud-tmp.sh
+  echo "uploading to server ($ip)..."
+  scp -i $ckey $HOME/.shortcuts/${device}push-to-cloud-tmp.sh ${user1}@${ip}:"\$HOME/$clidir/" && echo "...done."
+fi # end isupdate
 
 #create cronjob
 echo "--------------------------"
